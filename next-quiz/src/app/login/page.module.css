@@ -1,0 +1,45 @@
+.page {
+    width: 100vw;
+    height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.loginWrapper {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    width: 100%;
+    max-width: 1300px;
+}
+
+.guestFormCt form,
+.loginFormCt form {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-evenly;
+    height: 100%;
+    width: 300px;
+    border: 2px solid white;
+    border-radius: 10px;
+    padding: 10px;
+}
+
+.logoCt {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    max-height: calc(100vh / 3);
+}
+
+.logo {
+    height: 100%;
+    width: auto;
+}
+
+@media (max-width: 800px) {
+    .loginWrapper {
+        flex-direction: column;
+    }
+}
