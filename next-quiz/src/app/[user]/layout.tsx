@@ -2,11 +2,14 @@ import Footer from "./Footer";
 import Header from "./Header";
 import styles from "./page.module.css";
 
-const MainLayout = ({ children }: Readonly<{ children: React.ReactNode }>) => {
+const MainLayout = ({
+    children,
+    params,
+}: Readonly<{ children: React.ReactNode; params: { user: string } }>) => {
     return (
         <>
             <header className={styles.mainHeader}>
-                <Header />
+                <Header username={params.user} />
             </header>
             <main>{children}</main>
             <footer className={styles.mainFooter}>

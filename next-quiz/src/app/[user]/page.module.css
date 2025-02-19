@@ -1,0 +1,53 @@
+.mainHeader {
+    width: 100vw;
+    height: 70px;
+    background-color: var(--header-background);
+    color: var(--header-color);
+}
+
+.headerWrapper {
+    width: 1300px;
+    height: 100%;
+    margin: auto;
+    display: flex;
+    justify-content: space-between;
+}
+
+.logoCt {
+    height: 100%;
+    padding-block: 5px;
+}
+
+.logo {
+    height: 100%;
+    width: auto;
+}
+
+.headerMessageCt {
+    height: 100%;
+}
+
+.navCt {
+    height: 100%;
+}
+
+.navbar {
+    height: 100%;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.navbar a {
+    transition: all 0.3s ease;
+}
+
+.navbar a:hover {
+    color: var(--main-color);
+}
+
+.mainFooter {
+}
+
+.footerWrapper {
+}
