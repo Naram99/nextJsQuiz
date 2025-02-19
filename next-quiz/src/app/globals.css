@@ -3,6 +3,7 @@
     --main-color: #000;
     --header-background: #252525;
     --header-color: #bbbbbb;
+    --main-font: Arial, Helvetica, sans-serif;
 }
 
 @media (prefers-color-scheme: dark) {
@@ -21,7 +22,7 @@ body {
 body {
     color: var(--main-color);
     background: var(--main-background);
-    font-family: Arial, Helvetica, sans-serif;
+    font-family: var(--main-font);
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
 }

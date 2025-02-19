@@ -46,6 +46,11 @@
     color: var(--main-color);
 }
 
+.navbar .activeLink {
+    font-weight: bold;
+    color: var(--main-color);
+}
+
 .mainFooter {
 }
 

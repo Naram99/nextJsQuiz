@@ -2,8 +2,17 @@
 import Image from "next/image";
 import styles from "./page.module.css";
 import logo from "../../../public/logoWhite.png";
+import { notFound, usePathname } from "next/navigation";
+import Link from "next/link";
 
-const Header = ({ username }: { username: string }) => {
+const Header = ({ username }: { username: string | undefined }) => {
+    const pathname: string = usePathname();
+    const currentPage = pathname.split("/").pop();
+
+    if (!username) {
+        notFound();
+    }
+
     return (
         <div className={styles.headerWrapper}>
             <div className={styles.logoCt}>
@@ -12,9 +21,19 @@ const Header = ({ username }: { username: string }) => {
             <div className={styles.headerMessageCt}></div>
             <div className={styles.navCt}>
                 <nav className={styles.navbar}>
-                    <a href="/dashboard">Irányítópult</a>
-                    <a href="/help">Súgó</a>
-                    <a href="/profile">{username}</a>
+                    <Link
+                        href="dashboard"
+                        className={currentPage === "dashboard" ? styles.activeLink : ""}>
+                        Irányítópult
+                    </Link>
+                    <Link href="help" className={currentPage === "help" ? styles.activeLink : ""}>
+                        Súgó
+                    </Link>
+                    <Link
+                        href="profile"
+                        className={currentPage === "profile" ? styles.activeLink : ""}>
+                        {username}
+                    </Link>
                 </nav>
             </div>
         </div>
