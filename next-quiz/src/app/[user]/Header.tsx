@@ -6,12 +6,12 @@ import { notFound, usePathname } from "next/navigation";
 import Link from "next/link";
 
 const Header = ({ username }: { username: string | undefined }) => {
-    const pathname: string = usePathname();
-    const currentPage = pathname.split("/").pop();
-
     if (!username) {
         notFound();
     }
+
+    const pathname: string = usePathname();
+    const currentPage = pathname.split("/").pop();
 
     return (
         <div className={styles.headerWrapper}>

@@ -1,4 +1,9 @@
+/* HEADER */
+
 .mainHeader {
+    position: fixed;
+    top: 0;
+    left: 0;
     width: 100vw;
     height: 70px;
     background-color: var(--header-background);
@@ -50,6 +55,16 @@
     font-weight: bold;
     color: var(--main-color);
 }
+
+/* MAIN */
+
+.main {
+    padding-top: 70px;
+    width: 100vw;
+    height: 100vh;
+}
+
+/* FOOTER */
 
 .mainFooter {
 }

@@ -16,7 +16,7 @@ const MainLayout = ({
             <header className={styles.mainHeader}>
                 <Header username={params.user} />
             </header>
-            <main>{children}</main>
+            <main className={styles.main}>{children}</main>
             <footer className={styles.mainFooter}>
                 <Footer />
             </footer>

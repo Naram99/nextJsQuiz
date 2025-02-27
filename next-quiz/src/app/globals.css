@@ -4,6 +4,12 @@
     --header-background: #252525;
     --header-color: #bbbbbb;
     --main-font: Arial, Helvetica, sans-serif;
+    --card-border: #808080;
+    --correct: #047700;
+    --warning: #dfdb00;
+    --error: #880000;
+    --notify-bg: #008bad;
+    --notify-color: #cccccc;
 }
 
 @media (prefers-color-scheme: dark) {
