@@ -1,12 +1,18 @@
+"use client";
 import styles from "./page.module.css";
 import MainCard from "./MainCard";
-import { cardTexts } from "@/resources/languages/hu/cardTexts";
+import { useContext } from "react";
+import { LanguageContext } from "@/context/LanguageContext";
 
 const Dashboard = () => {
+    const { texts } = useContext(LanguageContext)!;
+    const cardText = texts.cardTexts || {
+        "": { title: "", description: "", buttonText: "", buttonLink: "" },
+    };
     return (
         <div className={styles.mainWrapper}>
             <div className={styles.cardsCt}>
-                {Object.entries(cardTexts).map(([key, card]) => (
+                {Object.entries(cardText).map(([key, card]) => (
                     <div className={styles.card} key={key}>
                         <MainCard {...card} />
                     </div>

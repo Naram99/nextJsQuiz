@@ -34,6 +34,9 @@
 
 .navCt {
     height: 100%;
+    display: flex;
+    padding-block: 5px;
+    gap: 2rem;
 }
 
 .navbar {
@@ -48,12 +51,24 @@
 }
 
 .navbar a:hover {
-    color: var(--main-color);
+    color: var(--header-highlight-color);
 }
 
 .navbar .activeLink {
     font-weight: bold;
-    color: var(--main-color);
+    color: var(--header-highlight-color);
+}
+
+.languageCt {
+    position: relative;
+    padding-block: 10px;
+    height: 100%;
+}
+
+.language {
+    height: 100%;
+    width: auto;
+    cursor: pointer;
 }
 
 /* MAIN */

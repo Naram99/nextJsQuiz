@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import "./globals.css";
+import { LanguageProvider } from "@/context/LanguageContext";
 
 export const metadata: Metadata = {
     title: "DRV Quiz App",
@@ -12,9 +13,11 @@ export default function RootLayout({
     children: React.ReactNode;
 }>) {
     return (
-        <html lang="en">
-            <body className={"layout-ct"}>{children}</body>
-        </html>
+        <LanguageProvider>
+            <html lang="en">
+                <body className={"layout-ct"}>{children}</body>
+            </html>
+        </LanguageProvider>
     );
 }
 
