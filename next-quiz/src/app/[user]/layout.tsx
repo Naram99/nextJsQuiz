@@ -3,18 +3,20 @@ import Footer from "./Footer";
 import Header from "./Header";
 import styles from "./page.module.css";
 
-const MainLayout = ({
+const MainLayout = async ({
     children,
     params,
-}: Readonly<{ children: React.ReactNode; params?: { user?: string } }>) => {
-    if (!params || !params.user) {
+}: Readonly<{ children: React.ReactNode; params?: Promise<{ user?: string }> }>) => {
+    const param = await params;
+    const user = param?.user
+    if (!param || !user) {
         return <Loading />;
     }
 
     return (
         <>
             <header className={styles.mainHeader}>
-                <Header username={params.user} />
+                <Header username={user} />
             </header>
             <main className={styles.main}>{children}</main>
             <footer className={styles.mainFooter}>
