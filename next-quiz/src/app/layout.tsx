@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import "./globals.css";
 import { LanguageProvider } from "@/context/LanguageContext";
+import React from "react";
 
 export const metadata: Metadata = {
     title: "DRV Quiz App",

@@ -14,7 +14,7 @@ const Header = ({ username }: { username: string | undefined }) => {
     }
 
     const { texts } = useContext(LanguageContext)!;
-    const headerText = texts.headerTexts;
+    const headerText = texts.headerTexts!;
 
     const pathname: string = usePathname();
     const currentPage = pathname.split("/").pop();
@@ -30,10 +30,10 @@ const Header = ({ username }: { username: string | undefined }) => {
                     <Link
                         href="dashboard"
                         className={currentPage === "dashboard" ? styles.activeLink : ""}>
-                        {headerText?.controlPanel}
+                        {headerText.controlPanel}
                     </Link>
                     <Link href="help" className={currentPage === "help" ? styles.activeLink : ""}>
-                        {headerText?.help}
+                        {headerText.help}
                     </Link>
                     <Link
                         href="profile"

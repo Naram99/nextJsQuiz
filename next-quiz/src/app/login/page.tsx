@@ -1,11 +1,15 @@
 "use client";
 
-import { useState } from "react";
+import React, {useContext, useState} from "react";
 import logo from "../../../public/logoWhite.png";
 import Image from "next/image";
 import styles from "./page.module.css";
+import {LanguageContext} from "@/context/LanguageContext";
 
 const LoginPage: React.FC = () => {
+    const {texts} = useContext(LanguageContext)!;
+    const loginTexts = texts.loginTexts!;
+
     const [register, setRegister] = useState(false);
 
     const handleSwitch = (): void => {
@@ -21,9 +25,9 @@ const LoginPage: React.FC = () => {
             <div className={styles.loginWrapper}>
                 <div className={styles.guestFormCt}>
                     <form onSubmit={handleSubmit}>
-                        <label htmlFor="guest">Game code</label>
+                        <label htmlFor="guest">{loginTexts.gameCode}</label>
                         <input type="text" name="guest" id="guest" />
-                        <button type="submit">Join game</button>
+                        <button type="submit">{loginTexts.join}</button>
                     </form>
                 </div>
                 <div className={styles.logoCt}>
@@ -31,21 +35,21 @@ const LoginPage: React.FC = () => {
                 </div>
                 <div className={styles.loginFormCt}>
                     <form onSubmit={handleSubmit}>
-                        <label htmlFor="username">Username</label>
+                        <label htmlFor="username">{loginTexts.userName}</label>
                         <input type="text" name="username" id="username" />
-                        <label htmlFor="password">Password</label>
+                        <label htmlFor="password">{loginTexts.password}</label>
                         <input type="password" name="papasswordrd" id="password" />
                         {register && (
                             <>
-                                <label htmlFor="passwordCheck">Password again</label>
+                                <label htmlFor="passwordCheck">{loginTexts.passwordAgain}</label>
                                 <input type="password" name="passwordCheck" id="passwordCheck" />
-                                <label htmlFor="email">Email address</label>
+                                <label htmlFor="email">{loginTexts.email}</label>
                                 <input type="text" name="email" id="email" />
                             </>
                         )}
-                        <button type="submit">{register ? "Register" : "Login"}</button>
+                        <button type="submit">{register ? loginTexts.register : loginTexts.login}</button>
                         <hr />
-                        <button onClick={handleSwitch}>{register ? "Login" : "Register"}</button>
+                        <button onClick={handleSwitch}>{register ? loginTexts.login : loginTexts.register}</button>
                     </form>
                 </div>
             </div>

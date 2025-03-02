@@ -6,9 +6,7 @@ import { LanguageContext } from "@/context/LanguageContext";
 
 const Dashboard = () => {
     const { texts } = useContext(LanguageContext)!;
-    const cardText = texts.cardTexts || {
-        "": { title: "", description: "", buttonText: "", buttonLink: "" },
-    };
+    const cardText = texts.cardTexts!;
     return (
         <div className={styles.mainWrapper}>
             <div className={styles.cardsCt}>
