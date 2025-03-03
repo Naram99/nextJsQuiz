@@ -1,5 +1,4 @@
 import styles from "./page.module.css";
-import logo from "../../public/logoWhite.png";
 import Image from "next/image";
 
 const NotFound = () => {
@@ -9,7 +8,7 @@ const NotFound = () => {
                 <div className={styles.codeCt}>
                     <div className={styles.number}>4</div>
                     <div className={styles.logoCt}>
-                        <Image src={logo} alt="DRV logo" className={styles.logo} />
+                        <Image src={"/logoWhite.png"} alt="DRV logo" className={styles.logo} />
                     </div>
                     <div className={styles.number}>4</div>
                 </div>
