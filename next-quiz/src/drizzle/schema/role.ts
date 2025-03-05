@@ -1,4 +1,4 @@
-import {pgEnum, pgTable, text} from "drizzle-orm/pg-core";
+import {pgEnum, pgTable} from "drizzle-orm/pg-core";
 import {id, createdAt, updatedAt} from "@/drizzle/schemaHelper";
 import {relations} from "drizzle-orm";
 import {UserTable} from "@/drizzle/schema/user";
