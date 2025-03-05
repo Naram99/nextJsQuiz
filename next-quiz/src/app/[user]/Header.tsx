@@ -22,7 +22,7 @@ const Header = ({ username }: { username: string | undefined }) => {
     return (
         <div className={styles.headerWrapper}>
             <div className={styles.logoCt}>
-                <Image src={logo} alt="DRV logo" className={styles.logo} />
+                <Image src={logo} alt="DRV logo" className={styles.logo} height={50} width={50}/>
             </div>
             <div className={styles.headerMessageCt}></div>
             <div className={styles.navCt}>
