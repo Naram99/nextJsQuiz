@@ -1,4 +1,4 @@
-import {pgTable, text} from "drizzle-orm/pg-core";
+import {pgTable, text, timestamp} from "drizzle-orm/pg-core";
 import { id, createdAt, updatedAt, deleted } from "@/drizzle/schemaHelper";
 import {relations} from "drizzle-orm";
 import {RoleTable} from "@/drizzle/schema/role";
@@ -11,6 +11,7 @@ export const UserTable = pgTable("users", {
     phone: text(),
     password: text().notNull(),
     roleId: id.references(() => RoleTable.id, {onDelete: "restrict"}),
+    lastLogin: timestamp({withTimezone: true}).notNull().defaultNow(),
     createdAt,
     updatedAt,
     deleted,
