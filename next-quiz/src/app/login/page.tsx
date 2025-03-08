@@ -5,19 +5,35 @@ import logo from "../../../public/logoWhite.png";
 import Image from "next/image";
 import styles from "./page.module.css";
 import {LanguageContext} from "@/context/LanguageContext";
+import InputGroup from "@/app/login/InputGroup";
+import FormValuesInterface from "@/utils/FormValues.interface";
 
 const LoginPage: React.FC = () => {
     const {texts} = useContext(LanguageContext)!;
     const loginTexts = texts.loginTexts!;
 
     const [register, setRegister] = useState(false);
+    const [formValues, setFormValues] = useState<FormValuesInterface>({
+        userName: "",
+        email: "",
+        password: "",
+        passwordCheck: "",
+        gameId: ""
+    })
 
     const handleSwitch = (): void => {
         setRegister(!register);
     };
 
+    const handleChange = (e: React.ChangeEvent<HTMLInputElement>): void => {
+        console.log(e.target.value);
+        const { name, value } = e.target;
+        setFormValues({ ...formValues, [name]: value });
+    }
+
     const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
+        console.log(e.currentTarget.id)
     };
 
     return (
@@ -25,8 +41,7 @@ const LoginPage: React.FC = () => {
             <div className={styles.loginWrapper}>
                 <div className={styles.guestFormCt}>
                     <form onSubmit={handleSubmit}>
-                        <label htmlFor="guest">{loginTexts.gameCode}</label>
-                        <input type="text" name="guest" id="guest" />
+                        <InputGroup title={loginTexts.gameCode} id={"guest"} inputType={"text"} onChange={handleChange} />
                         <button type="submit">{loginTexts.join}</button>
                     </form>
                 </div>
@@ -35,16 +50,12 @@ const LoginPage: React.FC = () => {
                 </div>
                 <div className={styles.loginFormCt}>
                     <form onSubmit={handleSubmit}>
-                        <label htmlFor="username">{loginTexts.userName}</label>
-                        <input type="text" name="username" id="username" />
-                        <label htmlFor="password">{loginTexts.password}</label>
-                        <input type="password" name="papasswordrd" id="password" />
+                        <InputGroup title={loginTexts.userName} id={"username"} inputType={"text"} onChange={handleChange} />
+                        <InputGroup title={loginTexts.password} id={"password"} inputType={"password"} onChange={handleChange} />
                         {register && (
                             <>
-                                <label htmlFor="passwordCheck">{loginTexts.passwordAgain}</label>
-                                <input type="password" name="passwordCheck" id="passwordCheck" />
-                                <label htmlFor="email">{loginTexts.email}</label>
-                                <input type="text" name="email" id="email" />
+                                <InputGroup title={loginTexts.passwordAgain} id={"passwordCheck"} inputType={"password"} onChange={handleChange} />
+                                <InputGroup title={loginTexts.email} id={"email"} inputType={"text"} onChange={handleChange} />
                             </>
                         )}
                         <button type="submit">{register ? loginTexts.register : loginTexts.login}</button>

@@ -38,6 +38,16 @@
     width: auto;
 }
 
+/* Input Group */
+
+.inputGroupCt {}
+
+.inputGroup {}
+
+.inputGroupLabel {}
+
+/* Media Queries */
+
 @media (max-width: 800px) {
     .loginWrapper {
         flex-direction: column;
