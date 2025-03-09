@@ -31,16 +31,29 @@ const LoginPage: React.FC = () => {
         setFormValues({ ...formValues, [name]: value });
     }
 
-    const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+    const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
-        console.log(e.currentTarget.id)
+
+        let path: string = e.currentTarget.id.replace("Form", "");
+        if (register && path === "login")
+            path = "register";
+
+        const resp = await fetch(`/api/auth/${path}`, {
+            method: "POST",
+            headers: {"Content-Type": "application/json"},
+            body: JSON.stringify(formValues)
+        })
+
+        // TODO: login response
+        const data = await resp.json();
+        console.log(data);
     };
 
     return (
         <main className={styles.page}>
             <div className={styles.loginWrapper}>
                 <div className={styles.guestFormCt}>
-                    <form onSubmit={handleSubmit}>
+                    <form id={"guestForm"} onSubmit={handleSubmit}>
                         <InputGroup title={loginTexts.gameCode} id={"guest"} inputType={"text"} onChange={handleChange} />
                         <button type="submit">{loginTexts.join}</button>
                     </form>
@@ -49,7 +62,7 @@ const LoginPage: React.FC = () => {
                     <Image src={logo} alt="DRV logo" className={styles.logo} />
                 </div>
                 <div className={styles.loginFormCt}>
-                    <form onSubmit={handleSubmit}>
+                    <form id={"loginForm"} onSubmit={handleSubmit}>
                         <InputGroup title={loginTexts.userName} id={"username"} inputType={"text"} onChange={handleChange} />
                         <InputGroup title={loginTexts.password} id={"password"} inputType={"password"} onChange={handleChange} />
                         {register && (
