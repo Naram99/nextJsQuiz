@@ -47,6 +47,9 @@
 }
 
 .navbar a {
+    display: flex;
+    height: 100%;
+    align-items: center;
     transition: all 0.3s ease;
 }
 
@@ -69,6 +72,33 @@
     height: 100%;
     width: auto;
     cursor: pointer;
+}
+
+/* DROPDOWN MENU */
+
+.dropdownCt {
+    position: relative;
+    display: flex;
+    height: 100%;
+    align-items: center;
+    transition: all 0.3s ease;
+
+}
+
+.dropdown {
+    display: none;
+    position: absolute;
+    top: 60px;
+    left: -1rem;
+    padding: 1rem;
+    background-color: var(--header-background);
+    color: var(--header-color);
+}
+
+.dropdownCt:hover .dropdown {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
 }
 
 /* MAIN */

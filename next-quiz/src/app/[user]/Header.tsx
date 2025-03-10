@@ -40,12 +40,25 @@ const Header = ({ username }: { username: string | undefined }) => {
                     <Link href="help" className={currentPage === "help" ? styles.activeLink : ""}>
                         {headerText.help}
                     </Link>
-                    <Link
-                        href="profile"
-                        className={currentPage === "profile" ? styles.activeLink : ""}>
+                    <div className={styles.dropdownCt}>
                         {username}
-                    </Link>
-                    {/* TODO: Dropdown menü */}
+                        <div className={styles.dropdown}>
+                            <Link
+                                href="profile"
+                                className={currentPage === "profile" ? styles.activeLink : ""}>
+                                {headerText.dropdown?.profile}
+                            </Link>
+                            <Link
+                                href="settings"
+                                className={currentPage === "settings" ? styles.activeLink : ""}>
+                                {headerText.dropdown?.settings}
+                            </Link>
+                            <Link
+                                href="logout">
+                                {headerText.dropdown?.logout}
+                            </Link>
+                        </div>
+                    </div>
                 </nav>
                 <LanguageSelector />
             </div>
