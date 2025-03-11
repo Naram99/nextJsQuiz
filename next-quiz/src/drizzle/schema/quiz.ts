@@ -1,11 +1,11 @@
-import {boolean, json, pgTable, text} from "drizzle-orm/pg-core";
+import {boolean, json, pgTable, text, uuid} from "drizzle-orm/pg-core";
 import {createdAt, id, updatedAt} from "@/drizzle/schemaHelper";
 import {relations} from "drizzle-orm";
 import {UserTable} from "@/drizzle/schema/user";
 
 export const QuizTable = pgTable('quiz', {
     id,
-    userId: id,
+    userId: uuid().references(() => UserTable.id, {onDelete: "cascade"}),
     title: text().notNull(),
     coverImg: text(),
     type: text().notNull(),

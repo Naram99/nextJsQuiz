@@ -5,15 +5,15 @@ import {UserTable} from "@/drizzle/schema/user";
 
 export const roles = ['admin', 'member', 'user'] as const;
 export type Role = typeof roles[number];
-export const roleEnum = pgEnum("role", roles);
+export const roleEnum = pgEnum("level_enum", roles);
 
-export const RoleTable = pgTable("role", {
+export const LevelTable = pgTable("level_user", {
     id,
     name: roleEnum().notNull().default("user"),
     createdAt,
     updatedAt,
 })
 
-export const RoleRelationships = relations(RoleTable, ({many}) => ({
+export const RoleRelationships = relations(LevelTable, ({many}) => ({
     id: many(UserTable)
 }))
