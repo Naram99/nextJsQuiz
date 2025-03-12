@@ -7,6 +7,8 @@ import styles from "./page.module.css";
 import {LanguageContext} from "@/context/LanguageContext";
 import InputGroup from "@/app/login/InputGroup";
 import FormValuesInterface from "@/utils/FormValues.interface";
+import {UserTable} from "@/drizzle/schema/user";
+import {db} from "@/drizzle/db";
 
 const LoginPage: React.FC = () => {
     const {texts} = useContext(LanguageContext)!;

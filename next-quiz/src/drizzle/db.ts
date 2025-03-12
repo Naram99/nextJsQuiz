@@ -1,0 +1,15 @@
+import { drizzle } from "drizzle-orm/node-postgres"
+import * as schema from "./schema"
+import {UserTable} from "./schema";
+
+export const db = drizzle({
+    schema,
+    connection: {
+        password: process.env.DB_PASSWORD,
+        user: process.env.DB_USER,
+        host: process.env.DB_HOST,
+        port: Number(process.env.DB_PORT),
+        database: process.env.DB_NAME
+    }
+})
+
