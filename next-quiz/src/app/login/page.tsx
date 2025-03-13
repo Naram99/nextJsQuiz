@@ -7,8 +7,6 @@ import styles from "./page.module.css";
 import {LanguageContext} from "@/context/LanguageContext";
 import InputGroup from "@/app/login/InputGroup";
 import FormValuesInterface from "@/utils/FormValues.interface";
-import {UserTable} from "@/drizzle/schema/user";
-import {db} from "@/drizzle/db";
 
 const LoginPage: React.FC = () => {
     const {texts} = useContext(LanguageContext)!;
@@ -39,6 +37,8 @@ const LoginPage: React.FC = () => {
         let path: string = e.currentTarget.id.replace("Form", "");
         if (register && path === "login")
             path = "register";
+
+        console.log(formValues);
 
         const resp = await fetch(`/api/auth/${path}`, {
             method: "POST",
