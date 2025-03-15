@@ -7,8 +7,6 @@ import styles from "./page.module.css";
 import {LanguageContext} from "@/context/LanguageContext";
 import InputGroup from "@/app/login/InputGroup";
 import FormValuesInterface from "@/utils/FormValues.interface";
-import {UserTable} from "@/drizzle/schema/user";
-import {db} from "@/drizzle/db";
 
 const LoginPage: React.FC = () => {
     const {texts} = useContext(LanguageContext)!;
@@ -28,7 +26,6 @@ const LoginPage: React.FC = () => {
     };
 
     const handleChange = (e: React.ChangeEvent<HTMLInputElement>): void => {
-        console.log(e.target.value);
         const { name, value } = e.target;
         setFormValues({ ...formValues, [name]: value });
     }
@@ -65,7 +62,7 @@ const LoginPage: React.FC = () => {
                 </div>
                 <div className={styles.loginFormCt}>
                     <form id={"loginForm"} onSubmit={handleSubmit}>
-                        <InputGroup title={loginTexts.userName} id={"username"} inputType={"text"} onChange={handleChange} />
+                        <InputGroup title={loginTexts.userName} id={"userName"} inputType={"text"} onChange={handleChange} />
                         <InputGroup title={loginTexts.password} id={"password"} inputType={"password"} onChange={handleChange} />
                         {register && (
                             <>
