@@ -37,8 +37,6 @@ const LoginPage: React.FC = () => {
         if (register && path === "login")
             path = "register";
 
-        console.log(formValues);
-
         const resp = await fetch(`/api/auth/${path}`, {
             method: "POST",
             headers: {"Content-Type": "application/json"},

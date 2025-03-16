@@ -1,6 +1,7 @@
 import {NextResponse} from "next/server";
 import userSelect from "@/app/api/auth/login/userSelect";
 import bcrypt from "bcrypt";
+import jwt from "jsonwebtoken";
 
 export async function POST(req: Request) {
     const data = await req.json();
@@ -8,7 +9,7 @@ export async function POST(req: Request) {
         error: false,
         message: ""
     }
-    console.log(data);
+    const secret = process.env.JWT_SECRET || "Y&cqxjDg2N}/?PBW.*L5MQ";
 
     try {
         const userArr = await userSelect({username: data.userName})
@@ -26,6 +27,11 @@ export async function POST(req: Request) {
         }
 
         // TODO: HTTP-only cookie return
+        const token = jwt.sign(
+            {username: loginUser.userName, role: loginUser.role},
+            secret,
+            {expiresIn: "1h"}
+        )
 
     } catch (error) {
         console.log(error);
