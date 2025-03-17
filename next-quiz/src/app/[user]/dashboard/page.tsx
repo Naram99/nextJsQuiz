@@ -7,6 +7,9 @@ import { LanguageContext } from "@/context/LanguageContext";
 const Dashboard = () => {
     const { texts } = useContext(LanguageContext)!;
     const cardText = texts.cardTexts!;
+
+    // TODO: Middleware
+
     return (
         <div className={styles.mainWrapper}>
             <div className={styles.cardsCt}>

@@ -6,6 +6,7 @@ import Link from "next/link";
 import LanguageSelector from "./LanguageSelector";
 import { useContext } from "react";
 import { LanguageContext } from "@/context/LanguageContext";
+import {useRouter} from "next/router";
 
 const Header = ({ username }: { username: string | undefined }) => {
     if (!username) {
@@ -17,6 +18,17 @@ const Header = ({ username }: { username: string | undefined }) => {
 
     const pathname: string = usePathname();
     const currentPage = pathname.split("/").pop();
+
+    const router = useRouter();
+
+    async function handleLogout() {
+        const resp = await fetch('api/auth/logout', {
+            method: "POST",
+            credentials: "include"
+        })
+        console.log(resp);
+        router.push("/login");
+    }
 
     return (
         <div className={styles.headerWrapper}>
@@ -54,7 +66,8 @@ const Header = ({ username }: { username: string | undefined }) => {
                                 {headerText.dropdown?.settings}
                             </Link>
                             <Link
-                                href="logout">
+                                href={"#"}
+                                onClick={handleLogout}>
                                 {headerText.dropdown?.logout}
                             </Link>
                         </div>

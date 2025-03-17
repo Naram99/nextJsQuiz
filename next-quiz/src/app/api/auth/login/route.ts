@@ -10,6 +10,7 @@ export async function POST(req: Request) {
         message: ""
     }
     const secret = process.env.JWT_SECRET || "Y&cqxjDg2N}/?PBW.*L5MQ";
+    let token = "";
 
     try {
         const userArr = await userSelect({username: data.userName})
@@ -26,8 +27,7 @@ export async function POST(req: Request) {
             console.log("Correct password");
         }
 
-        // TODO: HTTP-only cookie return
-        const token = jwt.sign(
+        token = jwt.sign(
             {username: loginUser.userName, role: loginUser.role},
             secret,
             {expiresIn: "1h"}
@@ -39,5 +39,15 @@ export async function POST(req: Request) {
         resp.message = error as string;
     }
 
-    return NextResponse.json(resp, {status: resp.error ? 401 : 200});
+    const response = NextResponse.json(resp, {status: resp.error ? 401 : 200});
+    if (token !== "") {
+        response.cookies.set("auth_token", token, {
+            httpOnly: true,
+            secure: process.env.NODE_ENV === "production",
+            sameSite: "strict",
+            maxAge: 60 * 60 * 1000
+        });
+    }
+
+    return response;
 }
