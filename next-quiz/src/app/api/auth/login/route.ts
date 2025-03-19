@@ -7,7 +7,8 @@ export async function POST(req: Request) {
     const data = await req.json();
     const resp = {
         error: false,
-        message: ""
+        message: "",
+        user: ""
     }
     const secret = process.env.JWT_SECRET || "Y&cqxjDg2N}/?PBW.*L5MQ";
     let token = "";
@@ -26,6 +27,8 @@ export async function POST(req: Request) {
         } else {
             console.log("Correct password");
         }
+
+        resp.user = loginUser.userName;
 
         token = jwt.sign(
             {username: loginUser.userName, role: loginUser.role},

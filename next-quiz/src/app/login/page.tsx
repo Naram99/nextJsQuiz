@@ -7,10 +7,12 @@ import styles from "./page.module.css";
 import {LanguageContext} from "@/context/LanguageContext";
 import InputGroup from "@/app/login/InputGroup";
 import FormValuesInterface from "@/utils/FormValues.interface";
+import {useRouter} from "next/navigation";
 
 const LoginPage: React.FC = () => {
     const {texts} = useContext(LanguageContext)!;
     const loginTexts = texts.loginTexts!;
+    const router = useRouter();
 
     const [register, setRegister] = useState(false);
     const [formValues, setFormValues] = useState<FormValuesInterface>({
@@ -45,7 +47,8 @@ const LoginPage: React.FC = () => {
 
         // TODO: login response
         const data = await resp.json();
-        console.log(data);
+        if (path === "login" && resp.status === 200)
+            router.push(`${data.user}/dashboard`);
     };
 
     return (
@@ -72,7 +75,7 @@ const LoginPage: React.FC = () => {
                         )}
                         <button type="submit">{register ? loginTexts.register : loginTexts.login}</button>
                         <hr />
-                        <button onClick={handleSwitch}>{register ? loginTexts.login : loginTexts.register}</button>
+                        <button type="button" onClick={handleSwitch}>{register ? loginTexts.login : loginTexts.register}</button>
                     </form>
                 </div>
             </div>

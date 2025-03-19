@@ -6,7 +6,7 @@ import Link from "next/link";
 import LanguageSelector from "./LanguageSelector";
 import { useContext } from "react";
 import { LanguageContext } from "@/context/LanguageContext";
-import {useRouter} from "next/router";
+import {useRouter} from "next/navigation";
 
 const Header = ({ username }: { username: string | undefined }) => {
     if (!username) {
@@ -22,12 +22,12 @@ const Header = ({ username }: { username: string | undefined }) => {
     const router = useRouter();
 
     async function handleLogout() {
-        const resp = await fetch('api/auth/logout', {
+        const resp = await fetch('/api/auth/logout', {
             method: "POST",
             credentials: "include"
         })
-        console.log(resp);
-        router.push("/login");
+        if (resp.ok)
+            router.push("/login");
     }
 
     return (
