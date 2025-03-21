@@ -2,5 +2,6 @@ import {NextResponse} from "next/server";
 
 export async function POST(req: Request) {
     // TODO: Guest game join
-    return NextResponse.json(req);
+    const data = await req.json();
+    return NextResponse.json(data, {status: 200});
 }

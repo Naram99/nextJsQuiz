@@ -22,11 +22,9 @@ export async function POST(req: Request) {
         const loginUser = userArr[0];
         console.log(loginUser);
 
-        if (!await bcrypt.compare(data.password, loginUser.password)) {
+        if (!await bcrypt.compare(data.password, loginUser.password))
             throw new Error("Wrong credentials.");
-        } else {
-            console.log("Correct password");
-        }
+
 
         resp.user = loginUser.userName;
 

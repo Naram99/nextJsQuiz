@@ -47,6 +47,7 @@ const LoginPage: React.FC = () => {
 
         // TODO: login response
         const data = await resp.json();
+        console.log(data);
         if (path === "login" && resp.status === 200)
             router.push(`${data.user}/dashboard`);
     };
