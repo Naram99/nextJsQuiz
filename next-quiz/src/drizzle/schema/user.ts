@@ -11,6 +11,7 @@ export const UserTable = pgTable("user_data", {
     phone: text(),
     password: text().notNull(),
     roleId: uuid().references(() => LevelTable.id, {onDelete: "restrict"}),
+    profilePicture: text(),
     lastLogin: timestamp({withTimezone: true}).notNull().defaultNow(),
     createdAt,
     updatedAt,

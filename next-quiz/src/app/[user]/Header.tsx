@@ -33,13 +33,15 @@ const Header = ({ username }: { username: string | undefined }) => {
     return (
         <div className={styles.headerWrapper}>
             <div className={styles.logoCt}>
-                <Image 
-                    src={"/logoWhite.png"} 
-                    alt="DRV logo" 
-                    className={styles.logo} 
-                    height={50} 
-                    width={50} 
-                />
+                <Link href="/">
+                    <Image
+                        src={"/logoWhite.png"}
+                        alt="DRV logo"
+                        className={styles.logo}
+                        height={50}
+                        width={50}
+                    />
+                </Link>
             </div>
             <div className={styles.headerMessageCt}></div>
             <div className={styles.navCt}>

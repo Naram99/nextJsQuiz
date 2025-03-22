@@ -16,8 +16,9 @@ export default async function middleware(req: Request) {
 
         const secret = new TextEncoder().encode(process.env.JWT_SECRET);
         const decodedToken = await jwtVerify(tokenVal, secret);
-        console.log(decodedToken.payload);
-        if ('username' in decodedToken.payload && decodedToken.payload.username !== "") {
+        const username = decodedToken.payload.username as string;
+
+        if (username && username !== "") {
             return NextResponse.next();
         } else {
             throw new Error("Unauthorized");

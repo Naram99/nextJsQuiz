@@ -1,0 +1,10 @@
+.profileCt {
+    position: relative;
+    display: flex;
+    width: 100%;
+}
+
+.dataFormCt {
+    display: flex;
+    width: 100%;
+}

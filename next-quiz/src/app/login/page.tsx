@@ -1,6 +1,6 @@
 "use client";
 
-import React, {useContext, useState} from "react";
+import React, {useContext, useEffect, useState} from "react";
 import logo from "../../../public/logoWhite.png";
 import Image from "next/image";
 import styles from "./page.module.css";
@@ -10,9 +10,30 @@ import FormValuesInterface from "@/utils/FormValues.interface";
 import {useRouter} from "next/navigation";
 
 const LoginPage: React.FC = () => {
+    const router = useRouter();
+
+    useEffect(() => {
+        async function checkAuth() {
+            try {
+                const resp = await fetch('/api/auth/check', {
+                    method: "GET",
+                    credentials: "include",
+                });
+                if (resp.ok) {
+                    const data = await resp.json();
+                    if (data.username)
+                        router.push(`/${data.username}/dashboard`);
+                }
+            } catch (error) {
+                console.error(error);
+            }
+        }
+
+        checkAuth().then()
+    }, [router]);
+
     const {texts} = useContext(LanguageContext)!;
     const loginTexts = texts.loginTexts!;
-    const router = useRouter();
 
     const [register, setRegister] = useState(false);
     const [formValues, setFormValues] = useState<FormValuesInterface>({
@@ -23,16 +44,16 @@ const LoginPage: React.FC = () => {
         gameId: ""
     })
 
-    const handleSwitch = (): void => {
+    function handleSwitch(): void {
         setRegister(!register);
-    };
+    }
 
-    const handleChange = (e: React.ChangeEvent<HTMLInputElement>): void => {
+    function handleChange(e: React.ChangeEvent<HTMLInputElement>): void {
         const { name, value } = e.target;
         setFormValues({ ...formValues, [name]: value });
     }
 
-    const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+    async function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
         e.preventDefault();
 
         let path: string = e.currentTarget.id.replace("Form", "");
@@ -50,7 +71,7 @@ const LoginPage: React.FC = () => {
         console.log(data);
         if (path === "login" && resp.status === 200)
             router.push(`${data.user}/dashboard`);
-    };
+    }
 
     return (
         <main className={styles.page}>
