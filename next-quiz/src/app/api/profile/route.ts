@@ -24,7 +24,13 @@ export async function GET() {
         const userName = decodedToken.payload.username as string;
         console.log(userName);
 
-        const queryResult = await db.select().from(UserTable).where(
+        const queryResult = await db.select({
+            id: UserTable.id,
+            userName: UserTable.name,
+            email: UserTable.email,
+            phone: UserTable.phone,
+            profilePicture: UserTable.profilePicture,
+        }).from(UserTable).where(
             eq(UserTable.name, userName)
         )
         console.log(queryResult)

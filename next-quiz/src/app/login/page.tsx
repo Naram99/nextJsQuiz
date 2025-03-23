@@ -5,7 +5,7 @@ import logo from "../../../public/logoWhite.png";
 import Image from "next/image";
 import styles from "./page.module.css";
 import {LanguageContext} from "@/context/LanguageContext";
-import InputGroup from "@/app/login/InputGroup";
+import InputGroup from "@/components/InputGroup";
 import FormValuesInterface from "@/utils/FormValues.interface";
 import {useRouter} from "next/navigation";
 
@@ -78,7 +78,13 @@ const LoginPage: React.FC = () => {
             <div className={styles.loginWrapper}>
                 <div className={styles.guestFormCt}>
                     <form id={"guestForm"} onSubmit={handleSubmit}>
-                        <InputGroup title={loginTexts.gameCode} id={"guest"} inputType={"text"} onChange={handleChange} />
+                        <InputGroup
+                            title={loginTexts.gameCode}
+                            id={"guest"}
+                            inputType={"text"}
+                            value={formValues.gameId}
+                            onChange={handleChange}
+                        />
                         <button type="submit">{loginTexts.join}</button>
                     </form>
                 </div>
@@ -87,12 +93,36 @@ const LoginPage: React.FC = () => {
                 </div>
                 <div className={styles.loginFormCt}>
                     <form id={"loginForm"} onSubmit={handleSubmit}>
-                        <InputGroup title={loginTexts.userName} id={"userName"} inputType={"text"} onChange={handleChange} />
-                        <InputGroup title={loginTexts.password} id={"password"} inputType={"password"} onChange={handleChange} />
+                        <InputGroup
+                            title={loginTexts.userName}
+                            id={"userName"}
+                            inputType={"text"}
+                            value={formValues.userName}
+                            onChange={handleChange}
+                        />
+                        <InputGroup
+                            title={loginTexts.password}
+                            id={"password"}
+                            inputType={"password"}
+                            value={formValues.password}
+                            onChange={handleChange}
+                        />
                         {register && (
                             <>
-                                <InputGroup title={loginTexts.passwordAgain} id={"passwordCheck"} inputType={"password"} onChange={handleChange} />
-                                <InputGroup title={loginTexts.email} id={"email"} inputType={"text"} onChange={handleChange} />
+                                <InputGroup
+                                    title={loginTexts.passwordAgain}
+                                    id={"passwordCheck"}
+                                    inputType={"password"}
+                                    value={formValues.passwordCheck}
+                                    onChange={handleChange}
+                                />
+                                <InputGroup
+                                    title={loginTexts.email}
+                                    id={"email"}
+                                    inputType={"text"}
+                                    value={formValues.email}
+                                    onChange={handleChange}
+                                />
                             </>
                         )}
                         <button type="submit">{register ? loginTexts.register : loginTexts.login}</button>

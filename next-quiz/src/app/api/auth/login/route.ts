@@ -2,6 +2,8 @@ import {NextResponse} from "next/server";
 import userSelect from "@/app/api/auth/login/userSelect";
 import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
+import {UserTable} from "@/drizzle/schema/user";
+import setLoginTime from "@/app/api/auth/login/setLoginTime";
 
 export async function POST(req: Request) {
     const data = await req.json();
@@ -33,6 +35,11 @@ export async function POST(req: Request) {
             secret,
             {expiresIn: "1h"}
         )
+
+        const update = await setLoginTime({userName: loginUser.userName})
+        if (update.error) {
+            throw new Error("Database error");
+        }
 
     } catch (error) {
         console.log(error);
