@@ -2,9 +2,9 @@
 
 import React, {useContext, useEffect, useState} from "react";
 import styles from "./page.module.css";
-import InputGroup from "@/components/InputGroup";
 import {LanguageContext} from "@/context/LanguageContext";
 import Image from "next/image";
+import ProfileEditor from "@/app/[user]/profile/ProfileEditor";
 
 const ProfilePage: React.FC = () => {
     const [update, setUpdate] = useState(false);
@@ -40,15 +40,6 @@ const ProfilePage: React.FC = () => {
         setUpdate(!update);
     }
 
-    async function handleChange(e: React.ChangeEvent<HTMLInputElement>) {
-        const [name, value] = e.target.value;
-        setUserData({...userData, [name]: value});
-    }
-
-    async function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
-        e.preventDefault();
-    }
-
     return (
         <div className={styles.profileCt}>
             <div className={styles.profileDataCt}>
@@ -63,11 +54,20 @@ const ProfilePage: React.FC = () => {
                 <button
                     type={"button"}
                     className={styles.updateBtn}
-                    onClick={handleUpdate}>{/* TODO: ProfileTexts */}</button>
+                    onClick={handleUpdate}>{/* TODO: ProfileTexts */}Update profile</button>
             </div>
-            <div className={styles.dataFormCt}>
-
-            </div>
+            {update && (
+                <div className={styles.dataFormCt}>
+                    <ProfileEditor
+                        id={userData.id}
+                        username={userData.name}
+                        email={userData.email}
+                        phone={userData.phone}
+                        profilePic={userData.profilePicture}
+                    />
+                </div>
+            )}
+            <div className={styles.friendsCt}>{/* TODO: Friends */}</div>
         </div>
     )
 }
