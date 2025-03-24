@@ -2,7 +2,6 @@ import {NextResponse} from "next/server";
 import userSelect from "@/app/api/auth/login/userSelect";
 import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
-import {UserTable} from "@/drizzle/schema/user";
 import setLoginTime from "@/app/api/auth/login/setLoginTime";
 
 export async function POST(req: Request) {
