@@ -17,10 +17,12 @@ export const FriendTable = pgTable("friends", {
 export const FriendRelationships = relations(FriendTable, ({one}) => ({
     initiator: one(UserTable, {
         fields: [FriendTable.initiator],
-        references: [UserTable.id]
+        references: [UserTable.id],
+        relationName: "initiator",
     }),
     target: one(UserTable, {
         fields: [FriendTable.target],
-        references: [UserTable.id]
+        references: [UserTable.id],
+        relationName: "target",
     }),
 }))

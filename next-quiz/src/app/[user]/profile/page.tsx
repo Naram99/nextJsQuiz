@@ -5,6 +5,7 @@ import styles from "./page.module.css";
 import {LanguageContext} from "@/context/LanguageContext";
 import Image from "next/image";
 import ProfileEditor from "@/app/[user]/profile/ProfileEditor";
+import FriendList from "@/app/[user]/profile/FriendList";
 
 const ProfilePage: React.FC = () => {
     const [update, setUpdate] = useState(false);
@@ -44,7 +45,7 @@ const ProfilePage: React.FC = () => {
         <div className={styles.profileCt}>
             <div className={styles.profileDataCt}>
                 <Image
-                    src={userData.profilePicture}
+                    src={`/users/${userData.name}/public/${userData.profilePicture}`}
                     alt={`${userData.name} profile picture`}
                     className={styles.profilePicture}
                 />
@@ -67,7 +68,10 @@ const ProfilePage: React.FC = () => {
                     />
                 </div>
             )}
-            <div className={styles.friendsCt}>{/* TODO: Friends */}</div>
+            <div className={styles.friendsCt}>
+                <FriendList />
+            </div>
+            {/* TODO: Delete user */}
         </div>
     )
 }

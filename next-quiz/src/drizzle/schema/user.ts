@@ -25,5 +25,6 @@ export const UserRelationships = relations(UserTable, ({one, many}) => ({
         references: [LevelTable.id]
     }),
     id: many(QuizTable),
-    friendId: many(FriendTable),
+    initiatorId: many(FriendTable, {relationName: "initiator"}),
+    targetId: many(FriendTable, {relationName: "target"}),
 }))
