@@ -3,6 +3,7 @@ import { id, createdAt, updatedAt, deleted } from "@/drizzle/schemaHelper";
 import {relations} from "drizzle-orm";
 import {LevelTable} from "@/drizzle/schema/role";
 import {QuizTable} from "@/drizzle/schema/quiz";
+import { FriendTable } from "./friends";
 
 export const UserTable = pgTable("user_data", {
     id,
@@ -23,5 +24,6 @@ export const UserRelationships = relations(UserTable, ({one, many}) => ({
         fields: [UserTable.roleId],
         references: [LevelTable.id]
     }),
-    id: many(QuizTable)
+    id: many(QuizTable),
+    friendId: many(FriendTable),
 }))
