@@ -15,7 +15,6 @@ export async function GET() {
     }
 
     try {
-        console.log(token);
         if (!token)
             throw new Error("Unauthorized");
 
