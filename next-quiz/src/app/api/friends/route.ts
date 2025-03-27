@@ -6,14 +6,20 @@ import {FriendTable} from "@/drizzle/schema/friends";
 import {aliasedTable, and, eq, or} from "drizzle-orm";
 import {jwtVerify} from "jose";
 
-export async function GET(req: Request) {
+type friendData = {
+    initiator: string;
+    target: string;
+    since: Date;
+}
+
+export async function GET() {
     // TODO: token verify extract
     const cookieStore = await cookies();
     const token = cookieStore.get('auth_token');
-    const resp = {
+    const resp: {error: boolean, message: string, data: friendData[]} = {
         error: false,
         message: "",
-        data: {}
+        data: []
     }
 
     try {
@@ -24,12 +30,13 @@ export async function GET(req: Request) {
         const decodedToken = await jwtVerify(token.value, secret);
         const username = decodedToken.payload.username as string;
 
-        // TODO: db query to get data
+        // TODO: db query to get requests, extract selects to dedicated functions
         const u1 = aliasedTable(UserTable, "u1");
         const u2 = aliasedTable(UserTable, "u2");
         const friendQueryResult = await db.select({
             initiator: u1.name,
-            target: u2.name
+            target: u2.name,
+            since: FriendTable.updatedAt
         }).from(FriendTable).innerJoin(
             u1,
             eq(FriendTable.initiator, u1.id)
@@ -45,6 +52,9 @@ export async function GET(req: Request) {
                 eq(FriendTable.accepted, true)
             )
         );
+
+        console.log(friendQueryResult);
+        resp.data = friendQueryResult;
 
     } catch (error) {
         console.error(error);

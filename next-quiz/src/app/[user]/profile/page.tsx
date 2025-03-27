@@ -22,6 +22,7 @@ const ProfilePage: React.FC = () => {
                 method: "GET",
                 credentials: "include",
             })
+            // TODO: Userdata is not set correctly
             if (userDataGet.ok) {
                 const dataObj = await userDataGet.json();
                 Object.entries(dataObj.data).forEach(([key, value]) => {
@@ -31,7 +32,6 @@ const ProfilePage: React.FC = () => {
         }
         getUserData().then();
     }, []);
-
     console.log(userData);
 
     const {texts} = useContext(LanguageContext)!;
@@ -48,6 +48,8 @@ const ProfilePage: React.FC = () => {
                     src={`/users/${userData.name}/public/${userData.profilePicture}`}
                     alt={`${userData.name} profile picture`}
                     className={styles.profilePicture}
+                    width={50}
+                    height={50}
                 />
                 <div className={styles.profileName}>{userData.name}</div>
                 <div className={styles.profileMail}>{userData.email}</div>
