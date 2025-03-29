@@ -1,20 +1,58 @@
-import styles from "./page.module.css"
-import {useEffect} from "react";
+"use client";
 
-export default function FriendList() {
-    // TODO: Get friends data from db.
-    // TODO: Get friend requests from db.
+import styles from "./page.module.css"
+import {useEffect, useState} from "react";
+import {friendData} from "@/utils/friendData.type";
+import FriendCard from "@/app/[user]/profile/FriendCard";
+import RequestCard from "@/app/[user]/profile/RequestCard";
+
+export default function FriendList({username}: {username: string}) {
+    const [loading, setLoading] = useState(true);
+    const [friendsData, setFriendsData] = useState<friendData>({
+        accepted: [],
+        requests: []
+    })
     useEffect(() => {
         async function getFriends() {
             const resp = await fetch("/api/friends", {
                 method: "GET",
                 credentials: "include"
             });
-            console.log(resp)
+            const respData = await resp.json();
+            setFriendsData(respData.data as friendData);
+            setLoading(false);
         }
         getFriends().then();
     }, []);
+    console.log(friendsData);
     return (
-        <div className={styles.friendList}>Friend List</div>
+        <div className={styles.friendList}>
+            <div className={styles.acceptedFriends}>
+                <div className={styles.sectionTitle}>{/* TODO: Friends texts */}</div>
+                <div className={styles.acceptedFriendsList}>
+                    {!loading && friendsData.accepted.map((friend, index) => (
+                        <div key={index} className={styles.friendCardWrapper}>
+                            <FriendCard
+                                username={friend.initiator === username ? friend.target : friend.initiator}
+                                since={friend.since}
+                            />
+                        </div>
+                    ))}
+                </div>
+            </div>
+            <div className={styles.requestedFriends}>
+                <div className={styles.sectionTitle}>{/* TODO: Friends texts */}</div>
+                <div className={styles.requestedFriendsList}>
+                    {!loading && friendsData.requests.map((user, index) => (
+                        <div key={index} className={styles.requestCardWrapper}>
+                            <RequestCard username={user.initiator} />
+                        </div>
+                    ))}
+                </div>
+            </div>
+            <div className={styles.searchUsers}>
+                {/* TODO: Search other users */}
+            </div>
+        </div>
     )
 }

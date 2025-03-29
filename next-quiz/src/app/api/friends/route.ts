@@ -5,21 +5,21 @@ import {UserTable} from "@/drizzle/schema/user";
 import {FriendTable} from "@/drizzle/schema/friends";
 import {aliasedTable, and, eq, or} from "drizzle-orm";
 import {jwtVerify} from "jose";
-
-type friendData = {
-    initiator: string;
-    target: string;
-    since: Date;
-}
+import {friendData} from "@/utils/friendData.type";
+import friendSelect from "@/app/api/friends/friendSelect";
+import requestSelect from "@/app/api/friends/requestSelect";
 
 export async function GET() {
     // TODO: token verify extract
     const cookieStore = await cookies();
     const token = cookieStore.get('auth_token');
-    const resp: {error: boolean, message: string, data: friendData[]} = {
+    const resp: {error: boolean, message: string, data: friendData} = {
         error: false,
         message: "",
-        data: []
+        data: {
+            accepted: [],
+            requests: []
+        }
     }
 
     try {
@@ -30,32 +30,10 @@ export async function GET() {
         const decodedToken = await jwtVerify(token.value, secret);
         const username = decodedToken.payload.username as string;
 
-        // TODO: db query to get requests, extract selects to dedicated functions
-        const u1 = aliasedTable(UserTable, "u1");
-        const u2 = aliasedTable(UserTable, "u2");
-        const friendQueryResult = await db.select({
-            initiator: u1.name,
-            target: u2.name,
-            since: FriendTable.updatedAt
-        }).from(FriendTable).innerJoin(
-            u1,
-            eq(FriendTable.initiator, u1.id)
-        ).innerJoin(
-            u2,
-            eq(FriendTable.target, u2.id)
-        ).where(
-            and(
-                or(
-                    eq(u1.name, username),
-                    eq(u2.name, username)
-                ),
-                eq(FriendTable.accepted, true)
-            )
-        );
+        resp.data.accepted = await friendSelect(username);
+        resp.data.requests = await requestSelect(username);
 
-        console.log(friendQueryResult);
-        resp.data = friendQueryResult;
-
+        console.log(resp.data);
     } catch (error) {
         console.error(error);
         resp.error = true;
