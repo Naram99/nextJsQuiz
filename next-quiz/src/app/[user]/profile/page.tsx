@@ -73,7 +73,7 @@ const ProfilePage: React.FC = () => {
             <div className={styles.friendsCt}>
                 <FriendList username={userData.name} />
             </div>
-            {/* TODO: Delete user */}
+            {/* TODO: Delete user, popup modal */}
         </div>
     )
 }
