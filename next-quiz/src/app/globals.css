@@ -45,6 +45,18 @@ a {
     text-decoration: none;
 }
 
+#modal {
+    position: relative;
+    display: grid;
+    place-content: center;
+}
+
+.modal-overlay {
+    position: absolute;
+}
+
+
+
 @media (prefers-color-scheme: dark) {
     html {
         color-scheme: dark;

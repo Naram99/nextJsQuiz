@@ -16,7 +16,10 @@ export default function RootLayout({
     return (
         <LanguageProvider>
             <html lang="en">
-                <body className={"layout-ct"}>{children}</body>
+                <body className={"layout-ct"}>
+                    {children}
+                    <div id={"modal"}></div>
+                </body>
             </html>
         </LanguageProvider>
     );

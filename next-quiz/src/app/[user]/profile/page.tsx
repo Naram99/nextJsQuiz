@@ -6,8 +6,10 @@ import {LanguageContext} from "@/context/LanguageContext";
 import Image from "next/image";
 import ProfileEditor from "@/app/[user]/profile/ProfileEditor";
 import FriendList from "@/app/[user]/profile/FriendList";
+import PopupModal from "@/components/modal/PopupModal";
 
 const ProfilePage: React.FC = () => {
+    const [isModalOpen, setIsModalOpen] = useState(false);
     const [update, setUpdate] = useState(false);
     const [userData, setUserData] = useState({
         id: "",
@@ -39,6 +41,14 @@ const ProfilePage: React.FC = () => {
 
     function handleUpdate() {
         setUpdate(!update);
+    }
+
+    function handleModalOpen() {
+        setIsModalOpen(true);
+    }
+
+    function closeModal() {
+        setIsModalOpen(false);
     }
 
     return (
@@ -74,6 +84,13 @@ const ProfilePage: React.FC = () => {
                 <FriendList username={userData.name} />
             </div>
             {/* TODO: Delete user, popup modal */}
+            <button className={styles.deleteProfileBtn} onClick={handleModalOpen}>
+                {/* TODO: Friends texts */}Delete
+            </button>
+            <PopupModal isOpen={isModalOpen} onclose={closeModal}>
+                <div></div>
+                {/* TODO: Delete modal type */}
+            </PopupModal>
         </div>
     )
 }
