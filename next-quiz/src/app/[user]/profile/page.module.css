@@ -1,6 +1,11 @@
 .profileCt {
     position: relative;
     display: flex;
+    max-width: 1300px;
+}
+
+.profileDataCt {
+    display: flex;
     width: 100%;
 }
 
