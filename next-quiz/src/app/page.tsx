@@ -14,7 +14,7 @@ export default function Home() {
             <LanguageSelector />
             <div className={styles.logoCt} >
                 <div className={styles.logo}>
-                    <Image src="/logoWhite.png" alt="DRV Logo" width={100} height={100}/>
+                    <Image src="/logoWhite.png" alt="DRV Logo" width={200} height={200}/>
                 </div>
             </div>
             <div className={styles.mainBtnCt}>
