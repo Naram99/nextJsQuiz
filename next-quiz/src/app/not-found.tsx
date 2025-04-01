@@ -8,7 +8,13 @@ const NotFound = () => {
                 <div className={styles.codeCt}>
                     <div className={styles.number}>4</div>
                     <div className={styles.errorLogoCt}>
-                        <Image src={"/logoWhite.png"} alt="DRV logo" className={styles.errorLogo} />
+                        <Image
+                            src={"/logoWhite.png"}
+                            alt="DRV logo"
+                            className={styles.errorLogo}
+                            width={50}
+                            height={50}
+                        />
                     </div>
                     <div className={styles.number}>4</div>
                 </div>
