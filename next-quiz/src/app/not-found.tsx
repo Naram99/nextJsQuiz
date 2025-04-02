@@ -1,7 +1,14 @@
+import { useRouter } from "next/router";
 import styles from "./page.module.css";
 import Image from "next/image";
 
 const NotFound = () => {
+    const router = useRouter();
+
+    function handleBack() {
+        router.back();
+    }
+
     return (
         <div className={styles.errorWrapper}>
             <div className={styles.errorCt}>
@@ -21,6 +28,9 @@ const NotFound = () => {
                 <div className={styles.messageCt}>
                     Looks like you want to access a page which does not exists.
                 </div>
+                <button type="button" onClick={handleBack} className={styles.notfoundBtn}>
+                    {/* TODO: notfound texts */}Back
+                </button>
             </div>
         </div>
     );

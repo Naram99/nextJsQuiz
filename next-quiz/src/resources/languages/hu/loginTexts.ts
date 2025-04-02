@@ -7,7 +7,7 @@ export const loginTexts: loginData = {
     oldPassword: "Eddigi jelszó",
     email: "Email cím",
     phone: "Telefonszám",
-    login: "Bejelentkezés",
+    login: "Belépés",
     register: "Regisztráció",
     gameCode: "Játék kód",
     join: "Csatlakozás"

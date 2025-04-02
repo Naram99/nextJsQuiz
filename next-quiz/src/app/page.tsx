@@ -16,6 +16,7 @@ export default function Home() {
                 <div className={styles.logo}>
                     <Image src="/logoWhite.png" alt="DRV Logo" width={200} height={200}/>
                 </div>
+                {/* TODO: Main page welcome text */}
             </div>
             <div className={styles.mainBtnCt}>
                 <Link href="/login" className={styles.mainBtn}>{loginText.login}</Link>
