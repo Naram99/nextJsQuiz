@@ -69,10 +69,12 @@
     position: relative;
     padding-block: 10px;
     height: 100%;
+    max-height: 100px;
 }
 
 .language {
     height: 100%;
+    max-height: 100px;
     width: auto;
     cursor: pointer;
 }
