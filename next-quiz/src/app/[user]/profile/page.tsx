@@ -7,9 +7,11 @@ import Image from "next/image";
 import ProfileEditor from "@/app/[user]/profile/ProfileEditor";
 import FriendList from "@/app/[user]/profile/FriendList";
 import PopupModal from "@/components/modal/PopupModal";
+import DeleteModalBody from "@/components/modal/DeleteModalBody";
 
 const ProfilePage: React.FC = () => {
     const [isModalOpen, setIsModalOpen] = useState(false);
+    const [deleteConfirmed, setDeleteConfirmed] = useState(false);
     const [update, setUpdate] = useState(false);
     const [userData, setUserData] = useState({
         id: "",
@@ -51,6 +53,11 @@ const ProfilePage: React.FC = () => {
         setIsModalOpen(false);
     }
 
+    function handleChoice(b: boolean) {
+        setDeleteConfirmed(b);
+        closeModal();
+    }
+
     return (
         <div className={styles.profileCt}>
             <div className={styles.profileDataCt}>
@@ -88,8 +95,12 @@ const ProfilePage: React.FC = () => {
                 {/* TODO: Friends texts */}Delete
             </button>
             <PopupModal isOpen={isModalOpen} onclose={closeModal}>
-                <div></div>
-                {/* TODO: Delete modal type */}
+                <DeleteModalBody
+                    text={"This is not reversible."}
+                    confirm={"Delete"}
+                    deny={"Cancel"}
+                    onChoice={handleChoice}
+                />
             </PopupModal>
         </div>
     )
