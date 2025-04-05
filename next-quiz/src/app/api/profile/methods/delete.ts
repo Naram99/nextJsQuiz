@@ -35,5 +35,8 @@ export async function DELETE() {
         resp.message = error as string;
     }
 
-    return NextResponse.json(resp, {status: resp.error ? 400 : 200});
+    const response = NextResponse.json(resp, {status: resp.error ? 400 : 200});
+    response.cookies.set("auth_token", "", {maxAge: 0});
+
+    return response;
 }

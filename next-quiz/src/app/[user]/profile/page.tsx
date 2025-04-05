@@ -8,10 +8,12 @@ import ProfileEditor from "@/app/[user]/profile/ProfileEditor";
 import FriendList from "@/app/[user]/profile/FriendList";
 import PopupModal from "@/components/modal/PopupModal";
 import DeleteModalBody from "@/components/modal/DeleteModalBody";
+import {useRouter} from "next/navigation";
 
 const ProfilePage: React.FC = () => {
+    const router = useRouter();
+
     const [isModalOpen, setIsModalOpen] = useState(false);
-    const [deleteConfirmed, setDeleteConfirmed] = useState(false);
     const [update, setUpdate] = useState(false);
     const [userData, setUserData] = useState({
         id: "",
@@ -53,9 +55,17 @@ const ProfilePage: React.FC = () => {
         setIsModalOpen(false);
     }
 
-    function handleChoice(b: boolean) {
-        setDeleteConfirmed(b);
+    async function handleChoice(choice: boolean) {
         closeModal();
+        if (choice) {
+            const resp = await fetch("/api/profile", {
+                method: "DELETE",
+                credentials: "include",
+            })
+
+            if (resp.ok)
+                router.push("/login");
+        }
     }
 
     return (
