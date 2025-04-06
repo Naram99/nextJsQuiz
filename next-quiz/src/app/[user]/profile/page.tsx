@@ -28,12 +28,17 @@ const ProfilePage: React.FC = () => {
                 method: "GET",
                 credentials: "include",
             })
-            // TODO: Userdata is not set correctly
+
             if (userDataGet.ok) {
                 const dataObj = await userDataGet.json();
-                Object.entries(dataObj.data).forEach(([key, value]) => {
-                    setUserData({...userData, [key]: value});
-                })
+                console.log(dataObj)
+                setUserData({
+                    id: dataObj.data.id ?? "",
+                    name: dataObj.data.userName ?? "",
+                    email: dataObj.data.email ?? "",
+                    phone: dataObj.data.phone ?? "",
+                    profilePicture: dataObj.data.profilePicture ?? "",
+                });
             }
         }
         getUserData().then();
