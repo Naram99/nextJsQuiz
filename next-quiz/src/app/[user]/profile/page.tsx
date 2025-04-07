@@ -16,8 +16,8 @@ const ProfilePage: React.FC = () => {
     const [isModalOpen, setIsModalOpen] = useState(false);
     const [update, setUpdate] = useState(false);
     const [userData, setUserData] = useState({
-        id: "",
         name: "",
+        id: "",
         email: "",
         phone: "",
         profilePicture: ""
@@ -84,6 +84,7 @@ const ProfilePage: React.FC = () => {
                     height={50}
                 />
                 <div className={styles.profileName}>{userData.name}</div>
+                <div className={styles.profileId}>{userData.id}</div>
                 <div className={styles.profileMail}>{userData.email}</div>
                 <div className={styles.profilePhone}>{userData.phone}</div>
                 <button
