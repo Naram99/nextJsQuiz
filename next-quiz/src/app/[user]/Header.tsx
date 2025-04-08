@@ -3,7 +3,7 @@ import Image from "next/image";
 import styles from "./page.module.css";
 import { notFound, usePathname } from "next/navigation";
 import Link from "next/link";
-import LanguageSelector from "./LanguageSelector";
+import LanguageSelector from "../../components/LanguageSelector";
 import { useContext } from "react";
 import { LanguageContext } from "@/context/LanguageContext";
 import {useRouter} from "next/navigation";

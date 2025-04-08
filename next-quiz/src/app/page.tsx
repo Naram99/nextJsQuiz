@@ -2,7 +2,7 @@
 import styles from "./page.module.css";
 import Image from "next/image";
 import Link from "next/link";
-import LanguageSelector from "@/app/[user]/LanguageSelector";
+import LanguageSelector from "@/components/LanguageSelector";
 import {useContext} from "react";
 import {LanguageContext} from "@/context/LanguageContext";
 

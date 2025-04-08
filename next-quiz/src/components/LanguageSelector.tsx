@@ -1,6 +1,6 @@
 import { useLanguage } from "@/context/LanguageContext";
 import Image from "next/image";
-import styles from "./page.module.css";
+import styles from "../app/[user]/page.module.css";
 
 const LanguageSelector = () => {
     const { language, setLanguage } = useLanguage();

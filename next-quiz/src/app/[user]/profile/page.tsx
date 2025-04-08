@@ -9,6 +9,7 @@ import FriendList from "@/app/[user]/profile/FriendList";
 import PopupModal from "@/components/modal/PopupModal";
 import DeleteModalBody from "@/components/modal/DeleteModalBody";
 import {useRouter} from "next/navigation";
+import ProfileDisplay from "@/app/[user]/profile/ProfileDisplay";
 
 const ProfilePage: React.FC = () => {
     const router = useRouter();
@@ -76,17 +77,7 @@ const ProfilePage: React.FC = () => {
     return (
         <div className={styles.profileCt}>
             <div className={styles.profileDataCt}>
-                <Image
-                    src={`/users/${userData.name}/public/${userData.profilePicture}`}
-                    alt={`${userData.name} profile picture`}
-                    className={styles.profilePicture}
-                    width={50}
-                    height={50}
-                />
-                <div className={styles.profileName}>{userData.name}</div>
-                <div className={styles.profileId}>{userData.id}</div>
-                <div className={styles.profileMail}>{userData.email}</div>
-                <div className={styles.profilePhone}>{userData.phone}</div>
+                <ProfileDisplay userdata={userData} />
                 <button
                     type={"button"}
                     className={styles.updateBtn}
@@ -106,7 +97,6 @@ const ProfilePage: React.FC = () => {
             <div className={styles.friendsCt}>
                 <FriendList username={userData.name} />
             </div>
-            {/* TODO: Delete user, popup modal */}
             <button className={styles.deleteProfileBtn} onClick={handleModalOpen}>
                 {/* TODO: Friends texts */}Delete
             </button>
