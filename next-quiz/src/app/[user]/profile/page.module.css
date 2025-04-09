@@ -8,6 +8,24 @@
 
 .profileDataCt {
     display: flex;
+    width: 100%;
+}
+
+.imageCt {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.imageCt img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    border-radius: 50%;
+}
+
+.textDataCt {
+    display: flex;
     flex-direction: column;
     width: 100%;
 }

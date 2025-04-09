@@ -3,7 +3,6 @@
 import React, {useContext, useEffect, useState} from "react";
 import styles from "./page.module.css";
 import {LanguageContext} from "@/context/LanguageContext";
-import Image from "next/image";
 import ProfileEditor from "@/app/[user]/profile/ProfileEditor";
 import FriendList from "@/app/[user]/profile/FriendList";
 import PopupModal from "@/components/modal/PopupModal";
@@ -77,11 +76,7 @@ const ProfilePage: React.FC = () => {
     return (
         <div className={styles.profileCt}>
             <div className={styles.profileDataCt}>
-                <ProfileDisplay userdata={userData} />
-                <button
-                    type={"button"}
-                    className={styles.updateBtn}
-                    onClick={handleUpdate}>{/* TODO: ProfileTexts */}Update profile</button>
+                <ProfileDisplay userdata={userData} handleUpdate={handleUpdate} />
             </div>
             {update && (
                 <div className={styles.dataFormCt}>

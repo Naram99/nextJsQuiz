@@ -9,21 +9,30 @@ export default function ProfileDisplay(props: {
         email: string;
         phone: string;
         profilePicture: string;
-    }
+    },
+    handleUpdate: () => void,
 }) {
     return (
         <>
-            <Image
-                src={`/users/${props.userdata.name}/public/${props.userdata.profilePicture}`}
-                alt={`${props.userdata.name} profile picture`}
-                className={styles.profilePicture}
-                width={50}
-                height={50}
-            />
-            <div className={styles.profileName}>{props.userdata.name}</div>
-            <div className={styles.profileId}>{props.userdata.id}</div>
-            <div className={styles.profileMail}>{props.userdata.email}</div>
-            <div className={styles.profilePhone}>{props.userdata.phone}</div>
+            <div className={styles.imageCt}>
+                <Image
+                    src={`/users/${props.userdata.name}/public/${props.userdata.profilePicture}`}
+                    alt={`${props.userdata.name} profile picture`}
+                    className={styles.profilePicture}
+                    width={50}
+                    height={50}
+                />
+            </div>
+            <div className={styles.textDataCt}>
+                <div className={styles.profileName}>{props.userdata.name}</div>
+                <div className={styles.profileId}>{props.userdata.id}</div>
+                <div className={styles.profileMail}>{props.userdata.email}</div>
+                <div className={styles.profilePhone}>{props.userdata.phone}</div>
+                <button
+                    type={"button"}
+                    className={styles.updateBtn}
+                    onClick={props.handleUpdate}>{/* TODO: ProfileTexts */}Update profile</button>
+            </div>
         </>
     )
 }
