@@ -9,7 +9,7 @@
 .loginWrapper {
     display: flex;
     flex-direction: row;
-    justify-content: space-between;
+    justify-content: space-evenly;
     width: 100%;
     max-width: 1300px;
 }
@@ -35,16 +35,46 @@
 
 .logo {
     height: 100%;
-    width: auto;
+    width: 300px;
 }
 
 /* Input Group */
 
-.inputGroupCt {}
+.inputGroupCt {
+    position: relative;
+    display: flex;
+}
 
-.inputGroup {}
+.inputGroup {
+    width: 100%;
+    background-color: transparent;
+    outline: none;
+    border: 0;
+    border-bottom: 2px solid var(--card-border);
+    padding: 1rem 0.5rem;
+    font-size: 1.2rem;
+    transition: all 0.3s ease;
+}
 
-.inputGroupLabel {}
+.inputGroup:focus {
+    border-bottom: 2px solid var(--main-color);
+}
+
+.inputGroupLabel {
+    position: absolute;
+    left: 0.5rem;
+    top: 1rem;
+    font-size: 1rem;
+    transition: all 0.3s ease;
+    color: var(--card-border);
+}
+
+.inputGroupCt:has(.inputGroup:focus) .inputGroupLabel,
+.inputGroupCt:has(.inputGroup:not(:placeholder-shown)) .inputGroupLabel {
+    top: 0;
+    font-size: 0.7rem;
+    color: var(--main-color);
+}
 
 /* Media Queries */
 
@@ -53,10 +83,42 @@
         max-width: 100vw;
         justify-content: space-evenly;
     }
+
+    .guestFormCt form,
+    .loginFormCt form {
+        width: 250px;
+        gap: 1rem;
+    }
+
+    .logo {
+        width: 200px;
+        height: 200px;
+        margin-block: 50px;
+    }
 }
 
 @media (max-width: 800px) {
     .loginWrapper {
         flex-direction: column;
+        gap: 2rem;
+    }
+
+    .guestFormCt form,
+    .loginFormCt form {
+        width: 80%;
+        margin-inline: auto;
+    }
+
+    .logo {
+        order: 0;
+        margin: 0;
+    }
+
+    .guestFormCt {
+        order: 2;
+    }
+
+    .loginFormCt {
+        order: 1;
     }
 }

@@ -24,6 +24,7 @@ const InputGroup = (
             name={id}
             value={value}
             onChange={onChange}
+            placeholder=""
         />
         <label htmlFor={id} className={styles.inputGroupLabel}>{title}</label>
     </div>
