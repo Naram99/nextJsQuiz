@@ -38,6 +38,24 @@
     width: 300px;
 }
 
+.loginBtn {
+    border-radius: 2rem;
+    background-color: transparent;
+    color: var(--main-color);
+    transition: all 0.3s ease;
+    border: 1px solid var(--main-color);
+    padding: 0.5rem;
+    outline: none;
+    cursor: pointer;
+    font-size: 1rem;
+    font-weight: bold;
+}
+
+.loginBtn:hover {
+    background-color: var(--main-color);
+    color: var(--main-background);
+}
+
 /* Input Group */
 
 .inputGroupCt {
@@ -51,7 +69,7 @@
     outline: none;
     border: 0;
     border-bottom: 2px solid var(--card-border);
-    padding: 1rem 0.5rem;
+    padding: 1rem 0.5rem 0.2rem;
     font-size: 1.2rem;
     transition: all 0.3s ease;
 }

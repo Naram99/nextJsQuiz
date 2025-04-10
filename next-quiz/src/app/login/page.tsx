@@ -85,7 +85,7 @@ const LoginPage: React.FC = () => {
                             value={formValues.gameId}
                             onChange={handleChange}
                         />
-                        <button type="submit">{loginTexts.join}</button>
+                        <button type="submit" className={styles.loginBtn}>{loginTexts.join}</button>
                     </form>
                 </div>
                 <div className={styles.logoCt}>
@@ -125,9 +125,16 @@ const LoginPage: React.FC = () => {
                                 />
                             </>
                         )}
-                        <button type="submit">{register ? loginTexts.register : loginTexts.login}</button>
+                        <button
+                            type="submit"
+                            className={styles.loginBtn}
+                        >{register ? loginTexts.register : loginTexts.login}</button>
                         <hr />
-                        <button type="button" onClick={handleSwitch}>{register ? loginTexts.login : loginTexts.register}</button>
+                        <button
+                            type="button"
+                            onClick={handleSwitch}
+                            className={styles.loginBtn}
+                        >{register ? loginTexts.login : loginTexts.register}</button>
                     </form>
                 </div>
             </div>
