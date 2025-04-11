@@ -30,7 +30,7 @@ const NotFound = () => {
                 <div className={styles.messageCt}>
                     Looks like you want to access a page which does not exists.
                 </div>
-                <button type="button" onClick={handleBack} className={styles.notfoundBtn}>
+                <button type="button" onClick={handleBack} className={styles.notFoundBtn}>
                     {/* TODO: notfound texts */}Back
                 </button>
             </div>
