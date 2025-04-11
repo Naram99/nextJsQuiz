@@ -10,5 +10,11 @@ export const loginTexts: loginData = {
     login: "Belépés",
     register: "Regisztráció",
     gameCode: "Játék kód",
-    join: "Csatlakozás"
+    join: "Csatlakozás",
+    errorTexts: {
+        userExists: "A felhasználó már létezik!",
+        wrongCredentials: "Rossz felhasználónév, vagy jelszó!",
+        dataMissing: "A mezőket kötelező kitölteni!",
+        pwNotMatch: "A megadott jelszavak nem egyeznek!"
+    }
 }

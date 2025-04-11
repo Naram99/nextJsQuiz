@@ -1,3 +1,5 @@
+import { loginError } from "./loginError.type";
+
 export type loginData = {
     userName: string;
     password: string;
@@ -9,4 +11,5 @@ export type loginData = {
     register: string;
     gameCode: string;
     join: string;
+    errorTexts: loginError
 }

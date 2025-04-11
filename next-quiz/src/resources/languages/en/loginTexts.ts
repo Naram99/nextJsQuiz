@@ -10,5 +10,11 @@ export const loginTexts: loginData = {
     login: "Login",
     register: "Register",
     gameCode: "Game code",
-    join: "Join game"
+    join: "Join game",
+    errorTexts: {
+        userExists: "User already exists!",
+        wrongCredentials: "Wrong username or password!",
+        dataMissing: "All fields must be filled!",
+        pwNotMatch: "Passwords do not match!"
+    }
 }

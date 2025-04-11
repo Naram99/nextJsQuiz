@@ -3,15 +3,13 @@ import { cardData } from "@/utils/cardData.type";
 import { cardType } from "@/utils/cardType.type";
 import { headerData } from "@/utils/headerData.type";
 import { createContext, ReactNode, useContext, useEffect, useState } from "react";
-import {loginData} from "@/utils/loginData.type";
+import { loginData } from "@/utils/loginData.type";
 import { chatData } from "@/utils/chatData.type";
-import {loginError} from "@/utils/loginError.type";
 
 interface LanguageTexts {
     cardTexts?: Record<cardType, cardData>;
     headerTexts?: headerData;
     loginTexts?: loginData;
-    loginErrorTexts?: loginError;
     chatTexts?: chatData;
 
     // Add new language texts here
@@ -31,7 +29,6 @@ export const LanguageProvider = ({ children }: { children: ReactNode }) => {
         cardTexts: {} as Record<cardType, cardData>,
         headerTexts: {} as headerData,
         loginTexts: {} as loginData,
-        loginErrorTexts: {} as loginError,
         chatTexts: {} as chatData,
 
         // Set new language texts here
@@ -40,11 +37,10 @@ export const LanguageProvider = ({ children }: { children: ReactNode }) => {
     useEffect(() => {
         const loadTexts = async () => {
             try {
-                const [cardModule, headerModule, loginModule, loginErrorModule, chatModule] = await Promise.all([
+                const [cardModule, headerModule, loginModule, chatModule] = await Promise.all([
                     import(`@/resources/languages/${language}/cardTexts.ts`),
                     import(`@/resources/languages/${language}/headerTexts.ts`),
                     import(`@/resources/languages/${language}/loginTexts.ts`),
-                    import(`@/resources/languages/${language}/loginErrorTexts.ts`),
                     import(`@/resources/languages/${language}/chatTexts.ts`),
 
                     // Import new language texts here
@@ -54,7 +50,6 @@ export const LanguageProvider = ({ children }: { children: ReactNode }) => {
                     cardTexts: cardModule.cardTexts,
                     headerTexts: headerModule.headerTexts,
                     loginTexts: loginModule.loginTexts,
-                    loginErrorTexts: loginErrorModule.loginErrorTexts,
                     chatTexts: chatModule.chatTexts
 
                     // Set new language texts here

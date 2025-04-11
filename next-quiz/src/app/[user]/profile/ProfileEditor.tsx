@@ -53,7 +53,9 @@ export default function ProfileEditor(
                         <InputGroup
                             title={userTexts[key as keyof ProfileEditValues]}
                             id={key}
-                            inputType={key.toLowerCase().includes("password") ? "password" : "text"}
+                            inputType={key.toLowerCase().includes("password") 
+                                ? "password" 
+                                : (key.toLowerCase().includes("picture") ? "file" : "text")}
                             onChange={handleChange}
                             value={value}/>
                     </div>

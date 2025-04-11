@@ -1,7 +1,6 @@
 "use client";
 
 import React, {useContext, useEffect, useState} from "react";
-import logo from "../../../public/logoWhite.png";
 import Image from "next/image";
 import styles from "./page.module.css";
 import {LanguageContext} from "@/context/LanguageContext";
@@ -80,7 +79,7 @@ const LoginPage: React.FC = () => {
                     <form id={"guestForm"} onSubmit={handleSubmit}>
                         <InputGroup
                             title={loginTexts.gameCode}
-                            id={"guest"}
+                            id={"gameId"}
                             inputType={"text"}
                             value={formValues.gameId}
                             onChange={handleChange}
@@ -89,7 +88,13 @@ const LoginPage: React.FC = () => {
                     </form>
                 </div>
                 <div className={styles.logoCt}>
-                    <Image src={logo} alt="DRV logo" className={styles.logo} />
+                    <Image 
+                        src={"/logoWhite.png"} 
+                        alt="DRV logo" 
+                        className={styles.logo}
+                        width={300}
+                        height={300}
+                    />
                 </div>
                 <div className={styles.loginFormCt}>
                     <form id={"loginForm"} onSubmit={handleSubmit}>
