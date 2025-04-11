@@ -4,6 +4,7 @@ import {relations} from "drizzle-orm";
 import {LevelTable} from "@/drizzle/schema/role";
 import {QuizTable} from "@/drizzle/schema/quiz";
 import { FriendTable } from "./friends";
+import { ForumPostTable } from "./forumpost";
 
 export const UserTable = pgTable("user_data", {
     id,
@@ -11,7 +12,7 @@ export const UserTable = pgTable("user_data", {
     email: text(),
     phone: text(),
     password: text().notNull(),
-    roleId: uuid().references(() => LevelTable.id, {onDelete: "restrict"}),
+    roleId: uuid().notNull().references(() => LevelTable.id, {onDelete: "restrict"}),
     profilePicture: text(),
     lastLogin: timestamp({withTimezone: true}).notNull().defaultNow(),
     createdAt,
@@ -27,4 +28,5 @@ export const UserRelationships = relations(UserTable, ({one, many}) => ({
     id: many(QuizTable),
     initiatorId: many(FriendTable, {relationName: "initiator"}),
     targetId: many(FriendTable, {relationName: "target"}),
+    postCreator: many(ForumPostTable),
 }))
