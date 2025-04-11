@@ -1,4 +1,4 @@
-import { chatData } from "@/utils/chatData.type";
+import { chatData } from "@/utils/types/chatData.type";
 
 export const chatTexts: chatData = {
     send: "Send",

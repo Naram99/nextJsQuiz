@@ -1,4 +1,4 @@
-export default interface ProfileEditValues {
+export default interface ProfileEditValuesInterface {
     id: string;
     name: string;
     email: string;

@@ -1,4 +1,4 @@
-import { gameTextData } from "@/utils/gameTextData.type";
+import { gameTextData } from "@/utils/types/gameTextData.type";
 
 export const gameTexts: gameTextData = {
     tictactoe: {

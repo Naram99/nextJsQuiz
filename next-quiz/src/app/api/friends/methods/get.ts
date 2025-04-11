@@ -1,7 +1,7 @@
 import {NextResponse} from "next/server";
 import {cookies} from "next/headers";
 import {jwtVerify} from "jose";
-import {friendData} from "@/utils/friendData.type";
+import {friendData} from "@/utils/types/friendData.type";
 import friendSelect from "@/app/api/friends/methods/friendSelect";
 import requestSelect from "@/app/api/friends/methods/requestSelect";
 

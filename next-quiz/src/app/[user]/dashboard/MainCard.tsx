@@ -1,4 +1,4 @@
-import { cardData } from "@/utils/cardData.type";
+import { cardData } from "@/utils/types/cardData.type";
 import styles from "./page.module.css";
 
 const MainCard: React.FC<cardData> = ({

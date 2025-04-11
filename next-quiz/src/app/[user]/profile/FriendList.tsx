@@ -2,7 +2,7 @@
 
 import styles from "./page.module.css"
 import {useEffect, useState} from "react";
-import {friendData} from "@/utils/friendData.type";
+import {friendData} from "@/utils/types/friendData.type";
 import FriendCard from "@/app/[user]/profile/FriendCard";
 import RequestCard from "@/app/[user]/profile/RequestCard";
 

@@ -1,10 +1,10 @@
 "use client";
-import { cardData } from "@/utils/cardData.type";
-import { cardType } from "@/utils/cardType.type";
-import { headerData } from "@/utils/headerData.type";
+import { cardData } from "@/utils/types/cardData.type";
+import { cardType } from "@/utils/types/cardType.type";
+import { headerData } from "@/utils/types/headerData.type";
 import { createContext, ReactNode, useContext, useEffect, useState } from "react";
-import { loginData } from "@/utils/loginData.type";
-import { chatData } from "@/utils/chatData.type";
+import { loginData } from "@/utils/types/loginData.type";
+import { chatData } from "@/utils/types/chatData.type";
 
 interface LanguageTexts {
     cardTexts?: Record<cardType, cardData>;

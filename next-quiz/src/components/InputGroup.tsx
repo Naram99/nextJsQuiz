@@ -1,4 +1,4 @@
-import {inputTypeType} from "@/utils/inputType.type";
+import {inputTypeType} from "@/utils/types/inputType.type";
 import styles from "../app/login/page.module.css";
 import React from "react";
 

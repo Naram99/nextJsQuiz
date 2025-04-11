@@ -5,7 +5,7 @@ import Image from "next/image";
 import styles from "./page.module.css";
 import {LanguageContext} from "@/context/LanguageContext";
 import InputGroup from "@/components/InputGroup";
-import FormValuesInterface from "@/utils/FormValues.interface";
+import FormValuesInterface from "@/utils/interfaces/FormValues.interface";
 import {useRouter} from "next/navigation";
 
 const LoginPage: React.FC = () => {

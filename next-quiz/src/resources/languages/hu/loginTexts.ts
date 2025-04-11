@@ -1,4 +1,4 @@
-import {loginData} from "@/utils/loginData.type";
+import {loginData} from "@/utils/types/loginData.type";
 
 export const loginTexts: loginData = {
     userName: "Felhasználónév",

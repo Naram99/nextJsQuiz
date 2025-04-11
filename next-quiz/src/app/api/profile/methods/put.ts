@@ -3,7 +3,6 @@ import {cookies} from "next/headers";
 import {jwtVerify} from "jose";
 import {db} from "@/drizzle/db";
 import {UserTable} from "@/drizzle/schema/user";
-import {eq, or} from "drizzle-orm";
 import userCheck from "@/app/api/auth/register/userCheck";
 import passwordCheck from "@/app/api/auth/register/passwordCheck";
 import bcrypt from "bcrypt";

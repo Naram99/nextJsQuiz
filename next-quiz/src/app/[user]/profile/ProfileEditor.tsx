@@ -1,14 +1,14 @@
 "use client";
 
 import React, {useState} from "react";
-import ProfileEditValues from "@/utils/ProfileEditValues";
+import ProfileEditValuesInterface from "@/utils/interfaces/ProfileEditValues.interface";
 import InputGroup from "@/components/InputGroup";
 
 export default function ProfileEditor(
     {username, email, phone, profilePic, id}:
     {username: string, email: string, phone: string, profilePic: string, id: string},
 ) {
-    const [userData, setUserData] = useState<ProfileEditValues>({
+    const [userData, setUserData] = useState<ProfileEditValuesInterface>({
         name: username,
         id: id,
         email: email,
@@ -19,7 +19,7 @@ export default function ProfileEditor(
         passwordCheck: "",
     })
 
-    const userTexts: Record<keyof ProfileEditValues, string> = {
+    const userTexts: Record<keyof ProfileEditValuesInterface, string> = {
         name: "",
         id: "",
         email: "",
@@ -51,7 +51,7 @@ export default function ProfileEditor(
                 .map(([key, value]) => (
                     <div key={key}>
                         <InputGroup
-                            title={userTexts[key as keyof ProfileEditValues]}
+                            title={userTexts[key as keyof ProfileEditValuesInterface]}
                             id={key}
                             inputType={key.toLowerCase().includes("password") 
                                 ? "password" 
