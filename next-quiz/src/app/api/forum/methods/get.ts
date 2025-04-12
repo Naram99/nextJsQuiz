@@ -3,11 +3,12 @@ import {ForumPostTable} from "@/drizzle/schema/forumpost";
 import {UserTable} from "@/drizzle/schema/user";
 import {desc, eq} from "drizzle-orm";
 import {NextResponse} from "next/server";
+import {forumPostData} from "@/utils/types/forumPostData.type";
 
 type respType = {
     error: boolean;
     message: string;
-    data: any[]
+    data: forumPostData[]
 }
 
 export async function GET() {
@@ -19,7 +20,13 @@ export async function GET() {
 
     try {
         resp.data = await db.select({
-            ForumPostTable,
+            id: ForumPostTable.id,
+            title: ForumPostTable.title,
+            description: ForumPostTable.description,
+            pictures: ForumPostTable.pictures,
+            createdBy: ForumPostTable.createdBy,
+            createdAt: ForumPostTable.createdAt,
+            updatedAt: ForumPostTable.updatedAt,
             creator: UserTable.name
         }).from(ForumPostTable).innerJoin(
             UserTable,
