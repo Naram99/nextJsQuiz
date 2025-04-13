@@ -39,5 +39,7 @@ export async function GET() {
         resp.message = error as string;
     }
 
+    console.log(resp.data)
+
     return NextResponse.json(resp, { status: resp.error ? 500 : 200 });
 }
