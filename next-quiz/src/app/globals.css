@@ -11,12 +11,14 @@
     --error: #880000;
     --notify-bg: #008bad;
     --notify-color: #cccccc;
+    --main-hover: #f0f0f0;
 }
 
 @media (prefers-color-scheme: dark) {
     :root {
         --main-background: #000;
         --main-color: #fff;
+        --main-hover: #2f2f2f;
     }
 }
 

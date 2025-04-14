@@ -12,6 +12,8 @@ type respType = {
 }
 
 export async function GET() {
+    // TODO: GET params handle
+
     const resp: respType = {
         error: false,
         message: "",

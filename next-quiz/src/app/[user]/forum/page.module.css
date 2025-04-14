@@ -17,6 +17,13 @@
     gap: 0.5rem;
     padding: 0.5rem;
     border-bottom: 1px solid var(--card-border);
+    cursor: pointer;
+    transition: all 0.3s ease;
+    background-color: var(--main-background);
+}
+
+.forumPostCt:hover {
+    background-color: var(--main-hover);
 }
 
 .forumPostTitle {
