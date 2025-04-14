@@ -5,6 +5,7 @@ import { useParams } from "next/navigation";
 import { useEffect, useState } from "react";
 import styles from "./page.module.css";
 import { forumCommentData } from "@/utils/types/forumCommentData.type";
+import Comment from "./Comment";
 
 type postState = {
     postData: forumPostData,
@@ -32,7 +33,7 @@ export default function ForumPostPage() {
 
     useEffect(() => {
         async function getData() {
-            const postsResp = await fetch(`/api/forum?${id}`, {
+            const postsResp = await fetch(`/api/forum?id=${id}`, {
                 method: "GET",
                 credentials: "include"
             });
@@ -40,13 +41,13 @@ export default function ForumPostPage() {
             // TODO: fetch to get comments
 
             const respData = await postsResp.json();
-            setData(respData.data[0])
+            setData(respData.data)
         }
 
         getData().then()
     }, [])
 
-    useEffect(() => {console.log(data)}, [data])
+    // TODO: Sort comments with answers
 
     return (
         <div className={styles.forumPostCt}>
@@ -59,8 +60,12 @@ export default function ForumPostPage() {
             <div className={styles.froumPostBody}>
                 <div className={styles.forumPostDescription}>{data.postData.description}</div>
                 <div className={styles.forumPostPictures}></div>
-                <div className={styles.forumPostComments}>
-
+                <div className={styles.forumPostCommentsCt}>
+                    {data.commentData.map(comment => (
+                        <div key={comment.id}>
+                            <Comment data={comment} />
+                        </div>
+                    ))}
                 </div>
             </div>
         </div>

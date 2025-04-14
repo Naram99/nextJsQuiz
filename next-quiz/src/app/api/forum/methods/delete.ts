@@ -1,7 +1,7 @@
 import {cookies} from "next/headers";
 import {NextResponse} from "next/server";
 import {jwtVerify} from "jose";
-import selectPost from "@/app/api/forum/methods/selectPost";
+import selectPostOwner from "@/app/api/forum/methods/selectPostOwner";
 import {db} from "@/drizzle/db";
 import {ForumPostTable} from "@/drizzle/schema/forumpost";
 
@@ -24,7 +24,7 @@ export async function DELETE(req: Request) {
         const username = decodedToken.payload.username as string;
         const role = decodedToken.payload.role as string;
 
-        const post = await selectPost(data.id);
+        const post = await selectPostOwner(data.id);
 
         if (!post || post.length !== 1)
             throw new Error("Invalid request");

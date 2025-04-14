@@ -8,7 +8,7 @@ export const ForumCommentTable = pgTable("forum_comment", {
     id,
     forumId: uuid().notNull().references(() => ForumPostTable.id, {onDelete: "cascade"}),
     userId: uuid().notNull().references(() => UserTable.id, {onDelete: "cascade"}),
-    comment: text(),
+    comment: text().notNull(),
     answerTo: uuid(),
     createdAt,
     updatedAt

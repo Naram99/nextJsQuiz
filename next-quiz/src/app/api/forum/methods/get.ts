@@ -1,18 +1,20 @@
-import {db} from "@/drizzle/db";
-import {ForumPostTable} from "@/drizzle/schema/forumpost";
-import {UserTable} from "@/drizzle/schema/user";
-import {desc, eq} from "drizzle-orm";
 import {NextResponse} from "next/server";
 import {forumPostData} from "@/utils/types/forumPostData.type";
+import { forumCommentData } from "@/utils/types/forumCommentData.type";
+import selectPost from "./selectPost";
 
 type respType = {
     error: boolean;
     message: string;
-    data: forumPostData[]
+    data: forumPostData[] | {
+        postData: forumPostData,
+        commentData: forumCommentData[]
+    }
 }
 
-export async function GET() {
-    // TODO: GET params handle
+export async function GET(req: Request) {
+    const { searchParams } = new URL(req.url);
+    const id = searchParams.get('id');
 
     const resp: respType = {
         error: false,
@@ -21,21 +23,8 @@ export async function GET() {
     }
 
     try {
-        resp.data = await db.select({
-            id: ForumPostTable.id,
-            title: ForumPostTable.title,
-            description: ForumPostTable.description,
-            pictures: ForumPostTable.pictures,
-            createdBy: ForumPostTable.createdBy,
-            createdAt: ForumPostTable.createdAt,
-            updatedAt: ForumPostTable.updatedAt,
-            creator: UserTable.name
-        }).from(ForumPostTable).innerJoin(
-            UserTable,
-            eq(ForumPostTable.createdBy, UserTable.id)
-        ).where(
-            eq(ForumPostTable.deleted, false)
-        ).orderBy(desc(ForumPostTable.createdAt)).limit(20);
+        resp.data = await selectPost(id);
+
     } catch (error) {
         resp.error = true;
         resp.message = error as string;
