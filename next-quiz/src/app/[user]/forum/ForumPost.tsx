@@ -6,6 +6,7 @@ export default function ForumPost({data}: {data: forumPostData }) {
         <div className={styles.forumPostCt}>
             <div className={styles.forumPostTitle}>{data.title}</div>
             <div className={styles.forumPostDescription}>{data.description}</div>
+            <div className={styles.forumPostInfo}>{`${data.creator}, ${data.createdAt}`}</div>
         </div>
     )
 }
