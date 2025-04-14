@@ -3,22 +3,43 @@
 import { forumPostData } from "@/utils/types/forumPostData.type";
 import { useParams } from "next/navigation";
 import { useEffect, useState } from "react";
+import styles from "./page.module.css";
+import { forumCommentData } from "@/utils/types/forumCommentData.type";
+
+type postState = {
+    postData: forumPostData,
+    commentData: forumCommentData[]
+}
 
 
 export default function ForumPostPage() {
     const params = useParams();
     const id = params.id;
 
-    const [data, setData] = useState<forumPostData>({});
+    const [data, setData] = useState<postState>({
+        postData: {
+            id: "", 
+            title: "", 
+            description: "", 
+            pictures: "", 
+            createdBy: "", 
+            createdAt: new Date(),
+            updatedAt: new Date(),
+            creator: ""
+        },
+        commentData: []
+    });
 
     useEffect(() => {
         async function getData() {
-            const resp = await fetch(`/api/forum?${id}`, {
+            const postsResp = await fetch(`/api/forum?${id}`, {
                 method: "GET",
                 credentials: "include"
             });
 
-            const respData = await resp.json();
+            // TODO: fetch to get comments
+
+            const respData = await postsResp.json();
             setData(respData.data[0])
         }
 
@@ -27,5 +48,21 @@ export default function ForumPostPage() {
 
     useEffect(() => {console.log(data)}, [data])
 
-    return <h1>{data.title}</h1>
+    return (
+        <div className={styles.forumPostCt}>
+            <div className={styles.forumPostTitleCt}>
+                <div className={styles.forumPostTitle}>{data.postData.title}</div>
+                <div className={styles.forumPostInfo}>
+                    {`${data.postData.creator}, ${data.postData.createdAt}`}
+                </div>
+            </div>
+            <div className={styles.froumPostBody}>
+                <div className={styles.forumPostDescription}>{data.postData.description}</div>
+                <div className={styles.forumPostPictures}></div>
+                <div className={styles.forumPostComments}>
+
+                </div>
+            </div>
+        </div>
+    )
 }

@@ -9,11 +9,12 @@ export const ForumCommentTable = pgTable("forum_comment", {
     forumId: uuid().notNull().references(() => ForumPostTable.id, {onDelete: "cascade"}),
     userId: uuid().notNull().references(() => UserTable.id, {onDelete: "cascade"}),
     comment: text(),
+    answerTo: uuid(),
     createdAt,
     updatedAt
 });
 
-export const ForumCommentRelationships = relations(ForumCommentTable, ({one}) => ({
+export const ForumCommentRelationships = relations(ForumCommentTable, ({one, many}) => ({
     creator: one(UserTable, {
         fields: [ForumCommentTable.userId],
         references: [UserTable.id]
@@ -21,5 +22,11 @@ export const ForumCommentRelationships = relations(ForumCommentTable, ({one}) =>
     forum: one(ForumPostTable, {
         fields: [ForumCommentTable.forumId],
         references: [ForumPostTable.id]
-    })
+    }),
+    parent: one(ForumCommentTable, {
+        fields: [ForumCommentTable.answerTo],
+        references: [ForumCommentTable.id],
+        relationName: "childComments"
+    }),
+    child: many(ForumCommentTable, {relationName: "childComments"})
 }))
