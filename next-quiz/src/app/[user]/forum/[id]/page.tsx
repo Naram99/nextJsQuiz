@@ -57,7 +57,7 @@ export default function ForumPostPage() {
                     {`${data.postData.creator}, ${data.postData.createdAt}`}
                 </div>
             </div>
-            <div className={styles.froumPostBody}>
+            <div className={styles.forumPostBody}>
                 <div className={styles.forumPostDescription}>{data.postData.description}</div>
                 <div className={styles.forumPostPictures}></div>
                 <div className={styles.forumPostCommentsCt}>

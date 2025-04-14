@@ -26,7 +26,37 @@
 }
 
 .forumPostBody {
+    width: 100%;
     display: flex;
     flex-direction: column;
     gap: 0.5rem;
+}
+
+.forumPostDescription {
+    width: 100%;
+    font-size: 1.2rem;
+}
+
+.forumPostCommentsCt {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+}
+
+.commentCt {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    gap: 0.2rem;
+}
+
+.commentUser {
+    width: 100%;
+    color: var(--card-border);
+}
+
+.commentText {
+    width: 100%;
+    color: var(--main-color);
 }
