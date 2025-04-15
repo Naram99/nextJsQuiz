@@ -36,6 +36,7 @@ export const config = {
         '/:user/chat',
         '/:user/forum',
         '/:user/tictactoe',
-        '/:user/quiz'
+        '/:user/quiz',
+        '/:user/settings',
     ]
 }

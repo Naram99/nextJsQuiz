@@ -1,12 +1,16 @@
 "use client";
 
 import styles from "./page.module.css";
-import React, {useEffect, useState} from "react";
+import React, {useContext, useEffect, useState} from "react";
 import {forumPostData} from "@/utils/types/forumPostData.type";
 import ForumPost from "@/app/[user]/forum/ForumPost";
 import {useRouter} from "next/navigation";
+import { LanguageContext } from "@/context/LanguageContext";
 
 export default function ForumPage() {
+    const { texts } = useContext(LanguageContext)!;
+    // TODO: ForumTexts
+
     const router = useRouter();
     const [posts, setPosts] = useState<forumPostData[]>([])
 

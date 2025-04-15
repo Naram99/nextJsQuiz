@@ -6,14 +6,14 @@ export const cardTexts: Record<cardType, cardData> = {
         title: "Chatroom",
         description: "Be connected to your friends!",
         buttonText: "Chat",
-        buttonLink: "/chat",
+        buttonLink: "chat",
         notification: "1 new!",
     },
     forum: {
         title: "Forum",
         description: "To discuss important things",
         buttonText: "Enter",
-        buttonLink: "/forum",
+        buttonLink: "forum",
     },
     tictactoe: {
         title: "Tic-Tac-Toe",

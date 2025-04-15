@@ -1,5 +1,6 @@
 import { cardData } from "@/utils/types/cardData.type";
 import styles from "./page.module.css";
+import Link from "next/link";
 
 const MainCard: React.FC<cardData> = ({
     title,
@@ -16,9 +17,9 @@ const MainCard: React.FC<cardData> = ({
                 {notification && <div className={styles.cardNotify}>{notification}</div>}
             </div>
             <div className={styles.cardFooter}>
-                <a className={styles.cardBtn} href={buttonLink}>
+                <Link className={styles.cardBtn} href={buttonLink}>
                     {buttonText}
-                </a>
+                </Link>
             </div>
         </>
     );

@@ -47,23 +47,23 @@ const Header = ({ username }: { username: string | undefined }) => {
             <div className={styles.navCt}>
                 <nav className={styles.navbar}>
                     <Link
-                        href="dashboard"
+                        href={`/${username}/dashboard`}
                         className={currentPage === "dashboard" ? styles.activeLink : ""}>
                         {headerText.controlPanel}
                     </Link>
-                    <Link href="help" className={currentPage === "help" ? styles.activeLink : ""}>
+                    <Link href={`/${username}/help`} className={currentPage === "help" ? styles.activeLink : ""}>
                         {headerText.help}
                     </Link>
                     <div className={styles.dropdownCt}>
                         {username}
                         <div className={styles.dropdown}>
                             <Link
-                                href="profile"
+                                href={`/${username}/profile`}
                                 className={currentPage === "profile" ? styles.activeLink : ""}>
                                 {headerText.dropdown?.profile}
                             </Link>
                             <Link
-                                href="settings"
+                                href={`/${username}/settings`}
                                 className={currentPage === "settings" ? styles.activeLink : ""}>
                                 {headerText.dropdown?.settings}
                             </Link>
