@@ -5,12 +5,14 @@ import { headerData } from "@/utils/types/headerData.type";
 import { createContext, ReactNode, useContext, useEffect, useState } from "react";
 import { loginData } from "@/utils/types/loginData.type";
 import { chatData } from "@/utils/types/chatData.type";
+import {forumTextData} from "@/utils/types/forumTextData.type";
 
 interface LanguageTexts {
     cardTexts?: Record<cardType, cardData>;
     headerTexts?: headerData;
     loginTexts?: loginData;
     chatTexts?: chatData;
+    forumTexts?: forumTextData;
 
     // Add new language texts here
 }
@@ -30,6 +32,7 @@ export const LanguageProvider = ({ children }: { children: ReactNode }) => {
         headerTexts: {} as headerData,
         loginTexts: {} as loginData,
         chatTexts: {} as chatData,
+        forumTexts: {} as forumTextData,
 
         // Set new language texts here
     });
@@ -37,11 +40,18 @@ export const LanguageProvider = ({ children }: { children: ReactNode }) => {
     useEffect(() => {
         const loadTexts = async () => {
             try {
-                const [cardModule, headerModule, loginModule, chatModule] = await Promise.all([
+                const [
+                    cardModule,
+                    headerModule,
+                    loginModule,
+                    chatModule,
+                    forumModule
+                ] = await Promise.all([
                     import(`@/resources/languages/${language}/cardTexts.ts`),
                     import(`@/resources/languages/${language}/headerTexts.ts`),
                     import(`@/resources/languages/${language}/loginTexts.ts`),
                     import(`@/resources/languages/${language}/chatTexts.ts`),
+                    import(`@/resources/languages/${language}/forumTexts.ts`),
 
                     // Import new language texts here
                 ]);
@@ -50,7 +60,8 @@ export const LanguageProvider = ({ children }: { children: ReactNode }) => {
                     cardTexts: cardModule.cardTexts,
                     headerTexts: headerModule.headerTexts,
                     loginTexts: loginModule.loginTexts,
-                    chatTexts: chatModule.chatTexts
+                    chatTexts: chatModule.chatTexts,
+                    forumTexts: forumModule.forumTexts
 
                     // Set new language texts here
                 });

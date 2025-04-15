@@ -2,10 +2,11 @@
 
 import { forumPostData } from "@/utils/types/forumPostData.type";
 import { useParams } from "next/navigation";
-import { useEffect, useState } from "react";
+import {useContext, useEffect, useState} from "react";
 import styles from "./page.module.css";
 import { forumCommentData } from "@/utils/types/forumCommentData.type";
 import Comment from "./Comment";
+import {LanguageContext} from "@/context/LanguageContext";
 
 type postState = {
     postData: forumPostData,
@@ -16,6 +17,9 @@ type postState = {
 export default function ForumPostPage() {
     const params = useParams();
     const id = params.id;
+
+    const { texts } = useContext(LanguageContext)!;
+    const forumText = texts.forumTexts!;
 
     const [data, setData] = useState<postState>({
         postData: {
@@ -61,6 +65,7 @@ export default function ForumPostPage() {
                 <div className={styles.forumPostDescription}>{data.postData.description}</div>
                 <div className={styles.forumPostPictures}></div>
                 <div className={styles.forumPostCommentsCt}>
+                    <div className={styles.commentsTitle}>{forumText.comments}</div>
                     {data.commentData.map(comment => (
                         <div key={comment.id}>
                             <Comment data={comment} />
