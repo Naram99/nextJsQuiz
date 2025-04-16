@@ -14,8 +14,16 @@ export default function DeleteModalBody({
                 <div className={"modal-text"}>{text}</div>
             </div>
             <div className={"modal-footer"}>
-                <button type={"button"} onClick={() => onChoice(true)}>{confirm}</button>
-                <button type={"button"} onClick={() => onChoice(false)}>{deny}</button>
+                <button
+                    type={"button"}
+                    className={"modal-delete-btn"}
+                    onClick={() => onChoice(true)}
+                >{confirm}</button>
+                <button
+                    type={"button"}
+                    className={"modal-cancel-btn"}
+                    onClick={() => onChoice(false)}
+                >{deny}</button>
             </div>
         </div>
     )

@@ -13,7 +13,7 @@ export default function PopupModal({
 
     return createPortal(
         <>
-            <div className={"modal-overlay"}></div>
+            <div className={"modal-overlay"} onClick={onclose}></div>
             <div className={"modal-container"}>
                 {children}
                 <button className={"modal-close"} onClick={onclose}>X</button>

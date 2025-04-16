@@ -20,6 +20,10 @@
         --main-color: #fff;
         --main-hover: #2f2f2f;
     }
+
+    html {
+        color-scheme: dark;
+    }
 }
 
 html,
@@ -68,15 +72,7 @@ a {
 /* MODALS */
 
 #modal {
-    position: fixed;
-    top: 0;
-    left: 0;
-    display: none;
-    place-content: center;
-    width: 100vw;
-    min-height: 100vh;
-    background-color: var(--main-background);
-    opacity: 0.5;
+
 }
 
 #modal.active {
@@ -84,15 +80,96 @@ a {
 }
 
 .modal-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    min-height: 100vh;
+    background-color: var(--main-background);
+    opacity: 0.5;
+    z-index: 10;
+    transition: all 0.3s ease;
+}
+
+.modal-container {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background-color: var(--main-background);
+    border: 2px solid var(--main-color);
+    border-radius: 5px;
+    box-shadow: 0 0 10px var(--main-color);
+    padding: 2rem;
     width: auto;
-    opacity: 1;
+    display: flex;
+    flex-direction: column;
+    z-index: 20;
 }
 
-
-
-@media (prefers-color-scheme: dark) {
-    html {
-        color-scheme: dark;
-    }
+.modal-close {
+    position: absolute;
+    top: 0;
+    right: 0;
+    margin: 0.4rem;
+    padding: 0.2rem;
+    font-size: 1.2rem;
+    font-weight: bold;
+    color: var(--card-border);
+    background-color: var(--main-background);
+    border: none;
+    transition: all 0.3s ease;
+    cursor: pointer;
 }
 
+.modal-close:hover {
+    color: var(--main-color);
+}
+
+.modal-body-wrapper {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    gap: 2rem;
+}
+
+.modal-body {
+    display: grid;
+    place-content: center;
+    width: 100%;
+}
+
+.modal-footer {
+    display: flex;
+    width: 100%;
+    justify-content: center;
+    gap: 2rem;
+}
+
+.modal-text {
+    color: var(--main-color);
+    font-size: 1.5rem;
+}
+
+.modal-delete-btn,
+.modal-cancel-btn {
+    color: var(--main-color);
+    background-color: var(--main-background);
+    cursor: pointer;
+    border: 1px solid var(--main-color);
+    border-radius: 2rem;
+    padding: 0.3rem 1rem;
+    transition: all 0.3s ease;
+    font-size: 1rem;
+    font-weight: bold;
+}
+
+.modal-delete-btn:hover {
+    color: var(--main-color);
+    background-color: var(--error);
+}
+
+.modal-cancel-btn:hover {
+    color: var(--main-background);
+    background-color: var(--main-color);
+}
