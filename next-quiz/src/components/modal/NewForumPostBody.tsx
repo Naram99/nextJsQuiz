@@ -29,7 +29,8 @@ export default function NewForumPostBody({
                 rows={3}
                 onChange={dataChange}
                 id={"description"}
-            >{data.description}</textarea>
+                value={data.description}
+            ></textarea>
         </>
     )
 }

@@ -68,13 +68,24 @@ a {
 /* MODALS */
 
 #modal {
-    position: relative;
-    display: grid;
+    position: fixed;
+    top: 0;
+    left: 0;
+    display: none;
     place-content: center;
+    width: 100vw;
+    min-height: 100vh;
+    background-color: var(--main-background);
+    opacity: 0.5;
+}
+
+#modal.active {
+    display: grid;
 }
 
 .modal-overlay {
-    position: absolute;
+    width: auto;
+    opacity: 1;
 }
 
 
