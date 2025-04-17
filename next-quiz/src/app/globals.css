@@ -139,6 +139,13 @@ a {
     width: 100%;
 }
 
+.modal-body textarea {
+    width: 100%;
+    border: 1px solid var(--main-color);
+    border-radius: 5px;
+    padding: 0.3rem;
+}
+
 .modal-footer {
     display: flex;
     width: 100%;
@@ -152,7 +159,8 @@ a {
 }
 
 .modal-delete-btn,
-.modal-cancel-btn {
+.modal-cancel-btn,
+.modal-publish-btn{
     color: var(--main-color);
     background-color: var(--main-background);
     cursor: pointer;
@@ -169,7 +177,8 @@ a {
     background-color: var(--error);
 }
 
-.modal-cancel-btn:hover {
+.modal-cancel-btn:hover,
+.modal-publish-btn:hover {
     color: var(--main-background);
     background-color: var(--main-color);
 }

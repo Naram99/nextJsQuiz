@@ -57,7 +57,18 @@ export default function ForumPage() {
         })
     }
 
-    // TODO: newPostSend
+    async function handlePublish() {
+        const resp = await fetch("/api/forum", {
+            method: "POST",
+            credentials: "include",
+            body: JSON.stringify({newPostData}),
+        })
+        const data = await resp.json()
+        if (data.ok) {
+            closeModal();
+            router.refresh();
+        }
+    }
 
     return (
         <div className={styles.forumPageWrapper}>
@@ -80,8 +91,10 @@ export default function ForumPage() {
             <PopupModal isOpen={isModalOpen} onclose={closeModal}>
                 <NewForumPostBody
                     text={forumText.newPostTitle}
+                    publish={forumText.publish}
                     dataChange={handleDataChange}
                     data={newPostData}
+                    onPublish={handlePublish}
                 />
             </PopupModal>
         </div>
