@@ -63,3 +63,36 @@
     width: 100%;
     color: var(--main-color);
 }
+
+.forumCommentCt {
+    position: fixed;
+    bottom: 1rem;
+    left: 0;
+    width: 100%;
+}
+
+.forumComment {
+    max-width: 1300px;
+    margin-inline: auto;
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+    gap: 3rem;
+}
+
+.sendCommentBtn {
+    background-color: transparent;
+    color: var(--main-color);
+    border: 2px solid var(--main-color);
+    border-radius: 2rem;
+    padding: 0.5rem 2rem;
+    font-weight: bold;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.sendCommentBtn:hover {
+    background-color: var(--main-color);
+    color: var(--main-background);
+    box-shadow: 0 0 10px var(--main-color);
+}

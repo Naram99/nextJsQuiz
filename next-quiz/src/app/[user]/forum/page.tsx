@@ -20,6 +20,7 @@ export default function ForumPage() {
     const [newPostData, setNewPostData] = useState({
         title: "",
         description: "",
+        type: "post"
     })
 
     useEffect(() => {
@@ -61,12 +62,11 @@ export default function ForumPage() {
         const resp = await fetch("/api/forum", {
             method: "POST",
             credentials: "include",
-            body: JSON.stringify({newPostData}),
+            body: JSON.stringify(newPostData),
         })
-        const data = await resp.json()
-        if (data.ok) {
+        if (resp.ok) {
             closeModal();
-            router.refresh();
+            location.reload();
         }
     }
 
