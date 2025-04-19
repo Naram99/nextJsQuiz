@@ -1,10 +1,11 @@
-import {pgTable, text, timestamp, uuid} from "drizzle-orm/pg-core";
+import { pgTable, text, timestamp, uuid } from "drizzle-orm/pg-core";
 import { id, createdAt, updatedAt, deleted } from "@/drizzle/schemaHelper";
-import {relations} from "drizzle-orm";
-import {LevelTable} from "@/drizzle/schema/role";
-import {QuizTable} from "@/drizzle/schema/quiz";
+import { relations } from "drizzle-orm";
+import { LevelTable } from "@/drizzle/schema/role";
+import { QuizTable } from "@/drizzle/schema/quiz";
 import { FriendTable } from "./friends";
 import { ForumPostTable } from "./forumpost";
+import { ReportTable } from "./report";
 
 export const UserTable = pgTable("user_data", {
     id,
@@ -12,21 +13,25 @@ export const UserTable = pgTable("user_data", {
     email: text(),
     phone: text(),
     password: text().notNull(),
-    roleId: uuid().notNull().references(() => LevelTable.id, {onDelete: "restrict"}),
+    roleId: uuid()
+        .notNull()
+        .references(() => LevelTable.id, { onDelete: "restrict" }),
     profilePicture: text(),
-    lastLogin: timestamp({withTimezone: true}).notNull().defaultNow(),
+    lastLogin: timestamp({ withTimezone: true }).notNull().defaultNow(),
     createdAt,
     updatedAt,
     deleted,
 });
 
-export const UserRelationships = relations(UserTable, ({one, many}) => ({
+export const UserRelationships = relations(UserTable, ({ one, many }) => ({
     role: one(LevelTable, {
         fields: [UserTable.roleId],
-        references: [LevelTable.id]
+        references: [LevelTable.id],
     }),
     id: many(QuizTable),
-    initiatorId: many(FriendTable, {relationName: "initiator"}),
-    targetId: many(FriendTable, {relationName: "target"}),
+    initiatorId: many(FriendTable, { relationName: "initiator" }),
+    targetId: many(FriendTable, { relationName: "target" }),
     postCreator: many(ForumPostTable),
-}))
+    reportCreator: many(ReportTable, { relationName: "reportCreator" }),
+    reportReviewer: many(ReportTable, { relationName: "reportReviewer" }),
+}));
