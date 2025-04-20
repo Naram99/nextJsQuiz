@@ -8,5 +8,6 @@ export const forumTexts: forumTextData = {
     publish: "Közzététel",
     comments: "Hozzászólások",
     doComment: "Szólj hozzá!",
-    send: "Küldés"
+    send: "Küldés",
+    report: "Jelentés",
 }

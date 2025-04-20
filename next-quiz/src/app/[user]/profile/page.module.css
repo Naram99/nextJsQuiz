@@ -34,3 +34,54 @@
     display: flex;
     width: 100%;
 }
+
+.friendCardCt,
+.requestCardCt {
+    display: flex;
+    gap: 2rem;
+    padding: 0.5rem;
+}
+
+.requestName {
+    font-size: 1rem;
+}
+
+.requestActionBtns {
+    display: flex;
+    gap: 1rem;
+}
+
+.requestAccept,
+.requestDeny {
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.requestAccept:hover {
+    color: var(--correct);
+}
+
+.requestDeny:hover {
+    color: var(--error);
+}
+
+.deleteProfileBtn {
+    display: flex;
+    gap: 1rem;
+    justify-content: center;
+    align-items: center;
+    background-color: transparent;
+    color: var(--main-color);
+    border: 2px solid var(--main-color);
+    border-radius: 2rem;
+    padding: 0.5rem;
+    font-weight: bold;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.deleteProfileBtn:hover {
+    background-color: var(--error);
+    color: var(--white);
+    box-shadow: 0 0 10px var(--main-color);
+}

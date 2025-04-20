@@ -3,6 +3,10 @@ import "./globals.css";
 import { LanguageProvider } from "@/context/LanguageContext";
 import React from "react";
 
+import { config } from '@fortawesome/fontawesome-svg-core';
+import '@fortawesome/fontawesome-svg-core/styles.css';
+config.autoAddCss = false;
+
 export const metadata: Metadata = {
     title: "DRV Quiz App",
     description: "Official Quiz app from the DROVE team",

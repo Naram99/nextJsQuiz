@@ -8,5 +8,6 @@ export const forumTexts: forumTextData = {
     publish: "Publish",
     comments: "Comments",
     doComment: "Make a comment",
-    send: "Send"
+    send: "Send",
+    report: "Report",
 }

@@ -7,4 +7,5 @@ export type forumTextData = {
     comments: string,
     doComment: string,
     send: string,
+    report: string,
 }

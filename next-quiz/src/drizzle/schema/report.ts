@@ -1,14 +1,15 @@
-import { pgTable, text, uuid } from "drizzle-orm/pg-core";
+import {pgEnum, pgTable, text, uuid} from "drizzle-orm/pg-core";
 import { createdAt, id, updatedAt } from "../schemaHelper";
 import { UserTable } from "./user";
 import { relations } from "drizzle-orm";
 
-// TODO: EntityType enum
+export const entityTypes = ["user", "post", "comment"] as const;
+export type EntityTypes = typeof entityTypes[number];
+export const entityTypeEnum = pgEnum("entity_enum", entityTypes);
 
 export const ReportTable = pgTable("report", {
     id,
     entityId: uuid().notNull(),
-    entityType: text().notNull(),
     description: text(),
     createdBy: uuid()
         .notNull()

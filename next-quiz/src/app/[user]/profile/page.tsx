@@ -9,6 +9,8 @@ import PopupModal from "@/components/modal/PopupModal";
 import DeleteModalBody from "@/components/modal/DeleteModalBody";
 import {useRouter} from "next/navigation";
 import ProfileDisplay from "@/app/[user]/profile/ProfileDisplay";
+import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
+import {faTrashCan} from "@fortawesome/free-solid-svg-icons";
 
 const ProfilePage: React.FC = () => {
     const router = useRouter();
@@ -94,6 +96,7 @@ const ProfilePage: React.FC = () => {
             </div>
             <button className={styles.deleteProfileBtn} onClick={handleModalOpen}>
                 {/* TODO: Friends texts */}Delete
+                <FontAwesomeIcon icon={faTrashCan} />
             </button>
             <PopupModal isOpen={isModalOpen} onclose={closeModal}>
                 <DeleteModalBody
