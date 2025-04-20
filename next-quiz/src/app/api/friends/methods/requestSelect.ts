@@ -7,7 +7,8 @@ export default function requestSelect(username: string) {
     const u1 = aliasedTable(UserTable, "u1");
     const u2 = aliasedTable(UserTable, "u2");
     return db.select({
-        initiator: u1.name
+        initiator: u1.name,
+        id: FriendTable.id
     }).from(FriendTable).innerJoin(
         u1,
         eq(FriendTable.initiator, u1.id)
@@ -17,7 +18,8 @@ export default function requestSelect(username: string) {
     ).where(
         and(
             eq(u2.name, username),
-            eq(FriendTable.accepted, false)
+            eq(FriendTable.accepted, false),
+            eq(FriendTable.deleted, false),
         )
     );
 }

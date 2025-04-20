@@ -1,4 +1,4 @@
-import { cardData } from "@/utils/types/cardData.type";
+import { cardData } from "@/utils/types/text/cardTextData.type";
 import styles from "./page.module.css";
 import Link from "next/link";
 

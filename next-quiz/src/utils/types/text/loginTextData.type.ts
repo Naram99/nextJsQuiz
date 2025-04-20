@@ -1,4 +1,4 @@
-import { loginError } from "./loginError.type";
+import { loginError } from "../loginError.type";
 
 export type loginData = {
     userName: string;

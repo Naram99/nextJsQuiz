@@ -1,4 +1,4 @@
-import {forumTextData} from "@/utils/types/forumTextData.type";
+import {forumTextData} from "@/utils/types/text/forumTextData.type";
 
 export const forumTexts: forumTextData = {
     title: "Fórum",

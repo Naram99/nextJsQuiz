@@ -1,13 +1,17 @@
 "use client";
 
-import React, {useState} from "react";
+import React, {useContext, useState} from "react";
 import ProfileEditValuesInterface from "@/utils/interfaces/ProfileEditValues.interface";
 import InputGroup from "@/components/InputGroup";
+import {LanguageContext} from "@/context/LanguageContext";
 
 export default function ProfileEditor(
     {username, email, phone, profilePic, id}:
     {username: string, email: string, phone: string, profilePic: string, id: string},
 ) {
+    const {texts} = useContext(LanguageContext)!;
+    const profileText = texts.profileTexts!;
+
     const [userData, setUserData] = useState<ProfileEditValuesInterface>({
         name: username,
         id: id,
@@ -20,14 +24,14 @@ export default function ProfileEditor(
     })
 
     const userTexts: Record<keyof ProfileEditValuesInterface, string> = {
-        name: "",
+        name: profileText.name,
         id: "",
-        email: "",
-        phone: "",
-        profilePicture: "",
-        oldPassword: "",
-        newPassword: "",
-        passwordCheck: "",
+        email: profileText.email,
+        phone: profileText.phone,
+        profilePicture: profileText.profilePicture,
+        oldPassword: profileText.oldPassword,
+        newPassword: profileText.newPassword,
+        passwordCheck: profileText.passwordCheck,
     };
 
     function handleChange(e: React.ChangeEvent<HTMLInputElement>) {
@@ -60,7 +64,7 @@ export default function ProfileEditor(
                             value={value}/>
                     </div>
                 ))}
-            <button type="submit">Submit</button>
+            <button type="submit">{profileText.submit}</button>
         </form>
     )
 }

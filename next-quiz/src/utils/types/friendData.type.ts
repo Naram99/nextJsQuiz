@@ -6,5 +6,6 @@ export type friendData = {
     }[],
     requests: {
         initiator: string;
+        id: string;
     }[]
 }

@@ -10,6 +10,7 @@ export const entityTypeEnum = pgEnum("entity_enum", entityTypes);
 export const ReportTable = pgTable("report", {
     id,
     entityId: uuid().notNull(),
+    entityType: entityTypeEnum().notNull().default("user"),
     description: text(),
     createdBy: uuid()
         .notNull()

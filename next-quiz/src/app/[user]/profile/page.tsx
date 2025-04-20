@@ -48,7 +48,7 @@ const ProfilePage: React.FC = () => {
     console.log(userData);
 
     const {texts} = useContext(LanguageContext)!;
-    const profileText = texts.loginTexts!;
+    const profileText = texts.profileTexts!;
 
     function handleUpdate() {
         setUpdate(!update);
@@ -95,14 +95,14 @@ const ProfilePage: React.FC = () => {
                 <FriendList username={userData.name} />
             </div>
             <button className={styles.deleteProfileBtn} onClick={handleModalOpen}>
-                {/* TODO: Friends texts */}Delete
+                {profileText.delete}
                 <FontAwesomeIcon icon={faTrashCan} />
             </button>
             <PopupModal isOpen={isModalOpen} onclose={closeModal}>
                 <DeleteModalBody
-                    text={"This is not reversible."}
-                    confirm={"Delete"}
-                    deny={"Cancel"}
+                    text={profileText.deleteWarning}
+                    confirm={profileText.deleteConfirm}
+                    deny={profileText.deleteDeny}
                     onChoice={handleChoice}
                 />
             </PopupModal>

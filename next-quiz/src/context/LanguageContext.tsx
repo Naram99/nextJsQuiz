@@ -1,11 +1,12 @@
 "use client";
-import { cardData } from "@/utils/types/cardData.type";
+import { cardData } from "@/utils/types/text/cardTextData.type";
 import { cardType } from "@/utils/types/cardType.type";
-import { headerData } from "@/utils/types/headerData.type";
+import { headerData } from "@/utils/types/text/headerTextData.type";
 import { createContext, ReactNode, useContext, useEffect, useState } from "react";
-import { loginData } from "@/utils/types/loginData.type";
-import { chatData } from "@/utils/types/chatData.type";
-import {forumTextData} from "@/utils/types/forumTextData.type";
+import { loginData } from "@/utils/types/text/loginTextData.type";
+import { chatData } from "@/utils/types/text/chatTextData.type";
+import {forumTextData} from "@/utils/types/text/forumTextData.type";
+import {profileTextData} from "@/utils/types/text/profileTextData.type";
 
 interface LanguageTexts {
     cardTexts?: Record<cardType, cardData>;
@@ -13,6 +14,7 @@ interface LanguageTexts {
     loginTexts?: loginData;
     chatTexts?: chatData;
     forumTexts?: forumTextData;
+    profileTexts?: profileTextData;
 
     // Add new language texts here
 }
@@ -33,6 +35,7 @@ export const LanguageProvider = ({ children }: { children: ReactNode }) => {
         loginTexts: {} as loginData,
         chatTexts: {} as chatData,
         forumTexts: {} as forumTextData,
+        profileTexts: {} as profileTextData,
 
         // Set new language texts here
     });
@@ -45,13 +48,15 @@ export const LanguageProvider = ({ children }: { children: ReactNode }) => {
                     headerModule,
                     loginModule,
                     chatModule,
-                    forumModule
+                    forumModule,
+                    profileModule,
                 ] = await Promise.all([
                     import(`@/resources/languages/${language}/cardTexts.ts`),
                     import(`@/resources/languages/${language}/headerTexts.ts`),
                     import(`@/resources/languages/${language}/loginTexts.ts`),
                     import(`@/resources/languages/${language}/chatTexts.ts`),
                     import(`@/resources/languages/${language}/forumTexts.ts`),
+                    import(`@/resources/languages/${language}/profileTexts.ts`),
 
                     // Import new language texts here
                 ]);
@@ -61,7 +66,8 @@ export const LanguageProvider = ({ children }: { children: ReactNode }) => {
                     headerTexts: headerModule.headerTexts,
                     loginTexts: loginModule.loginTexts,
                     chatTexts: chatModule.chatTexts,
-                    forumTexts: forumModule.forumTexts
+                    forumTexts: forumModule.forumTexts,
+                    profileTexts: profileModule.profileTexts,
 
                     // Set new language texts here
                 });

@@ -1,6 +1,7 @@
 import styles from "./page.module.css";
 import Image from "next/image";
-import React from "react";
+import React, {useContext} from "react";
+import {LanguageContext} from "@/context/LanguageContext";
 
 export default function ProfileDisplay(props: {
     userdata: {
@@ -12,6 +13,9 @@ export default function ProfileDisplay(props: {
     },
     handleUpdate: () => void,
 }) {
+    const {texts} = useContext(LanguageContext)!;
+    const profileText = texts.profileTexts!;
+
     return (
         <>
             <div className={styles.imageCt}>
@@ -31,7 +35,7 @@ export default function ProfileDisplay(props: {
                 <button
                     type={"button"}
                     className={styles.updateBtn}
-                    onClick={props.handleUpdate}>{/* TODO: ProfileTexts */}Update profile</button>
+                    onClick={props.handleUpdate}>{profileText.update}</button>
             </div>
         </>
     )

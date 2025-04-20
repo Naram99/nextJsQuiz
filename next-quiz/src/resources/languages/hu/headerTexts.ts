@@ -1,4 +1,4 @@
-import { headerData } from "@/utils/types/headerData.type";
+import { headerData } from "@/utils/types/text/headerTextData.type";
 
 export const headerTexts: headerData = {
     controlPanel: "Irányítópult",

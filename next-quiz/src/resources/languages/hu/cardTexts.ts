@@ -1,4 +1,4 @@
-import { cardData } from "@/utils/types/cardData.type";
+import { cardData } from "@/utils/types/text/cardTextData.type";
 import { cardType } from "@/utils/types/cardType.type";
 
 export const cardTexts: Record<cardType, cardData> = {
