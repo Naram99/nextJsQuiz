@@ -5,9 +5,9 @@ import { pipeline } from "stream";
 import * as tar from "tar";
 
 async function updateData(patch: string, dir: string): Promise<boolean> {
-    console.log(typeof tar.x);
+    console.log(`Updating to patch: ${patch}`);
     try {
-        if (!fs.existsSync(dir)) fs.mkdirSync(dir, { recursive: true });
+        if (!fs.existsSync(`./${dir}/${patch}`)) fs.mkdirSync(`./${dir}/${patch}`, { recursive: true });
 
         const response = await axios({
             method: "GET",
@@ -16,7 +16,7 @@ async function updateData(patch: string, dir: string): Promise<boolean> {
         });
 
         await new Promise((resolve, reject) => {
-            pipeline(response.data, tar.x({ C: dir }), (error) =>
+            pipeline(response.data, tar.x({ C: `./${dir}/${patch}` }), (error) =>
                 error ? reject(error) : resolve(true)
             );
         });
@@ -28,4 +28,6 @@ async function updateData(patch: string, dir: string): Promise<boolean> {
     }
 }
 
-updateData(process.argv[2], "/lol");
+updateData(process.argv[2], "lol")
+    .then(r => console.log(`Update finished with: ${r ? "success" : "error"}`))
+    .catch(e => console.log(e));
