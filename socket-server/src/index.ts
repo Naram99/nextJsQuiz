@@ -7,7 +7,12 @@ dotenv.config();
 
 const app = express();
 const httpServer = createServer(app);
-const io = new Server(httpServer);
+const io = new Server(httpServer, {
+    cors: {
+        origin: "*",
+        methods: ["GET", "POST"],
+    }
+});
 
 io.on("connection", (socket) => {
     console.log("A user connected.");
@@ -17,4 +22,9 @@ io.on("connection", (socket) => {
     });
 });
 
+app.get("/", (req, res) => {
+    console.log("Welcome to the server");
+})
+
 httpServer.listen(process.env.PORT || 3210);
+console.log(`Listening on port ${process.env.PORT}`);

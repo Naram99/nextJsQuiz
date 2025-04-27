@@ -3,4 +3,5 @@ export type chatData = {
     join: string;
     leave: string;
     placeholder: string;
+    allChat: string;
 }

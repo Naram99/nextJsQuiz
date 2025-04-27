@@ -7,6 +7,7 @@ import {LanguageContext} from "@/context/LanguageContext";
 import InputGroup from "@/components/InputGroup";
 import FormValuesInterface from "@/utils/interfaces/FormValues.interface";
 import {useRouter} from "next/navigation";
+import {socket} from "@/socket/socket";
 
 const LoginPage: React.FC = () => {
     const router = useRouter();
@@ -21,6 +22,7 @@ const LoginPage: React.FC = () => {
                 if (resp.ok) {
                     const data = await resp.json();
                     if (data.username)
+                        socket.connect();
                         router.push(`/${data.username}/dashboard`);
                 }
             } catch (error) {
