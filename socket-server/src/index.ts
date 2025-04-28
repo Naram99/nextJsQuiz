@@ -16,6 +16,11 @@ const io = new Server(httpServer, {
 
 io.on("connection", (socket) => {
     console.log("A user connected.");
+    socket.join("all");
+
+    socket.on("chatMessage", (msg: string, room: string) => {
+        io.to(room).emit("chatMessage", msg);
+    })
 
     socket.on("disconnect", (username) => {
         console.log(`${username} disconnected.`);

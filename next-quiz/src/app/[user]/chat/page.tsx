@@ -5,10 +5,28 @@ import styles from "./page.module.css";
 import ChatSelector from "@/app/[user]/chat/ChatSelector";
 import {chatFriend} from "@/utils/types/chatFriend.type";
 import Chat from "@/app/[user]/chat/Chat";
+import {socket} from "@/socket/socket";
 
 export default function ChatPage() {
     const [selected, setSelected] = useState("");
     const [friends, setFriends] = useState<chatFriend[]>([]);
+    const [messages, setMessages] = useState<Record<string, string>[]>([]);
+
+    useEffect(() => {
+        if (!socket.connected) {
+            socket.connect();
+        }
+
+        const handleChatMessage = (msg: string, room: string) => {
+            setMessages(prevMessages => [...prevMessages, { msg, room }]);
+        };
+
+        socket.on("chatMessage", handleChatMessage);
+
+        return () => {
+            socket.off("chatMessage", handleChatMessage);
+        };
+    }, []);
 
     useEffect(() => {
         async function getFriends() {
@@ -33,9 +51,11 @@ export default function ChatPage() {
 
     return (
         <div className={styles.mainCt}>
-            <h1>Chat Layout</h1>
-            <ChatSelector friends={friends} onSelect={handleSelect} />
-            <Chat selected={selected} />
+            <h1 className={styles.mainTitle}>Chat</h1>
+            <div className={styles.chatLayoutCt}>
+                <ChatSelector friends={friends} onSelect={handleSelect} />
+                <Chat selected={selected} />
+            </div>
         </div>
     );
 }

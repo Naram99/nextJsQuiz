@@ -4,17 +4,10 @@ import styles from "./page.module.css";
 import MainCard from "./MainCard";
 import {useContext, useEffect} from "react";
 import { LanguageContext } from "@/context/LanguageContext";
-import {socket} from "@/socket/socket";
 
 const Dashboard = () => {
     const { texts } = useContext(LanguageContext)!;
     const cardText = texts.cardTexts!;
-
-    useEffect(() => {
-        if (!socket.connected)
-            socket.connect();
-        console.log(socket.connected);
-    })
 
     return (
         <div className={styles.mainWrapper}>

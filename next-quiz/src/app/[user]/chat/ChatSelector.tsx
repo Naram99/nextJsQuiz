@@ -15,8 +15,6 @@ export default function ChatSelector(
         ...(Array.isArray(friends) ? friends : []),
     ]
 
-    console.log(friends)
-
     // Future upgrade: Create chat card component.
     return (
         <div className={styles.chatSelectorCt}>
