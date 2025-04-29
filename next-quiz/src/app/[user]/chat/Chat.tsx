@@ -36,7 +36,7 @@ export default function Chat({selected}: {selected: string}) {
                         value={newMessage} />
                     <button
                         type={"button"}
-                        className={styles.sendCommentBtn}
+                        className={styles.sendMessageBtn}
                         onClick={handleSubmit}
                     >
                         {chatText.send}
