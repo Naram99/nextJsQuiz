@@ -6,7 +6,9 @@ import React, {useContext, useState} from "react";
 import {LanguageContext} from "@/context/LanguageContext";
 import {socket} from "@/socket/socket";
 
-export default function Chat({selected}: {selected: string}) {
+export default function Chat(
+    {selected, messages}:
+    {selected: string, messages: Record<string, string>[]}) {
     const {texts} = useContext(LanguageContext)!;
     const chatText = texts.chatTexts!;
 
@@ -25,7 +27,13 @@ export default function Chat({selected}: {selected: string}) {
 
     return (
         <div className={styles.chatWrapper}>
-            <div className={styles.chatCt}></div>
+            <div className={styles.chatCt}>
+                {messages.map((msg, index) => (
+                    <div key={index} className={styles.message}>
+                        {msg.message}
+                    </div>
+                ))}
+            </div>
             <div className={styles.chatMessageCt}>
                 <div className={styles.chatMessage}>
                     <InputGroup

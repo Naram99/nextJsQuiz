@@ -8,7 +8,7 @@ import Chat from "@/app/[user]/chat/Chat";
 import {socket} from "@/socket/socket";
 
 export default function ChatPage() {
-    const [selected, setSelected] = useState("");
+    const [selected, setSelected] = useState("all");
     const [friends, setFriends] = useState<chatFriend[]>([]);
     const [messages, setMessages] = useState<Record<string, string>[]>([]);
 
@@ -18,7 +18,7 @@ export default function ChatPage() {
         }
 
         const handleChatMessage = (msg: string, room: string) => {
-            setMessages(prevMessages => [...prevMessages, { msg, room }]);
+            setMessages(prevMessages => [...prevMessages, { message: msg, room: room }]);
         };
 
         socket.on("chatMessage", handleChatMessage);
@@ -54,7 +54,7 @@ export default function ChatPage() {
             <h1 className={styles.mainTitle}>Chat</h1>
             <div className={styles.chatLayoutCt}>
                 <ChatSelector friends={friends} onSelect={handleSelect} />
-                <Chat selected={selected} />
+                <Chat selected={selected} messages={messages} />
             </div>
         </div>
     );

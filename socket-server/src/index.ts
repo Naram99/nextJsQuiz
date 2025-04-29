@@ -15,21 +15,26 @@ const io = new Server(httpServer, {
 });
 
 io.on("connection", (socket) => {
-    console.log("A user connected.");
+    io.to("all").emit("chatMessage", "A new user connected");
     socket.join("all");
 
     socket.on("chatMessage", (msg: string, room: string) => {
-        io.to(room).emit("chatMessage", msg);
+        socket.to(room).emit("chatMessage", msg, room);
     })
 
-    socket.on("disconnect", (username) => {
-        console.log(`${username} disconnected.`);
+    socket.on("disconnect", (reason) => {
+        console.log(`A user disconnected due to ${reason}.`);
     });
 });
 
 app.get("/", (req, res) => {
     console.log("Welcome to the server");
 })
+
+async function test() {
+    const data = undefined;
+    // TODO: DB connection test
+}
 
 httpServer.listen(process.env.PORT || 3210);
 console.log(`Listening on port ${process.env.PORT}`);

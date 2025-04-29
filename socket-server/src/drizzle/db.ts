@@ -1,5 +1,7 @@
 import { drizzle } from "drizzle-orm/node-postgres"
-import * as schema from "./schema"
+import * as schema from "../../../next-quiz/src/drizzle/schema";
+
+// TODO: DB connection review
 
 export const db = drizzle({
     schema,

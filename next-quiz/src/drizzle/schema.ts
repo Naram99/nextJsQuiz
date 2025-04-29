@@ -5,3 +5,5 @@ export * from "./schema/friends";
 export * from "./schema/forumpost";
 export * from "./schema/forumcomment";
 export * from "./schema/report";
+export * from "./schema/chatmessage";
+export * from "./schema/chatroom";
