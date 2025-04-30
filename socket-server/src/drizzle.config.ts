@@ -1,8 +1,8 @@
 import {defineConfig} from "drizzle-kit";
 
 export default defineConfig({
-    out: "../next-quiz/src/drizzle/migrations",
-    schema: "../next-quiz/src/drizzle/schema.ts",
+    out: "./drizzle/migrations",
+    schema: "./drizzle/schema.ts",
     strict: true,
     verbose: true,
     dialect: "postgresql",

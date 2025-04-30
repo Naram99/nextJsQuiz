@@ -2,6 +2,8 @@ import express from "express";
 import { createServer } from "http";
 import { Server } from "socket.io";
 import dotenv from "dotenv";
+import { db } from "./drizzle/db";
+import { UserTable } from "./drizzle/schema";
 
 dotenv.config();
 
@@ -29,10 +31,12 @@ io.on("connection", (socket) => {
 
 app.get("/", (req, res) => {
     console.log("Welcome to the server");
+    test().then()
 })
 
 async function test() {
-    const data = undefined;
+    const data = await db.select().from(UserTable);
+    console.log(data);
     // TODO: DB connection test
 }
 
