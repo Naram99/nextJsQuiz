@@ -35,6 +35,7 @@ app.get("/", (req, res) => {
 })
 
 async function test() {
+    console.log(process.env.DB_USER);
     const data = await db.select().from(UserTable);
     console.log(data);
     // TODO: DB connection test
