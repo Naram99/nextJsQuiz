@@ -7,8 +7,8 @@ import {LanguageContext} from "@/context/LanguageContext";
 import {socket} from "@/socket/socket";
 
 export default function Chat(
-    {selected, messages}:
-    {selected: string, messages: Record<string, string>[]}) {
+    {selected, messages, name}:
+    {selected: string, messages: Record<string, string>[], name: string}) {
     const {texts} = useContext(LanguageContext)!;
     const chatText = texts.chatTexts!;
 

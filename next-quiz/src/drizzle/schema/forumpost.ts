@@ -1,4 +1,4 @@
-import { json, pgTable, text, uuid } from "drizzle-orm/pg-core";
+import { jsonb, pgTable, text, uuid } from "drizzle-orm/pg-core";
 import { createdAt, deleted, id, updatedAt } from "../schemaHelper";
 import { UserTable } from "./user";
 import { relations } from "drizzle-orm";
@@ -8,7 +8,7 @@ export const ForumPostTable = pgTable("forum_post", {
     id,
     title: text().notNull(),
     description: text(),
-    pictures: json().default({}),
+    pictures: jsonb().default({}),
     createdBy: uuid().notNull().references(() => UserTable.id, { onDelete: "cascade" }),
     createdAt,
     updatedAt,

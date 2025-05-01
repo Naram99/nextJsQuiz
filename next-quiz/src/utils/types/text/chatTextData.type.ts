@@ -4,4 +4,5 @@ export type chatData = {
     leave: string;
     placeholder: string;
     allChat: string;
+    newRoom: string;
 }

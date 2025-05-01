@@ -1,15 +1,20 @@
 "use client";
 
-import React, {useEffect, useState} from "react";
+import React, {useContext, useEffect, useState} from "react";
 import styles from "./page.module.css";
 import ChatSelector from "@/app/[user]/chat/ChatSelector";
-import {chatFriend} from "@/utils/types/chatFriend.type";
+import {chatRoom} from "@/utils/types/chatRoom.type";
 import Chat from "@/app/[user]/chat/Chat";
 import {socket} from "@/socket/socket";
+import { LanguageContext } from "@/context/LanguageContext";
 
 export default function ChatPage() {
+    const {texts} = useContext(LanguageContext)!;
+    const chatText = texts.chatTexts!;
+
     const [selected, setSelected] = useState("all");
-    const [friends, setFriends] = useState<chatFriend[]>([]);
+    const [selectedName, setSelectedName] = useState(chatText.allChat);
+    const [rooms, setRooms] = useState<chatRoom[]>([]);
     const [messages, setMessages] = useState<Record<string, string>[]>([]);
 
     useEffect(() => {
@@ -29,7 +34,7 @@ export default function ChatPage() {
     }, []);
 
     useEffect(() => {
-        async function getFriends() {
+        async function getRooms() {
             const resp = await fetch("/api/chat", {
                 method: "GET",
                 credentials: "include"
@@ -37,15 +42,16 @@ export default function ChatPage() {
 
             if (resp.ok) {
                 const data = await resp.json();
-                setFriends(data.data);
+                setRooms(data.data);
             }
         }
 
-        getFriends().then()
+        getRooms().then()
     }, [])
 
-    function handleSelect(id: string) {
+    function handleSelect(id: string, name: string) {
         setSelected(id);
+        setSelectedName(name);
         console.log(id);
     }
 
@@ -53,8 +59,8 @@ export default function ChatPage() {
         <div className={styles.mainCt}>
             <h1 className={styles.mainTitle}>Chat</h1>
             <div className={styles.chatLayoutCt}>
-                <ChatSelector friends={friends} onSelect={handleSelect} />
-                <Chat selected={selected} messages={messages} />
+                <ChatSelector rooms={rooms} onSelect={handleSelect} />
+                <Chat selected={selected} messages={messages} name={selectedName} />
             </div>
         </div>
     );

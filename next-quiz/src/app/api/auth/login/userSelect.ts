@@ -5,6 +5,7 @@ import {LevelTable} from "@/drizzle/schema/role";
 
 const userSelect = async ({username}: { username: string }) => {
     return db.select({
+        id: UserTable.id,
         userName: UserTable.name,
         password: UserTable.password,
         email: UserTable.email,

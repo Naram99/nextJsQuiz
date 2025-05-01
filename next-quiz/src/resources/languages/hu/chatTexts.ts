@@ -6,4 +6,5 @@ export const chatTexts: chatData = {
     leave: " elhagyta a csevegést.",
     placeholder: "Írd ide az üzeneted",
     allChat: "Közös chat",
+    newRoom: "Új csevegés",
 }

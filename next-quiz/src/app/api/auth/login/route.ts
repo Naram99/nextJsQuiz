@@ -30,7 +30,7 @@ export async function POST(req: Request) {
         resp.user = loginUser.userName;
 
         token = jwt.sign(
-            {username: loginUser.userName, role: loginUser.role},
+            {username: loginUser.userName, role: loginUser.role, id: loginUser.id},
             secret,
             {expiresIn: "1h"}
         )

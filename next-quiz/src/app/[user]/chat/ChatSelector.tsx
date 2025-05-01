@@ -1,33 +1,47 @@
 import styles from "./page.module.css";
 import React, {useContext} from "react";
 import {LanguageContext} from "@/context/LanguageContext";
-import {chatFriend} from "@/utils/types/chatFriend.type";
+import {chatRoom} from "@/utils/types/chatRoom.type";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faPlus } from "@fortawesome/free-solid-svg-icons";
 
 export default function ChatSelector(
-    {friends, onSelect}:
-    {friends: chatFriend[], onSelect: (id: string) => void}) {
+    {rooms, onSelect}:
+    {rooms: chatRoom[], onSelect: (id: string, name: string) => void}) {
 
     const {texts} = useContext(LanguageContext)!;
     const chatText = texts.chatTexts!;
 
-    const listItems: chatFriend[] = [
-        {id: "all", name: chatText.allChat},
-        ...(Array.isArray(friends) ? friends : []),
-    ]
+    const listItems: chatRoom[] = [
+        {id: "all", names: [chatText.allChat]},
+        ...(Array.isArray(rooms) ? rooms : []),
+    ];
+
+    function handleNewRoom() {
+        // TODO: new room popup
+    }
 
     // Future upgrade: Create chat card component.
     return (
-        <div className={styles.chatSelectorCt}>
-            {listItems.map((friend) => (
-                <div
-                    key={friend.id}
-                    id={friend.id}
-                    className={styles.chatCard}
-                    onClick={() => onSelect(friend.id)}
-                >
-                    {friend.name}
-                </div>
-            ))}
+        <div className={styles.chatSelectorWrapper}>
+            <div className={styles.newRoomBtnCt}>
+                <button type="button" className={styles.newRoomBtn} onClick={handleNewRoom}>
+                    <FontAwesomeIcon icon={faPlus} />
+                    {chatText.newRoom}
+                </button>
+            </div>
+            <div className={styles.chatSelectorCt}>
+                {listItems.map((room) => (
+                    <div
+                        key={room.id}
+                        id={room.id}
+                        className={styles.chatCard}
+                        onClick={() => onSelect(room.id, room.names.join(', '))}
+                    >
+                        {room.names.join(', ')}
+                    </div>
+                ))}
+            </div>
         </div>
     )
 }
