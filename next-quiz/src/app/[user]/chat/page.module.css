@@ -1,4 +1,4 @@
-.mainCt{
+.mainCt {
     display: flex;
     flex-direction: column;
     max-width: 1300px;
@@ -54,6 +54,26 @@
     justify-content: space-between;
     height: 100%;
     width: 75%;
+}
+
+.chatTitleCt {
+    cursor: pointer;
+    display: flex;
+    gap: 1rem;
+}
+
+.chatTitle {
+    font-weight: bold;
+    font-size: 1.2rem;
+}
+
+.chatRenameIcon {
+    opacity: 0;
+    transition: all 0.3s ease;
+}
+
+.chatTitleCt:hover .chatRenameIcon {
+    opacity: 1;
 }
 
 .chatCt {

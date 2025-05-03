@@ -6,5 +6,7 @@ export const chatTexts: chatData = {
     leave: " left the chat.",
     placeholder: "Write your message here",
     allChat: "All chat",
-    newRoom: "New chatroom"
-}
+    newRoom: "New chatroom",
+    roomRename: "Room name",
+    renameBtn: "Rename",
+};

@@ -1,15 +1,15 @@
 "use client";
 
-import React, {useContext, useEffect, useState} from "react";
+import React, { useContext, useEffect, useState } from "react";
 import styles from "./page.module.css";
 import ChatSelector from "@/app/[user]/chat/ChatSelector";
-import {chatRoom} from "@/utils/types/chatRoom.type";
+import { chatRoom } from "@/utils/types/chatRoom.type";
 import Chat from "@/app/[user]/chat/Chat";
-import {socket} from "@/socket/socket";
+import { socket } from "@/socket/socket";
 import { LanguageContext } from "@/context/LanguageContext";
 
 export default function ChatPage() {
-    const {texts} = useContext(LanguageContext)!;
+    const { texts } = useContext(LanguageContext)!;
     const chatText = texts.chatTexts!;
 
     const [selected, setSelected] = useState("all");
@@ -23,7 +23,7 @@ export default function ChatPage() {
         }
 
         const handleChatMessage = (msg: string, room: string) => {
-            setMessages(prevMessages => [...prevMessages, { message: msg, room: room }]);
+            setMessages((prevMessages) => [...prevMessages, { message: msg, room: room }]);
         };
 
         socket.on("chatMessage", handleChatMessage);
@@ -37,8 +37,8 @@ export default function ChatPage() {
         async function getRooms() {
             const resp = await fetch("/api/chat", {
                 method: "GET",
-                credentials: "include"
-            })
+                credentials: "include",
+            });
 
             if (resp.ok) {
                 const data = await resp.json();
@@ -46,8 +46,8 @@ export default function ChatPage() {
             }
         }
 
-        getRooms().then()
-    }, [])
+        getRooms().then();
+    }, []);
 
     function handleSelect(id: string, name: string) {
         setSelected(id);

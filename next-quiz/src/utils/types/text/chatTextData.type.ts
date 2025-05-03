@@ -5,4 +5,6 @@ export type chatData = {
     placeholder: string;
     allChat: string;
     newRoom: string;
-}
+    roomRename: string;
+    renameBtn: string;
+};

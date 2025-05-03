@@ -13,7 +13,7 @@ const io = new Server(httpServer, {
     cors: {
         origin: "*",
         methods: ["GET", "POST"],
-    }
+    },
 });
 
 io.on("connection", (socket: Socket) => {
@@ -22,7 +22,7 @@ io.on("connection", (socket: Socket) => {
 
     socket.on("chatMessage", (msg: string, room: string) => {
         socket.to(room).emit("chatMessage", msg, room);
-    })
+    });
 
     socket.on("disconnect", (reason) => {
         console.log(`A user disconnected due to ${reason}.`);
@@ -31,16 +31,20 @@ io.on("connection", (socket: Socket) => {
 
 app.get("/", (req, res) => {
     console.log("Welcome to the server");
-    // test().then()
-})
+    test().then();
+});
 
 async function test() {
     console.log(process.env.DB_USER);
-    
+
     const testInsert = await db.insert(ChatRoomTable).values({
-        userIdArray: JSON.stringify(["22ee4737-db18-4e85-8f56-e766c828b166", "45ad31c7-416d-4136-bbc8-443a556c640a"])
-    })
-    
+        userIdArray: [
+            "22ee4737-db18-4e85-8f56-e766c828b166",
+            "40b5e4d6-386c-467e-9295-781de70d0e5b",
+            "45ad31c7-416d-4136-bbc8-443a556c640a",
+        ],
+    });
+
     const data = await db.select().from(ChatRoomTable);
     console.log(data);
 }

@@ -7,4 +7,6 @@ export const chatTexts: chatData = {
     placeholder: "Írd ide az üzeneted",
     allChat: "Közös chat",
     newRoom: "Új csevegés",
-}
+    roomRename: "Csoport neve",
+    renameBtn: "Átnevezés",
+};
