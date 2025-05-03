@@ -6,6 +6,7 @@ import { QuizTable } from "@/drizzle/schema/quiz";
 import { FriendTable } from "./friends";
 import { ForumPostTable } from "./forumpost";
 import { ReportTable } from "./report";
+import { ChatMessageTable } from "./chatmessage";
 
 export const UserTable = pgTable("user_data", {
     id,
@@ -34,4 +35,5 @@ export const UserRelationships = relations(UserTable, ({ one, many }) => ({
     postCreator: many(ForumPostTable),
     reportCreator: many(ReportTable, { relationName: "reportCreator" }),
     reportReviewer: many(ReportTable, { relationName: "reportReviewer" }),
+    messageSender: many(ChatMessageTable),
 }));

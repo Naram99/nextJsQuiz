@@ -17,6 +17,9 @@ const io = new Server(httpServer, {
 });
 
 io.on("connection", (socket: Socket) => {
+    // TODO: token verify
+    const userId = socket.handshake.auth.token;
+
     io.to("all").emit("chatMessage", "A new user connected");
     socket.join("all");
 
@@ -29,7 +32,7 @@ io.on("connection", (socket: Socket) => {
     });
 });
 
-app.get("/", (req, res) => {
+app.get("/", () => {
     console.log("Welcome to the server");
     test().then();
 });
