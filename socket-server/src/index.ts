@@ -4,6 +4,9 @@ import { Server, Socket } from "socket.io";
 import dotenv from "dotenv";
 import { db } from "./drizzle/db";
 import { ChatRoomTable, UserTable } from "./drizzle/schema";
+import verifyToken from "./utils/verifyToken";
+import UserHandler from "./modules/UserHandler";
+import SocketHandler from "./modules/SocketHandler";
 
 dotenv.config();
 
@@ -16,9 +19,30 @@ const io = new Server(httpServer, {
     },
 });
 
+io.use(async (socket, next) => {
+    try {
+        const token = socket.handshake.auth.token;
+        if (!token) return next(new Error("Invalid token"));
+
+        const userData = await verifyToken(
+            socket.handshake.auth.token,
+            String(process.env.JWT_SECRET)
+        );
+
+        socket.data.user = userData;
+        next();
+    } catch (error) {
+        console.error("JWT verification error:", error);
+        return next(new Error("Invalid token"));
+    }
+});
+
 io.on("connection", (socket: Socket) => {
-    // TODO: token verify
-    const userId = socket.handshake.auth.token;
+    const userData = socket.data.user;
+    const uh = new UserHandler(userData.id, userData.name, userData.role);
+    const sh = new SocketHandler(socket, uh.id);
+
+    // TODO: socket events in class
 
     io.to("all").emit("chatMessage", "A new user connected");
     socket.join("all");
