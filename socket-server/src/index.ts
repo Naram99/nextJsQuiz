@@ -3,7 +3,7 @@ import { createServer } from "http";
 import { Server, Socket } from "socket.io";
 import dotenv from "dotenv";
 import { db } from "./drizzle/db";
-import { ChatRoomTable, UserTable } from "./drizzle/schema";
+import { ChatRoomTable } from "./drizzle/schema";
 import verifyToken from "./utils/verifyToken";
 import UserHandler from "./modules/UserHandler";
 import SocketHandler from "./modules/SocketHandler";
@@ -58,7 +58,7 @@ io.on("connection", (socket: Socket) => {
 
 app.get("/", () => {
     console.log("Welcome to the server");
-    test().then();
+    // test().then();
 });
 
 async function test() {
