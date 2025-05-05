@@ -6,7 +6,7 @@ import { db } from "./drizzle/db";
 import { ChatRoomTable } from "./drizzle/schema";
 import verifyToken from "./utils/verifyToken";
 import UserHandler from "./modules/UserHandler";
-import SocketHandler from "./modules/SocketHandler";
+import ChatHandler from "./modules/SocketHandler";
 
 dotenv.config();
 
@@ -38,18 +38,12 @@ io.use(async (socket, next) => {
 });
 
 io.on("connection", (socket: Socket) => {
+    console.log(`User connected with id: ${socket.id}`);
+
     const userData = socket.data.user;
     const uh = new UserHandler(userData.id, userData.name, userData.role);
-    const sh = new SocketHandler(socket, uh.id);
-
-    // TODO: socket events in class
-
-    io.to("all").emit("chatMessage", "A new user connected");
-    socket.join("all");
-
-    socket.on("chatMessage", (msg: string, room: string) => {
-        socket.to(room).emit("chatMessage", msg, room);
-    });
+    const ch = new ChatHandler(io, socket, uh.id);
+    ch.initialize();
 
     socket.on("disconnect", (reason) => {
         console.log(`A user disconnected due to ${reason}.`);

@@ -18,8 +18,6 @@ async function getToken(): Promise<string | null> {
 
 const token = await getToken();
 
-console.log(token);
-
 export const socket = io(
     `http://${process.env.NEXT_PUBLIC_WS_HOST}:${process.env.NEXT_PUBLIC_WS_PORT}`,
     {

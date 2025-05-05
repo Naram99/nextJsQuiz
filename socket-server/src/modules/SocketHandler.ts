@@ -1,26 +1,42 @@
-import { Socket } from "socket.io";
+import { Server, Socket } from "socket.io";
 import DbHandler from "./DbHandler";
 
-export default class SocketHandler {
+export default class ChatHandler {
+    private _io: Server;
     private _socket: Socket;
     private _dbHandler: DbHandler = new DbHandler();
     private _userId: string;
     private _rooms: string[] = [];
 
-    constructor(socket: Socket, id: string) {
+    constructor(server: Server, socket: Socket, id: string) {
+        this._io = server;
         this._socket = socket;
         this._userId = id;
     }
 
-    async getRooms() {
+    public async initialize() {
+        await this.getRooms();
+        this.joinRooms();
+        this.addEvents();
+    }
+
+    private async getRooms(): Promise<void> {
         const roomQuery = await this._dbHandler.selectRoomsForUser(this._userId);
         this._rooms = roomQuery.map((data) => data.id);
     }
 
-    joinRooms() {
+    private joinRooms(): void {
         this._socket.join("all");
         this._rooms.forEach((id) => this._socket.join(id));
     }
 
     // TODO: socket events
+    addEvents() {
+        this._socket.on("chatMessage", (msg: string, room: string) => {
+            console.log(`Message: ${msg}; To: ${room}`);
+
+            this._io.to(room).emit("chatMessage", msg);
+            this._dbHandler.insertChatMessage(room, this._userId, msg);
+        });
+    }
 }

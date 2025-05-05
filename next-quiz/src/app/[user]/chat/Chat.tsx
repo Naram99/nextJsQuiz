@@ -47,7 +47,8 @@ export default function Chat({
         setNewMessage(e.target.value);
     }
 
-    function handleSubmit() {
+    function handleSubmit(e: React.FormEvent<HTMLFormElement> | React.MouseEvent) {
+        e.preventDefault();
         if (newMessage.trim().length > 0) {
             socket.emit("chatMessage", newMessage, selected);
             setNewMessage("");
@@ -101,7 +102,11 @@ export default function Chat({
                         onChange={handleChange}
                         value={newMessage}
                     />
-                    <button type={"submit"} className={styles.sendMessageBtn}>
+                    <button
+                        type={"button"}
+                        className={styles.sendMessageBtn}
+                        onClick={handleSubmit}
+                    >
                         {chatText.send}
                     </button>
                 </form>
