@@ -14,4 +14,5 @@ export type profileTextData = {
     passwordCheck: string;
     acceptedFriends: string;
     requestedFriends: string;
-}
+    addFriend: string;
+};

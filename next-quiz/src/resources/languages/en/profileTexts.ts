@@ -1,4 +1,4 @@
-import {profileTextData} from "@/utils/types/text/profileTextData.type";
+import { profileTextData } from "@/utils/types/text/profileTextData.type";
 
 export const profileTexts: profileTextData = {
     update: "Update",
@@ -16,4 +16,5 @@ export const profileTexts: profileTextData = {
     passwordCheck: "New Password Again",
     acceptedFriends: "Friends",
     requestedFriends: "Requests",
-}
+    addFriend: "Add friend",
+};

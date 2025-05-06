@@ -1,4 +1,4 @@
-import {profileTextData} from "@/utils/types/text/profileTextData.type";
+import { profileTextData } from "@/utils/types/text/profileTextData.type";
 
 export const profileTexts: profileTextData = {
     update: "Módosítás",
@@ -16,4 +16,5 @@ export const profileTexts: profileTextData = {
     passwordCheck: "Új jelszó újra",
     acceptedFriends: "Ismerősők",
     requestedFriends: "Kérések",
-}
+    addFriend: "Barát hozzáadása",
+};

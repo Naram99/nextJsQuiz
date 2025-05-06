@@ -65,6 +65,8 @@
     color: var(--error);
 }
 
+/* BUTTONS */
+
 .deleteProfileBtn {
     display: flex;
     gap: 1rem;
@@ -84,4 +86,28 @@
     background-color: var(--error);
     color: var(--white);
     box-shadow: 0 0 10px var(--main-color);
+}
+
+.pagesBtn,
+.pagesBtnActive {
+    cursor: pointer;
+    padding: 0.5rem;
+    font-size: 1rem;
+    background-color: transparent;
+    border: none;
+    transition: all 0.3s ease;
+}
+
+.pagesBtn {
+    color: var(--border-color);
+}
+
+.pagesBtnActive {
+    font-weight: bold;
+    color: var(--main-color);
+    text-decoration: underline;
+}
+
+.pagesBtn:hover {
+    text-decoration: underline;
 }
