@@ -7,6 +7,7 @@ import { LanguageContext } from "@/context/LanguageContext";
 import { socket } from "@/socket/socket";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faPen } from "@fortawesome/free-solid-svg-icons";
+import Message from "./Message";
 
 export default function Chat({
     selected,
@@ -86,30 +87,32 @@ export default function Chat({
                     </>
                 )}
             </div>
-            <div className={styles.chatCt}>
-                {messages.map((msg, index) => (
-                    <div key={index} className={styles.message}>
-                        {msg.message}
-                    </div>
-                ))}
-            </div>
-            <div className={styles.chatMessageCt}>
-                <form className={styles.chatMessage} onSubmit={handleSubmit}>
-                    <InputGroup
-                        title={chatText.placeholder}
-                        id={"comment"}
-                        inputType={"text"}
-                        onChange={handleChange}
-                        value={newMessage}
-                    />
-                    <button
-                        type={"button"}
-                        className={styles.sendMessageBtn}
-                        onClick={handleSubmit}
-                    >
-                        {chatText.send}
-                    </button>
-                </form>
+            <div className={styles.messagesWrapper}>
+                <div className={styles.chatCt}>
+                    {messages.map((msg, index) => (
+                        <div key={index} className={styles.message}>
+                            <Message msg={msg.message} sender={msg.sender} />
+                        </div>
+                    ))}
+                </div>
+                <div className={styles.chatMessageCt}>
+                    <form className={styles.chatMessage} onSubmit={handleSubmit}>
+                        <InputGroup
+                            title={chatText.placeholder}
+                            id={"comment"}
+                            inputType={"text"}
+                            onChange={handleChange}
+                            value={newMessage}
+                        />
+                        <button
+                            type={"button"}
+                            className={styles.sendMessageBtn}
+                            onClick={handleSubmit}
+                        >
+                            {chatText.send}
+                        </button>
+                    </form>
+                </div>
             </div>
         </div>
     );

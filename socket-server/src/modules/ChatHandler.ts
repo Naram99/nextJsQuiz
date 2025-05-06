@@ -6,12 +6,14 @@ export default class ChatHandler {
     private _socket: Socket;
     private _dbHandler: DbHandler = new DbHandler();
     private _userId: string;
+    private _userName: string;
     private _rooms: string[] = [];
 
-    constructor(server: Server, socket: Socket, id: string) {
+    constructor(server: Server, socket: Socket, id: string, name: string) {
         this._io = server;
         this._socket = socket;
         this._userId = id;
+        this._userName = name;
     }
 
     public async initialize() {
@@ -31,11 +33,11 @@ export default class ChatHandler {
     }
 
     // TODO: socket events
-    addEvents() {
+    private addEvents() {
         this._socket.on("chatMessage", (msg: string, room: string) => {
-            console.log(`Message: ${msg}; To: ${room}`);
+            console.log(`Message: ${msg}; From: ${this._userName}; To: ${room}`);
 
-            this._io.to(room).emit("chatMessage", msg);
+            this._io.to(room).emit("chatMessage", msg, this._userName);
             this._dbHandler.insertChatMessage(room, this._userId, msg);
         });
     }

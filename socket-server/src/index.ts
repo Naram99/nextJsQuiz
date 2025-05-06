@@ -6,7 +6,7 @@ import { db } from "./drizzle/db";
 import { ChatRoomTable } from "./drizzle/schema";
 import verifyToken from "./utils/verifyToken";
 import UserHandler from "./modules/UserHandler";
-import ChatHandler from "./modules/SocketHandler";
+import ChatHandler from "./modules/ChatHandler";
 
 dotenv.config();
 
@@ -42,7 +42,7 @@ io.on("connection", (socket: Socket) => {
 
     const userData = socket.data.user;
     const uh = new UserHandler(userData.id, userData.name, userData.role);
-    const ch = new ChatHandler(io, socket, uh.id);
+    const ch = new ChatHandler(io, socket, uh.id, uh.name);
     ch.initialize();
 
     socket.on("disconnect", (reason) => {

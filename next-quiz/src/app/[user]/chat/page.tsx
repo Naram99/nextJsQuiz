@@ -22,8 +22,8 @@ export default function ChatPage() {
             socket.connect();
         }
 
-        const handleChatMessage = (msg: string, room: string) => {
-            setMessages((prevMessages) => [...prevMessages, { message: msg, room: room }]);
+        const handleChatMessage = (msg: string, sender: string, room: string) => {
+            setMessages((prevMessages) => [...prevMessages, { message: msg, sender: sender, room: room }]);
         };
 
         socket.on("chatMessage", handleChatMessage);
