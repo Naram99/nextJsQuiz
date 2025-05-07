@@ -1,16 +1,16 @@
-"use client"
+"use client";
 
-import React, {useContext, useEffect, useState} from "react";
+import React, { useContext, useEffect, useState } from "react";
 import styles from "./page.module.css";
-import {LanguageContext} from "@/context/LanguageContext";
+import { LanguageContext } from "@/context/LanguageContext";
 import ProfileEditor from "@/app/[user]/profile/ProfileEditor";
 import FriendList from "@/app/[user]/profile/FriendList";
 import PopupModal from "@/components/modal/PopupModal";
 import DeleteModalBody from "@/components/modal/DeleteModalBody";
-import {useRouter} from "next/navigation";
+import { useRouter } from "next/navigation";
 import ProfileDisplay from "@/app/[user]/profile/ProfileDisplay";
-import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
-import {faTrashCan} from "@fortawesome/free-solid-svg-icons";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faTrashCan } from "@fortawesome/free-solid-svg-icons";
 
 const ProfilePage: React.FC = () => {
     const router = useRouter();
@@ -22,18 +22,18 @@ const ProfilePage: React.FC = () => {
         id: "",
         email: "",
         phone: "",
-        profilePicture: ""
+        profilePicture: "",
     });
     useEffect(() => {
         async function getUserData() {
             const userDataGet = await fetch("/api/profile", {
                 method: "GET",
                 credentials: "include",
-            })
+            });
 
             if (userDataGet.ok) {
                 const dataObj = await userDataGet.json();
-                console.log(dataObj)
+                console.log(dataObj);
                 setUserData({
                     id: dataObj.data.id ?? "",
                     name: dataObj.data.userName ?? "",
@@ -47,7 +47,7 @@ const ProfilePage: React.FC = () => {
     }, []);
     console.log(userData);
 
-    const {texts} = useContext(LanguageContext)!;
+    const { texts } = useContext(LanguageContext)!;
     const profileText = texts.profileTexts!;
 
     function handleUpdate() {
@@ -68,10 +68,9 @@ const ProfilePage: React.FC = () => {
             const resp = await fetch("/api/profile", {
                 method: "DELETE",
                 credentials: "include",
-            })
+            });
 
-            if (resp.ok)
-                router.push("/login");
+            if (resp.ok) router.push("/login");
         }
     }
 
@@ -107,7 +106,7 @@ const ProfilePage: React.FC = () => {
                 />
             </PopupModal>
         </div>
-    )
-}
+    );
+};
 
 export default ProfilePage;
