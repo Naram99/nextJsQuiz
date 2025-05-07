@@ -28,7 +28,7 @@ export default class ChatHandler {
     }
 
     private joinRooms(): void {
-        this._socket.join("all");
+        this._socket.join("aaaaaaaa-aaaa-aaaa-aaaa-aaaaaaaaaaaa");
         this._rooms.forEach((id) => this._socket.join(id));
     }
 

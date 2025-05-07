@@ -56,6 +56,8 @@ export default function Chat({
         }
     }
 
+    // TODO: Filter messages with room id
+
     //Bug: Default all chat does not appear on page
 
     return (

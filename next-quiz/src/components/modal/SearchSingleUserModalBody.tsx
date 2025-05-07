@@ -1,4 +1,6 @@
-export default async function SearchSingleUserModalBody() {
+"use client";
+
+export default function SearchSingleUserModalBody() {
     // TODO
     return <></>;
 }

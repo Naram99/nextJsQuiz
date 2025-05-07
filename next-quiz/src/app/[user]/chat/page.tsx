@@ -12,7 +12,7 @@ export default function ChatPage() {
     const { texts } = useContext(LanguageContext)!;
     const chatText = texts.chatTexts!;
 
-    const [selected, setSelected] = useState("all");
+    const [selected, setSelected] = useState("aaaaaaaa-aaaa-aaaa-aaaa-aaaaaaaaaaaa");
     const [selectedName, setSelectedName] = useState(chatText.allChat);
     const [rooms, setRooms] = useState<chatRoom[]>([]);
     const [messages, setMessages] = useState<Record<string, string>[]>([]);

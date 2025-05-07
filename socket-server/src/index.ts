@@ -52,7 +52,7 @@ io.on("connection", (socket: Socket) => {
 
 app.get("/", () => {
     console.log("Welcome to the server");
-    // test().then();
+    test().then();
 });
 
 async function test() {
@@ -60,10 +60,10 @@ async function test() {
 
     const testInsert = await db.insert(ChatRoomTable).values({
         userIdArray: [
-            "22ee4737-db18-4e85-8f56-e766c828b166",
-            "40b5e4d6-386c-467e-9295-781de70d0e5b",
-            "45ad31c7-416d-4136-bbc8-443a556c640a",
+            "adfa6e48-587a-43a0-9d95-479418724e77",
+            "cf85752e-56db-49f4-867f-c855db35bc66",
         ],
+        name: "Tesztnév"
     });
 
     const data = await db.select().from(ChatRoomTable);

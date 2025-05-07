@@ -16,7 +16,7 @@ export default function ChatSelector({
     const chatText = texts.chatTexts!;
 
     const listItems: chatRoom[] = [
-        { id: "all", names: [chatText.allChat] },
+        { id: "aaaaaaaa-aaaa-aaaa-aaaa-aaaaaaaaaaaa", names: [chatText.allChat] },
         ...(Array.isArray(rooms) ? rooms : []),
     ];
 

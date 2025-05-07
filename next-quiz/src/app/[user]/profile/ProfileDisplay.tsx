@@ -2,6 +2,8 @@ import styles from "./page.module.css";
 import Image from "next/image";
 import React, {useContext} from "react";
 import {LanguageContext} from "@/context/LanguageContext";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faPen } from "@fortawesome/free-solid-svg-icons";
 
 export default function ProfileDisplay(props: {
     userdata: {
@@ -35,7 +37,11 @@ export default function ProfileDisplay(props: {
                 <button
                     type={"button"}
                     className={styles.updateBtn}
-                    onClick={props.handleUpdate}>{profileText.update}</button>
+                    onClick={props.handleUpdate}
+                >
+                    {profileText.update}
+                    <FontAwesomeIcon icon={faPen} />
+                </button>
             </div>
         </>
     )
