@@ -17,4 +17,7 @@ export const profileTexts: profileTextData = {
     acceptedFriends: "Ismerősők",
     requestedFriends: "Kérések",
     addFriend: "Barát hozzáadása",
+    sendRequest: "Jelölés",
+    search: "Keresés",
+    searchForUser: "Felhasználó neve"
 };

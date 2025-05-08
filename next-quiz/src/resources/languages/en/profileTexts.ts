@@ -17,4 +17,7 @@ export const profileTexts: profileTextData = {
     acceptedFriends: "Friends",
     requestedFriends: "Requests",
     addFriend: "Add friend",
+    sendRequest: "Request",
+    search: "Search",
+    searchForUser: "Name to search for"
 };

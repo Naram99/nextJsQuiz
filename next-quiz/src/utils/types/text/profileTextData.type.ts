@@ -15,4 +15,7 @@ export type profileTextData = {
     acceptedFriends: string;
     requestedFriends: string;
     addFriend: string;
+    sendRequest: string;
+    search: string;
+    searchForUser: string;
 };
