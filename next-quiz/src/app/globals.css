@@ -74,7 +74,6 @@ a {
 /* MODALS */
 
 #modal {
-
 }
 
 #modal.active {
@@ -139,6 +138,7 @@ a {
     display: grid;
     place-content: center;
     width: 100%;
+    gap: 1rem;
 }
 
 .modal-body textarea {
@@ -155,14 +155,27 @@ a {
     gap: 2rem;
 }
 
+.modal-search-ct {
+    display: flex;
+    justify-content: space-between;
+}
+
+.modal-search-finds {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    gap: 0.4rem;
+}
+
 .modal-text {
     color: var(--main-color);
     font-size: 1.5rem;
 }
 
+.modal-btn,
 .modal-delete-btn,
 .modal-cancel-btn,
-.modal-publish-btn{
+.modal-publish-btn {
     color: var(--main-color);
     background-color: var(--main-background);
     cursor: pointer;
@@ -183,4 +196,27 @@ a {
 .modal-publish-btn:hover {
     color: var(--main-background);
     background-color: var(--main-color);
+}
+
+/* MODAL Components */
+
+.user-find-card {
+    display: flex;
+    justify-content: space-between;
+    width: 100%;
+}
+
+.user-find-name {
+    font-size: 1rem;
+    color: var(--main-color);
+}
+
+.user-find-icon {
+    color: var(--card-border);
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.user-find-icon:hover {
+    color: var(--main-color);
 }
