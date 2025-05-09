@@ -1,13 +1,14 @@
 import { jwtVerify } from "jose";
 import { cookies } from "next/headers";
 import { NextResponse } from "next/server";
-import searchUsers from "./searchUsers";
+import searchNoFriendUsers from "./searchNoFriendUsers";
+import searchAllUsers from "./searchAllUsers";
 
-export async function POST(req:Request) {
+export async function POST(req: Request) {
     const cookieStore = await cookies();
     const token = cookieStore.get("auth_token");
 
-    const resp: {error: boolean, message: string, data: {id: string, name: string}[]} = {
+    const resp: { error: boolean; message: string; data: { id: string; name: string }[] } = {
         error: false,
         message: "",
         data: [],
@@ -23,7 +24,8 @@ export async function POST(req:Request) {
         const decodedToken = await jwtVerify(token.value, secret);
         const userId = decodedToken.payload.id as string;
 
-        resp.data = await searchUsers(userId, search);
+        if (body.friends) resp.data = await searchAllUsers(userId, search);
+        else resp.data = await searchNoFriendUsers(userId, search);
     } catch (error) {
         console.error(error);
         resp.error = true;

@@ -1,9 +1,11 @@
 import styles from "./page.module.css";
-import React, { useContext } from "react";
+import React, { useContext, useState } from "react";
 import { LanguageContext } from "@/context/LanguageContext";
 import { chatRoom } from "@/utils/types/chatRoom.type";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faPlus } from "@fortawesome/free-solid-svg-icons";
+import SearchMultiUserModalBody from "@/components/modal/SearchMultiUserModalBody";
+import PopupModal from "@/components/modal/PopupModal";
 
 export default function ChatSelector({
     rooms,
@@ -20,8 +22,14 @@ export default function ChatSelector({
         ...(Array.isArray(rooms) ? rooms : []),
     ];
 
+    const [isModalOpen, setIsModalOpen] = useState(false);
+
+    function closeModal() {
+        setIsModalOpen(false);
+    }
+
     function handleNewRoom() {
-        // TODO: new room popup
+        setIsModalOpen(true);
     }
 
     // Future upgrade: Create chat card component.
@@ -45,6 +53,9 @@ export default function ChatSelector({
                     </div>
                 ))}
             </div>
+            <PopupModal isOpen={isModalOpen} onclose={closeModal}>
+                <SearchMultiUserModalBody closeModal={closeModal} />
+            </PopupModal>
         </div>
     );
 }

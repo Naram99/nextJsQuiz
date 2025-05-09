@@ -26,15 +26,18 @@ export default function UserFind({ id, name }: { id: string; name: string }) {
     return (
         <div className={"user-find-card"}>
             <div className={"user-find-name"}>{name}</div>
-            {loading ? <Loading /> : 
-                sent ? <FontAwesomeIcon icon={faUserCheck} /> :
+            {loading ? (
+                <Loading />
+            ) : sent ? (
+                <FontAwesomeIcon icon={faUserCheck} />
+            ) : (
                 <FontAwesomeIcon
                     id={id}
                     icon={faUserPlus}
                     className={"user-find-icon"}
                     onClick={handleRequest}
                 />
-            }
+            )}
         </div>
     );
 }

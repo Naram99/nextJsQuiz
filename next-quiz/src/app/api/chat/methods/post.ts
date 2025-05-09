@@ -1,8 +1,9 @@
 import { cookies } from "next/headers";
 import { NextResponse } from "next/server";
 import chatRoomCreate from "./chatRoomCreate";
+import { jwtVerify } from "jose";
 
-export async function POST(req:Request) {
+export async function POST(req: Request) {
     const cookieStore = await cookies();
     const token = cookieStore.get("auth_token");
     const resp: { error: boolean; message: string } = {
@@ -15,7 +16,13 @@ export async function POST(req:Request) {
     try {
         if (!token) throw new Error("Unauthorized");
 
-        if (data.length === 0) throw new Error("Cannot create empty room!");
+        const secret = new TextEncoder().encode(process.env.JWT_SECRET);
+        const decodedToken = await jwtVerify(token.value, secret);
+        const userId = decodedToken.payload.id as string;
+
+        data.push(userId);
+
+        if (data.length < 2) throw new Error("Cannot create empty room!");
 
         await chatRoomCreate(data);
     } catch (error) {

@@ -4,7 +4,7 @@ import InputGroup from "../InputGroup";
 import SelectedUser from "../SelectedUser";
 import UserFindMulti from "../UserFindMulti";
 
-export default function SearchMultiUserModalBody() {
+export default function SearchMultiUserModalBody({ closeModal }: { closeModal: () => void }) {
     const { texts } = useContext(LanguageContext)!;
     const profileText = texts.profileTexts!;
 
@@ -17,7 +17,7 @@ export default function SearchMultiUserModalBody() {
         const resp = await fetch("/api/search/user", {
             method: "POST",
             credentials: "include",
-            body: JSON.stringify({ search: searchParams }),
+            body: JSON.stringify({ search: searchParams, friends: true }),
         });
 
         if (resp.ok) {
@@ -27,17 +27,17 @@ export default function SearchMultiUserModalBody() {
     }
 
     async function createRoom() {
-        const idArr = selectedUsers.map(user => (user.id));
+        const idArr = selectedUsers.map((user) => user.id);
         const resp = await fetch("/api/chat", {
             method: "POST",
             credentials: "include",
-            body: JSON.stringify(idArr)
-        })
+            body: JSON.stringify(idArr),
+        });
 
         if (resp.ok) {
             setFinds([]);
             setSelectedUsers([]);
-            // TODO: close modal
+            closeModal();
         }
     }
 
@@ -46,13 +46,17 @@ export default function SearchMultiUserModalBody() {
     }
 
     function handleAddUser(id: string, name: string) {
-        setSelectedUsers([...selectedUsers, {id: id, name: name}]);
+        setSelectedUsers(
+            selectedUsers.some((user) => user.id === id)
+                ? selectedUsers
+                : [...selectedUsers, { id: id, name: name }]
+        );
     }
 
     function handleRemoveUser(id: string) {
-        setSelectedUsers(selectedUsers.filter(user => user.id !== id));
+        setSelectedUsers(selectedUsers.filter((user) => user.id !== id));
     }
-    
+
     return (
         <div className={"modal-body"}>
             <div className={"modal-search-ct"}>
@@ -68,9 +72,13 @@ export default function SearchMultiUserModalBody() {
                 </button>
             </div>
             <div className={"modal-selected-users"}>
-                {selectedUsers.map(user => (
+                {selectedUsers.map((user) => (
                     <div className={"selected-user"} key={user.id}>
-                        <SelectedUser id={user.id} name={user.name} handleRemove={handleRemoveUser} />
+                        <SelectedUser
+                            id={user.id}
+                            name={user.name}
+                            handleRemove={handleRemoveUser}
+                        />
                     </div>
                 ))}
             </div>

@@ -97,6 +97,7 @@ a {
     top: 50%;
     left: 50%;
     transform: translate(-50%, -50%);
+    max-height: 90%;
     background-color: var(--main-background);
     border: 2px solid var(--main-color);
     border-radius: 5px;
@@ -165,6 +166,17 @@ a {
     flex-direction: column;
     width: 100%;
     gap: 0.4rem;
+    overflow-y: auto;
+}
+
+.modal-selected-users {
+    display: flex;
+    gap: 1rem;
+}
+
+.selected-card {
+    display: flex;
+    gap: 0.5rem;
 }
 
 .modal-text {

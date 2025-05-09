@@ -16,7 +16,7 @@ export default function SearchSingleUserModalBody() {
         const resp = await fetch("/api/search/user", {
             method: "POST",
             credentials: "include",
-            body: JSON.stringify({ search: searchParams }),
+            body: JSON.stringify({ search: searchParams, friends: false }),
         });
 
         if (resp.ok) {
