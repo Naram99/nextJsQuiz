@@ -1,8 +1,8 @@
 import { cookies } from "next/headers";
 import { NextResponse } from "next/server";
-import nameChange from "./nameChange";
+import chatRoomCreate from "./chatRoomCreate";
 
-export async function PUT(req: Request) {
+export async function POST(req:Request) {
     const cookieStore = await cookies();
     const token = cookieStore.get("auth_token");
     const resp: { error: boolean; message: string } = {
@@ -14,15 +14,15 @@ export async function PUT(req: Request) {
 
     try {
         if (!token) throw new Error("Unauthorized");
-        if (data.id === "aaaaaaaa-aaaa-aaaa-aaaa-aaaaaaaaaaaa") 
-            throw new Error("Cannot rename all chat!");
 
-        await nameChange(data.id, data.name);
+        if (data.length === 0) throw new Error("Cannot create empty room!");
+
+        await chatRoomCreate(data);
     } catch (error) {
         resp.error = true;
         resp.message = error as string;
         console.error(error);
     }
 
-    return NextResponse.json(resp, { status: resp.error ? 400 : 200 });
+    return NextResponse.json(resp, { status: resp.error ? 400 : 201 });
 }
