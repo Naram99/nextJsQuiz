@@ -37,6 +37,7 @@ export default function SearchMultiUserModalBody() {
         if (resp.ok) {
             setFinds([]);
             setSelectedUsers([]);
+            // TODO: close modal
         }
     }
 
