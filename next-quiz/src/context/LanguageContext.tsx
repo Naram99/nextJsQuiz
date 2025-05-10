@@ -5,8 +5,8 @@ import { headerData } from "@/utils/types/text/headerTextData.type";
 import { createContext, ReactNode, useContext, useEffect, useState } from "react";
 import { loginData } from "@/utils/types/text/loginTextData.type";
 import { chatData } from "@/utils/types/text/chatTextData.type";
-import {forumTextData} from "@/utils/types/text/forumTextData.type";
-import {profileTextData} from "@/utils/types/text/profileTextData.type";
+import { forumTextData } from "@/utils/types/text/forumTextData.type";
+import { profileTextData } from "@/utils/types/text/profileTextData.type";
 
 interface LanguageTexts {
     cardTexts?: Record<cardType, cardData>;
@@ -76,7 +76,7 @@ export const LanguageProvider = ({ children }: { children: ReactNode }) => {
             }
         };
 
-        loadTexts().then(r => console.log(r));
+        loadTexts().then();
     }, [language]);
 
     return (

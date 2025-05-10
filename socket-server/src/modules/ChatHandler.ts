@@ -37,7 +37,7 @@ export default class ChatHandler {
         this._socket.on("chatMessage", (msg: string, room: string) => {
             console.log(`Message: ${msg}; From: ${this._userName}; To: ${room}`);
 
-            this._io.to(room).emit("chatMessage", msg, this._userName);
+            this._io.to(room).emit("chatMessage", msg, this._userName, room);
             this._dbHandler.insertChatMessage(room, this._userId, msg);
         });
     }

@@ -1,8 +1,12 @@
-import { io } from "socket.io-client";
+import { io, Socket } from "socket.io-client";
 
-async function getToken(): Promise<string | null> {
-    let token: string | null = null;
+const WS_URL = `http://${process.env.NEXT_PUBLIC_WS_HOST}:${process.env.NEXT_PUBLIC_WS_PORT}`;
 
+export const socket: Socket = io(WS_URL, {
+    autoConnect: false,
+});
+
+export async function connectSocketWithFreshToken() {
     const resp = await fetch("/api/auth/token", {
         method: "GET",
         credentials: "include",
@@ -10,23 +14,14 @@ async function getToken(): Promise<string | null> {
 
     if (resp.ok) {
         const data = await resp.json();
-        token = data.token;
-    }
+        const freshToken = data.token;
 
-    return token;
+        socket.auth = { token: freshToken };
+        socket.connect();
+    } else {
+        console.error("Token fetch failed. Cannot connect socket.");
+    }
 }
-
-const token = await getToken();
-
-export const socket = io(
-    `http://${process.env.NEXT_PUBLIC_WS_HOST}:${process.env.NEXT_PUBLIC_WS_PORT}`,
-    {
-        autoConnect: false,
-        auth: {
-            token: token,
-        },
-    }
-);
 
 socket.on("connect", () => {
     console.log(`Socket connected with id: ${socket.id}`);
@@ -34,4 +29,16 @@ socket.on("connect", () => {
 
 socket.on("connect_error", (error) => {
     console.log(`Socket connection error: ${error}`);
+});
+
+socket.on("reconnect_attempt", async () => {
+    const resp = await fetch("/api/auth/token", {
+        method: "GET",
+        credentials: "include",
+    });
+
+    if (resp.ok) {
+        const data = await resp.json();
+        socket.auth = { token: data.token };
+    }
 });

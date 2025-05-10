@@ -5,7 +5,7 @@ import styles from "./page.module.css";
 import ChatSelector from "@/app/[user]/chat/ChatSelector";
 import { chatRoom } from "@/utils/types/chatRoom.type";
 import Chat from "@/app/[user]/chat/Chat";
-import { socket } from "@/socket/socket";
+import { connectSocketWithFreshToken, socket } from "@/socket/socket";
 import { LanguageContext } from "@/context/LanguageContext";
 import { chatMessage } from "@/utils/types/chatMessage.type";
 
@@ -13,21 +13,23 @@ export default function ChatPage() {
     const { texts } = useContext(LanguageContext)!;
     const chatText = texts.chatTexts!;
 
-    const [selected, setSelected] = useState("aaaaaaaa-aaaa-aaaa-aaaa-aaaaaaaaaaaa");
+    const [selected, setSelected] = useState<string>("aaaaaaaa-aaaa-aaaa-aaaa-aaaaaaaaaaaa");
     const [selectedName, setSelectedName] = useState(chatText.allChat);
     const [rooms, setRooms] = useState<chatRoom[]>([]);
     const [messages, setMessages] = useState<chatMessage[]>([]);
 
     useEffect(() => {
         if (!socket.connected) {
-            socket.connect();
+            connectSocketWithFreshToken();
         }
 
         const handleChatMessage = (msg: string, sender: string, room: string) => {
-            setMessages((prevMessages) => [
-                ...prevMessages,
-                { message: msg, sender: sender, room: room },
-            ]);
+            if (room === selected) {
+                setMessages((prevMessages) => [
+                    ...prevMessages,
+                    { message: msg, sender: sender, room: room },
+                ]);
+            }
         };
 
         socket.on("chatMessage", handleChatMessage);
@@ -35,7 +37,7 @@ export default function ChatPage() {
         return () => {
             socket.off("chatMessage", handleChatMessage);
         };
-    }, []);
+    }, [selected]);
 
     useEffect(() => {
         async function getRooms() {
