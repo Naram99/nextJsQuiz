@@ -8,6 +8,7 @@ import { socket } from "@/socket/socket";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faPen } from "@fortawesome/free-solid-svg-icons";
 import Message from "./Message";
+import { chatMessage } from "@/utils/types/chatMessage.type";
 
 export default function Chat({
     selected,
@@ -15,7 +16,7 @@ export default function Chat({
     name,
 }: {
     selected: string;
-    messages: Record<string, string>[];
+    messages: chatMessage[];
     name: string;
 }) {
     const { texts } = useContext(LanguageContext)!;

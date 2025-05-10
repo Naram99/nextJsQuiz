@@ -7,6 +7,7 @@ import { chatRoom } from "@/utils/types/chatRoom.type";
 import Chat from "@/app/[user]/chat/Chat";
 import { socket } from "@/socket/socket";
 import { LanguageContext } from "@/context/LanguageContext";
+import { chatMessage } from "@/utils/types/chatMessage.type";
 
 export default function ChatPage() {
     const { texts } = useContext(LanguageContext)!;
@@ -15,7 +16,7 @@ export default function ChatPage() {
     const [selected, setSelected] = useState("aaaaaaaa-aaaa-aaaa-aaaa-aaaaaaaaaaaa");
     const [selectedName, setSelectedName] = useState(chatText.allChat);
     const [rooms, setRooms] = useState<chatRoom[]>([]);
-    const [messages, setMessages] = useState<Record<string, string>[]>([]);
+    const [messages, setMessages] = useState<chatMessage[]>([]);
 
     useEffect(() => {
         if (!socket.connected) {
@@ -23,7 +24,10 @@ export default function ChatPage() {
         }
 
         const handleChatMessage = (msg: string, sender: string, room: string) => {
-            setMessages((prevMessages) => [...prevMessages, { message: msg, sender: sender, room: room }]);
+            setMessages((prevMessages) => [
+                ...prevMessages,
+                { message: msg, sender: sender, room: room },
+            ]);
         };
 
         socket.on("chatMessage", handleChatMessage);
@@ -48,6 +52,23 @@ export default function ChatPage() {
 
         getRooms().then();
     }, []);
+
+    useEffect(() => {
+        async function getMessages() {
+            const resp = await fetch("/api/messages", {
+                method: "POST",
+                credentials: "include",
+                body: JSON.stringify({ room: selected }),
+            });
+
+            if (resp.ok) {
+                const response = await resp.json();
+                setMessages(response.data);
+            }
+        }
+
+        getMessages().then();
+    }, [selected]);
 
     function handleSelect(id: string, name: string) {
         setSelected(id);
