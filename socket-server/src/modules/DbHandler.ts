@@ -1,6 +1,6 @@
 import { eq, sql } from "drizzle-orm";
 import { db } from "../drizzle/db";
-import { ChatMessageTable, ChatRoomTable, UserTable } from "../drizzle/schema";
+import { ChatMessageTable, ChatRoomTable, GameTable, UserTable } from "../drizzle/schema";
 
 export default class DbHandler {
     private _db;
@@ -27,6 +27,14 @@ export default class DbHandler {
             roomId: roomId,
             message: message,
             createdBy: userId,
+        });
+    }
+
+    public async insertGame(players: string[], type: string, score: Record<string, string>) {
+        return await this._db.insert(GameTable).values({
+            players: players,
+            gameType: type,
+            finalScore: score,
         });
     }
 }
