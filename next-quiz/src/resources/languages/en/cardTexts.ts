@@ -18,6 +18,6 @@ export const cardTexts: Record<cardType, cardData> = {
         title: "Game Lobby",
         description: "Have fun!",
         buttonText: "Let's go!",
-        buttonLink: "/lobby",
-    }
+        buttonLink: "lobby",
+    },
 };

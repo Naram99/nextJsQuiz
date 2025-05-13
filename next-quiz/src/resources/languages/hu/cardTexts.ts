@@ -18,6 +18,6 @@ export const cardTexts: Record<cardType, cardData> = {
         title: "Játékszoba",
         description: "Ki a jobb?",
         buttonText: "Indítás",
-        buttonLink: "/lobby",
+        buttonLink: "lobby",
     },
 };
