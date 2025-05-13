@@ -1,1 +1,1 @@
-export type cardType = "chat" | "forum" | "tictactoe" | "quiz";
+export type cardType = "chat" | "forum" | "lobby";

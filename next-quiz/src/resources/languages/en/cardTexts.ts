@@ -4,10 +4,9 @@ import { cardType } from "@/utils/types/cardType.type";
 export const cardTexts: Record<cardType, cardData> = {
     chat: {
         title: "Chatroom",
-        description: "Be connected to your friends!",
+        description: "Be connected with your friends!",
         buttonText: "Chat",
         buttonLink: "chat",
-        notification: "1 new!",
     },
     forum: {
         title: "Forum",
@@ -15,16 +14,10 @@ export const cardTexts: Record<cardType, cardData> = {
         buttonText: "Enter",
         buttonLink: "forum",
     },
-    tictactoe: {
-        title: "Tic-Tac-Toe",
-        description: "The classic game",
-        buttonText: "Start",
-        buttonLink: "tictactoe",
-    },
-    quiz: {
-        title: "Quiz",
-        description: "Who knows better?",
-        buttonText: "Start",
-        buttonLink: "quiz",
-    },
+    lobby: {
+        title: "Game Lobby",
+        description: "Have fun!",
+        buttonText: "Let's go!",
+        buttonLink: "/lobby",
+    }
 };

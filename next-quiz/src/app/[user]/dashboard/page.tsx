@@ -2,7 +2,7 @@
 
 import styles from "./page.module.css";
 import MainCard from "./MainCard";
-import {useContext, useEffect} from "react";
+import {useContext} from "react";
 import { LanguageContext } from "@/context/LanguageContext";
 
 const Dashboard = () => {

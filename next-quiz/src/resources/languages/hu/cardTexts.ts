@@ -7,7 +7,6 @@ export const cardTexts: Record<cardType, cardData> = {
         description: "Hogy mindig elérd a barátaidat!",
         buttonText: "Csevegés",
         buttonLink: "chat",
-        notification: "1 olvasatlan!",
     },
     forum: {
         title: "Fórum",
@@ -15,16 +14,10 @@ export const cardTexts: Record<cardType, cardData> = {
         buttonText: "Belépés",
         buttonLink: "forum",
     },
-    tictactoe: {
-        title: "Amőba",
-        description: "Örök klasszikus",
+    lobby: {
+        title: "Játékszoba",
+        description: "Ki a jobb?",
         buttonText: "Indítás",
-        buttonLink: "tictactoe",
-    },
-    quiz: {
-        title: "Kvíz",
-        description: "Ki tud többet?",
-        buttonText: "Start",
-        buttonLink: "quiz",
+        buttonLink: "/lobby",
     },
 };

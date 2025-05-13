@@ -7,6 +7,8 @@ import { loginData } from "@/utils/types/text/loginTextData.type";
 import { chatData } from "@/utils/types/text/chatTextData.type";
 import { forumTextData } from "@/utils/types/text/forumTextData.type";
 import { profileTextData } from "@/utils/types/text/profileTextData.type";
+import { gameCardType } from "@/utils/types/gameCardType.type";
+import { lobbyTextData } from "@/utils/types/text/lobbyTextData.type";
 
 interface LanguageTexts {
     cardTexts?: Record<cardType, cardData>;
@@ -15,6 +17,8 @@ interface LanguageTexts {
     chatTexts?: chatData;
     forumTexts?: forumTextData;
     profileTexts?: profileTextData;
+    gameCardTexts?: Record<gameCardType, cardData>;
+    lobbyTexts?: lobbyTextData;
 
     // Add new language texts here
 }
@@ -36,6 +40,8 @@ export const LanguageProvider = ({ children }: { children: ReactNode }) => {
         chatTexts: {} as chatData,
         forumTexts: {} as forumTextData,
         profileTexts: {} as profileTextData,
+        gameCardTexts: {} as Record<gameCardType, cardData>,
+        lobbyTexts: {} as lobbyTextData,
 
         // Set new language texts here
     });
@@ -50,6 +56,8 @@ export const LanguageProvider = ({ children }: { children: ReactNode }) => {
                     chatModule,
                     forumModule,
                     profileModule,
+                    gameCardModule,
+                    lobbyModule
                 ] = await Promise.all([
                     import(`@/resources/languages/${language}/cardTexts.ts`),
                     import(`@/resources/languages/${language}/headerTexts.ts`),
@@ -57,6 +65,8 @@ export const LanguageProvider = ({ children }: { children: ReactNode }) => {
                     import(`@/resources/languages/${language}/chatTexts.ts`),
                     import(`@/resources/languages/${language}/forumTexts.ts`),
                     import(`@/resources/languages/${language}/profileTexts.ts`),
+                    import(`@/resources/languages/${language}/gameCardTexts.ts`),
+                    import(`@/resources/languages/${language}/lobbyTexts.ts`),
 
                     // Import new language texts here
                 ]);
@@ -68,6 +78,8 @@ export const LanguageProvider = ({ children }: { children: ReactNode }) => {
                     chatTexts: chatModule.chatTexts,
                     forumTexts: forumModule.forumTexts,
                     profileTexts: profileModule.profileTexts,
+                    gameCardTexts: gameCardModule.gameCardTexts,
+                    lobbyTexts: lobbyModule.lobbyTexts,
 
                     // Set new language texts here
                 });
