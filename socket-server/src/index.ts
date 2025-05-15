@@ -7,6 +7,7 @@ import { ChatRoomTable } from "./drizzle/schema";
 import verifyToken from "./utils/verifyToken";
 import UserHandler from "./modules/UserHandler";
 import ChatHandler from "./modules/ChatHandler";
+import LobbyManager from "./modules/LobbyManager";
 
 dotenv.config();
 
@@ -36,6 +37,8 @@ io.use(async (socket, next) => {
         return next(new Error("Invalid token"));
     }
 });
+
+const lm = new LobbyManager();
 
 io.on("connection", (socket: Socket) => {
     console.log(`User connected with id: ${socket.id}`);
