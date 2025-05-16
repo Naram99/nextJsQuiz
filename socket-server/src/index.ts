@@ -8,6 +8,7 @@ import verifyToken from "./utils/verifyToken";
 import UserHandler from "./modules/UserHandler";
 import ChatHandler from "./modules/ChatHandler";
 import LobbyManager from "./modules/LobbyManager";
+import { UserInLobby } from "./utils/type/UserInLobby.type";
 
 dotenv.config();
 
@@ -44,9 +45,31 @@ io.on("connection", (socket: Socket) => {
     console.log(`User connected with id: ${socket.id}`);
 
     const userData = socket.data.user;
+    const lobbyUser: UserInLobby = {
+        userId: userData.id,
+        name: userData.name,
+        socket: socket,
+        isConnected: true
+    }
     const uh = new UserHandler(userData.id, userData.name, userData.role);
     const ch = new ChatHandler(io, socket, uh.id, uh.name);
     ch.initialize();
+
+    socket.on("validateJoinCode", code => {
+        socket.emit("validateJoinCodeAnswer", lm.checkIfLobbyExists(code));
+    })
+
+    socket.on("joinLobby", code => {
+        lm.removeUserFromAllLobbies(lobbyUser);
+        socket.emit("joinLobbyOk", lm.addUserToLobby(lobbyUser, code), code);
+    })
+
+    socket.on("createLobby", () => {
+        lm.removeUserFromAllLobbies(lobbyUser);
+        const newCode = generateLobbyCode(6);
+        if (lm.createLobby(newCode, lobbyUser))
+            socket.emit("joinLobbyOk", true, newCode);
+    })
 
     socket.on("disconnect", (reason) => {
         console.log(`A user disconnected due to ${reason}.`);
@@ -71,6 +94,17 @@ async function test() {
 
     const data = await db.select().from(ChatRoomTable);
     console.log(data);
+}
+
+function generateLobbyCode(length: number): string {
+    let code = "";
+    const chars = "abcdefghijklmnopqrstuvwxyz0123456789";
+
+    for (let i = 0; i < length; i++) {
+        const randomIndex = Math.floor(Math.random() * chars.length);
+        code += chars.charAt(randomIndex);    
+    }
+    return code;
 }
 
 httpServer.listen(process.env.PORT || 3210);

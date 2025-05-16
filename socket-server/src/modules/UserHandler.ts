@@ -1,5 +1,3 @@
-import { jwtVerify } from "jose";
-
 export default class UserHandler {
     private _id: string;
     private _name: string;

@@ -10,7 +10,9 @@ export default class Lobby {
         game: "tictactoe",
     };
 
-    constructor(public readonly code: string, public owner: string) {}
+    constructor(public readonly code: string, public owner: UserInLobby) {
+        this.users.set(owner.userId, owner);
+    }
 
     /**
      * Adding a user to the lobby.

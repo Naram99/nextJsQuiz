@@ -9,8 +9,8 @@ export default class LobbyManager {
     /**
      * createLobby
      */
-    public createLobby(code: string, userId: string): Lobby {
-        const lobby = new Lobby(code, userId);
+    public createLobby(code: string, user: UserInLobby): Lobby {
+        const lobby = new Lobby(code, user);
         this.lobbies.set(code, lobby);
         return lobby;
     }
@@ -23,13 +23,25 @@ export default class LobbyManager {
         return this.lobbies.has(code);
     }
 
-    public addUserToLobby(user: UserInLobby, lobbyCode: string): void {
-        this.lobbies.get(lobbyCode)?.addUser(user);
+    // TODO: Add user to socket room.
+    public addUserToLobby(user: UserInLobby, lobbyCode: string): boolean {
+        if (this.lobbies.get(lobbyCode)?.addUser(user)) return true;
+        return false;
+            
     }
 
+    // TODO: Remove User from socket rooms
     public removeUserFromLobby(user: UserInLobby, lobbyCode: string): void {
         this.lobbies.get(lobbyCode)?.removeUser(user.userId);
-        if (!this.lobbies.get(lobbyCode)?.hasUser(this.lobbies.get(lobbyCode)!.owner))
+        if (!this.lobbies.get(lobbyCode)?.hasUser(this.lobbies.get(lobbyCode)!.owner.userId))
             this.lobbies.delete(lobbyCode);
+    }
+
+    public removeUserFromAllLobbies(user: UserInLobby) {
+        for (const [code, lobby] of Array.from(this.lobbies.entries())) {
+            lobby.removeUser(user.userId);
+            if (!lobby.hasUser(lobby.owner.userId))
+                this.lobbies.delete(code);
+        }
     }
 }
