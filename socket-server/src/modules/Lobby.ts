@@ -12,6 +12,7 @@ export default class Lobby {
 
     constructor(public readonly code: string, public owner: UserInLobby) {
         this.users.set(owner.userId, owner);
+        owner.socket?.join(code);
     }
 
     /**

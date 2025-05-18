@@ -1,9 +1,13 @@
+"use client";
+
 import { useContext, useEffect, useState } from "react";
 import styles from "./page.module.css";
 import { LanguageContext } from "@/context/LanguageContext";
 import InputGroup from "@/components/InputGroup";
 import { connectSocketWithFreshToken, socket } from "@/socket/socket";
 import { useRouter } from "next/navigation";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faCheck, faX } from "@fortawesome/free-solid-svg-icons";
 
 export default function LobbySetupPage() {
     const router = useRouter();
@@ -28,8 +32,8 @@ export default function LobbySetupPage() {
 
     function handleChange(e: React.ChangeEvent<HTMLInputElement>) {
         setCode(e.target.value);
-        if (code.trim() !== "") {
-            socket.emit("validateJoinCode", code);
+        if (e.target.value.trim() !== "") {
+            socket.emit("validateJoinCode", e.target.value);
         }
     }
 
@@ -49,6 +53,8 @@ export default function LobbySetupPage() {
     }
 
     function joinProcedure(ok: boolean, link: string) {
+        console.log(ok, link);
+
         if (ok) router.push(`/lobby/${link}`);
     }
 
@@ -68,7 +74,17 @@ export default function LobbySetupPage() {
                     title={lobbyText.code}
                 />
                 <div className={styles.lobbyCodeValidator}>
-                    {validCode ? lobbyText.validCode : lobbyText.invalidCode}
+                    {validCode ? (
+                        <>
+                            <FontAwesomeIcon icon={faCheck} />
+                            {lobbyText.validCode}
+                        </>
+                    ) : (
+                        <>
+                            <FontAwesomeIcon icon={faX} />
+                            {lobbyText.invalidCode}
+                        </>
+                    )}
                 </div>
                 <button type={"submit"} className={styles.lobbyJoinBtn} onClick={handleJoin}>
                     {lobbyText.join}

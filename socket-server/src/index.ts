@@ -49,36 +49,40 @@ io.on("connection", (socket: Socket) => {
         userId: userData.id,
         name: userData.name,
         socket: socket,
-        isConnected: true
-    }
+        isConnected: true,
+    };
     const uh = new UserHandler(userData.id, userData.name, userData.role);
     const ch = new ChatHandler(io, socket, uh.id, uh.name);
     ch.initialize();
 
-    socket.on("validateJoinCode", code => {
+    socket.on("validateJoinCode", (code) => {
         socket.emit("validateJoinCodeAnswer", lm.checkIfLobbyExists(code));
-    })
+    });
 
-    socket.on("joinLobby", code => {
+    socket.on("joinLobby", (code) => {
         lm.removeUserFromAllLobbies(lobbyUser);
         socket.emit("joinLobbyOk", lm.addUserToLobby(lobbyUser, code), code);
-    })
+        console.log(lm.lobbyData);
+    });
 
     socket.on("createLobby", () => {
         lm.removeUserFromAllLobbies(lobbyUser);
-        const newCode = generateLobbyCode(6);
-        if (lm.createLobby(newCode, lobbyUser))
-            socket.emit("joinLobbyOk", true, newCode);
-    })
+        let newCode = generateLobbyCode(6);
+        while (lm.checkIfLobbyExists(newCode)) newCode = generateLobbyCode(6);
+        if (lm.createLobby(newCode, lobbyUser)) socket.emit("joinLobbyOk", true, newCode);
+        console.log(lm.lobbyData);
+    });
 
     socket.on("disconnect", (reason) => {
         console.log(`A user disconnected due to ${reason}.`);
+        lm.removeUserFromAllLobbies(lobbyUser);
+        console.log(lm.lobbyData);
     });
 });
 
 app.get("/", () => {
     console.log("Welcome to the server");
-    test().then();
+    // test().then();
 });
 
 async function test() {
@@ -89,7 +93,7 @@ async function test() {
             "adfa6e48-587a-43a0-9d95-479418724e77",
             "cf85752e-56db-49f4-867f-c855db35bc66",
         ],
-        name: "Tesztnév"
+        name: "Tesztnév",
     });
 
     const data = await db.select().from(ChatRoomTable);
@@ -102,7 +106,7 @@ function generateLobbyCode(length: number): string {
 
     for (let i = 0; i < length; i++) {
         const randomIndex = Math.floor(Math.random() * chars.length);
-        code += chars.charAt(randomIndex);    
+        code += chars.charAt(randomIndex);
     }
     return code;
 }
