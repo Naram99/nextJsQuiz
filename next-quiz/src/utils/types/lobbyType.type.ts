@@ -1,0 +1,1 @@
+export type lobbyType = "friend" | "open" | "computer";

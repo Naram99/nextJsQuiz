@@ -1,0 +1,1 @@
+export default function LobbyUser({name, id}: {name: string, id: string}) {}
