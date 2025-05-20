@@ -48,7 +48,20 @@ export default class LobbyManager {
         }
     }
 
-    public get lobbyData(): Map<string, Lobby> {
+    public lobbySettings(code: string) {
+        return this.lobbies.get(code)!.settings;
+    }
+
+    public lobbyUsers(code: string): string[] {
+        return Array.from(
+            this.lobbies
+                .get(code)!
+                .getUsers()
+                .map((user) => user.name)
+        );
+    }
+
+    public get lobbiesData(): Map<string, Lobby> {
         return this.lobbies;
     }
 }

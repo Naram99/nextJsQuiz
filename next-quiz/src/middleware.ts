@@ -1,10 +1,10 @@
-import {jwtVerify} from "jose"; // Needed because of Edge Runtime
+import { jwtVerify } from "jose"; // Needed because of Edge Runtime
 import { cookies } from "next/headers";
 import { NextResponse } from "next/server";
 
 export default async function middleware(req: Request) {
     const cookieStore = await cookies();
-    const token = cookieStore.get('auth_token');
+    const token = cookieStore.get("auth_token");
     let tokenVal = "";
 
     try {
@@ -25,18 +25,19 @@ export default async function middleware(req: Request) {
         }
     } catch (error) {
         console.log(error);
-        return NextResponse.redirect(new URL('/login', req.url));
+        return NextResponse.redirect(new URL("/login", req.url));
     }
 }
 
 export const config = {
     matcher: [
-        '/:user/dashboard',
-        '/:user/profile',
-        '/:user/chat',
-        '/:user/forum',
-        '/:user/tictactoe',
-        '/:user/quiz',
-        '/:user/settings',
-    ]
-}
+        "/:user/dashboard",
+        "/:user/profile",
+        "/:user/chat",
+        "/:user/forum",
+        "/:user/tictactoe",
+        "/:user/quiz",
+        "/:user/settings",
+        "/:user/lobby",
+    ],
+};

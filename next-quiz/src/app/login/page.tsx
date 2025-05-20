@@ -1,39 +1,40 @@
 "use client";
 
-import React, {useContext, useEffect, useState} from "react";
+import React, { useContext, useEffect, useState } from "react";
 import Image from "next/image";
 import styles from "./page.module.css";
-import {LanguageContext} from "@/context/LanguageContext";
+import { LanguageContext } from "@/context/LanguageContext";
 import InputGroup from "@/components/InputGroup";
 import FormValuesInterface from "@/utils/interfaces/FormValues.interface";
-import {useRouter} from "next/navigation";
-import {socket} from "@/socket/socket";
+import { useRouter } from "next/navigation";
+import { socket } from "@/socket/socket";
 
 const LoginPage: React.FC = () => {
     const router = useRouter();
 
+    // TODO: join as guest
+
     useEffect(() => {
         async function checkAuth() {
             try {
-                const resp = await fetch('/api/auth/check', {
+                const resp = await fetch("/api/auth/check", {
                     method: "GET",
                     credentials: "include",
                 });
                 if (resp.ok) {
                     const data = await resp.json();
-                    if (data.username)
-                        socket.connect();
-                        router.push(`/${data.username}/dashboard`);
+                    if (data.username) socket.connect();
+                    router.push(`/${data.username}/dashboard`);
                 }
             } catch (error) {
                 console.error(error);
             }
         }
 
-        checkAuth().then()
+        checkAuth().then();
     }, [router]);
 
-    const {texts} = useContext(LanguageContext)!;
+    const { texts } = useContext(LanguageContext)!;
     const loginTexts = texts.loginTexts!;
 
     const [register, setRegister] = useState(false);
@@ -42,8 +43,8 @@ const LoginPage: React.FC = () => {
         email: "",
         password: "",
         passwordCheck: "",
-        gameId: ""
-    })
+        gameId: "",
+    });
 
     function handleSwitch(): void {
         setRegister(!register);
@@ -58,20 +59,18 @@ const LoginPage: React.FC = () => {
         e.preventDefault();
 
         let path: string = e.currentTarget.id.replace("Form", "");
-        if (register && path === "login")
-            path = "register";
+        if (register && path === "login") path = "register";
 
         const resp = await fetch(`/api/auth/${path}`, {
             method: "POST",
-            headers: {"Content-Type": "application/json"},
-            body: JSON.stringify(formValues)
-        })
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify(formValues),
+        });
 
         // TODO: login response
         const data = await resp.json();
         console.log(data);
-        if (path === "login" && resp.status === 200)
-            router.push(`${data.user}/dashboard`);
+        if (path === "login" && resp.status === 200) router.push(`${data.user}/dashboard`);
     }
 
     return (
@@ -86,13 +85,15 @@ const LoginPage: React.FC = () => {
                             value={formValues.gameId}
                             onChange={handleChange}
                         />
-                        <button type="submit" className={styles.loginBtn}>{loginTexts.join}</button>
+                        <button type="submit" className={styles.loginBtn}>
+                            {loginTexts.join}
+                        </button>
                     </form>
                 </div>
                 <div className={styles.logoCt}>
-                    <Image 
-                        src={"/logoWhite.png"} 
-                        alt="DRV logo" 
+                    <Image
+                        src={"/logoWhite.png"}
+                        alt="DRV logo"
                         className={styles.logo}
                         width={300}
                         height={300}
@@ -132,16 +133,13 @@ const LoginPage: React.FC = () => {
                                 />
                             </>
                         )}
-                        <button
-                            type="submit"
-                            className={styles.loginBtn}
-                        >{register ? loginTexts.register : loginTexts.login}</button>
+                        <button type="submit" className={styles.loginBtn}>
+                            {register ? loginTexts.register : loginTexts.login}
+                        </button>
                         <hr />
-                        <button
-                            type="button"
-                            onClick={handleSwitch}
-                            className={styles.loginBtn}
-                        >{register ? loginTexts.login : loginTexts.register}</button>
+                        <button type="button" onClick={handleSwitch} className={styles.loginBtn}>
+                            {register ? loginTexts.login : loginTexts.register}
+                        </button>
                     </form>
                 </div>
             </div>

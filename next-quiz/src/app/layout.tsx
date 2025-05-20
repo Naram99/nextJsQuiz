@@ -3,8 +3,9 @@ import "./globals.css";
 import { LanguageProvider } from "@/context/LanguageContext";
 import React from "react";
 
-import { config } from '@fortawesome/fontawesome-svg-core';
-import '@fortawesome/fontawesome-svg-core/styles.css';
+import { config } from "@fortawesome/fontawesome-svg-core";
+import "@fortawesome/fontawesome-svg-core/styles.css";
+import { UserProvider } from "@/context/UserContext";
 config.autoAddCss = false;
 
 export const metadata: Metadata = {
@@ -19,13 +20,14 @@ export default function RootLayout({
 }>) {
     return (
         <LanguageProvider>
-            <html lang="en">
-                <body className={"layout-ct"}>
-                    {children}
-                    <div id={"modal"}></div>
-                </body>
-            </html>
+            <UserProvider>
+                <html lang="en">
+                    <body className={"layout-ct"}>
+                        {children}
+                        <div id={"modal"}></div>
+                    </body>
+                </html>
+            </UserProvider>
         </LanguageProvider>
     );
 }
-

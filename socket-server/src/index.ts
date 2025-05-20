@@ -22,6 +22,7 @@ const io = new Server(httpServer, {
 });
 
 io.use(async (socket, next) => {
+    // TODO: guest auth with no token
     try {
         const token = socket.handshake.auth.token;
         if (!token) return next(new Error("Invalid token"));
@@ -62,7 +63,7 @@ io.on("connection", (socket: Socket) => {
     socket.on("joinLobby", (code) => {
         lm.removeUserFromAllLobbies(lobbyUser);
         socket.emit("joinLobbyOk", lm.addUserToLobby(lobbyUser, code), code);
-        console.log(lm.lobbyData);
+        console.log(lm.lobbiesData);
     });
 
     socket.on("createLobby", () => {
@@ -70,13 +71,26 @@ io.on("connection", (socket: Socket) => {
         let newCode = generateLobbyCode(6);
         while (lm.checkIfLobbyExists(newCode)) newCode = generateLobbyCode(6);
         if (lm.createLobby(newCode, lobbyUser)) socket.emit("joinLobbyOk", true, newCode);
-        console.log(lm.lobbyData);
+        console.log(lm.lobbiesData);
+    });
+
+    socket.on("getLobbyData", (code: string) => {
+        io.to(code).emit(
+            "lobbyData",
+            lm.lobbyUsers(code),
+            lm.lobbySettings(code),
+            lm.lobbiesData.get(code)?.owner.name
+        );
+    });
+
+    socket.on("leaveLobby", (code: string) => {
+        lm.removeUserFromLobby(lobbyUser, code);
     });
 
     socket.on("disconnect", (reason) => {
         console.log(`A user disconnected due to ${reason}.`);
         lm.removeUserFromAllLobbies(lobbyUser);
-        console.log(lm.lobbyData);
+        console.log(lm.lobbiesData);
     });
 });
 
