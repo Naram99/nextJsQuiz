@@ -6,6 +6,7 @@ export default class Lobby {
     private users: Map<string, UserInLobby> = new Map();
     public settings: LobbySettings = {
         lobbyType: "open",
+        minUsers: 2,
         maxUsers: 2,
         game: "tictactoe",
     };
