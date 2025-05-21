@@ -1,8 +1,22 @@
 .lobbySetupWrapper {
     display: flex;
     flex-direction: column;
+    gap: 4rem;
     max-width: 1300px;
     margin-inline: auto;
+    justify-content: center;
+    align-items: center;
+    height: 100%;
+}
+
+.lobbyJoinBtn {
+    width: 100%;
+}
+
+.lobbyJoin {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
 }
 
 .lobbyCreateBtn,

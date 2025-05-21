@@ -53,10 +53,11 @@ export default class LobbyManager {
     }
 
     public lobbyUsers(code: string): string[] {
+        console.log(this.lobbies.get(code));
+        
         return Array.from(
             this.lobbies
-                .get(code)!
-                .getUsers()
+                .get(code)!.getUsers()
                 .map((user) => user.name)
         );
     }

@@ -1,4 +1,5 @@
-import { jwtVerify } from "jose";
+"use client";
+
 import { createContext, ReactNode, useContext, useEffect, useState } from "react";
 
 type User = {
