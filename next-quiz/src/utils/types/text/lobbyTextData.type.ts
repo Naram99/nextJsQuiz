@@ -4,4 +4,5 @@ export type lobbyTextData = {
     code: string;
     validCode: string;
     invalidCode: string;
+    leave: string;
 };

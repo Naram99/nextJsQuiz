@@ -53,13 +53,14 @@ export default class LobbyManager {
     }
 
     public lobbyUsers(code: string): string[] {
-        console.log(this.lobbies.get(code));
-        
-        return Array.from(
-            this.lobbies
-                .get(code)!.getUsers()
-                .map((user) => user.name)
-        );
+        if (this.lobbies.has(code)) {
+            return Array.from(
+                this.lobbies
+                    .get(code)!
+                    .getUsers()
+                    .map((user) => user.name)
+            );
+        } else return [];
     }
 
     public get lobbiesData(): Map<string, Lobby> {

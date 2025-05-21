@@ -60,6 +60,10 @@ io.on("connection", (socket: Socket) => {
         socket.emit("validateJoinCodeAnswer", lm.checkIfLobbyExists(code));
     });
 
+    socket.on("checkIfUserInLobby", (code) => {
+        socket.emit("userInLobby", lm.lobbiesData.get(code)?.hasUser(lobbyUser.userId));
+    });
+
     socket.on("joinLobby", (code) => {
         lm.removeUserFromAllLobbies(lobbyUser);
         socket.emit("joinLobbyOk", lm.addUserToLobby(lobbyUser, code), code);
@@ -71,7 +75,6 @@ io.on("connection", (socket: Socket) => {
         let newCode = generateLobbyCode(6);
         while (lm.checkIfLobbyExists(newCode)) newCode = generateLobbyCode(6);
         if (lm.createLobby(newCode, lobbyUser)) socket.emit("joinLobbyOk", true, newCode);
-        console.log(lm.lobbiesData);
     });
 
     socket.on("getLobbyData", (code: string) => {
@@ -85,6 +88,16 @@ io.on("connection", (socket: Socket) => {
 
     socket.on("leaveLobby", (code: string) => {
         lm.removeUserFromLobby(lobbyUser, code);
+        if (lm.lobbiesData.has(code)) {
+            io.to(code).emit(
+                "lobbyData",
+                lm.lobbyUsers(code),
+                lm.lobbySettings(code),
+                lm.lobbiesData.get(code)?.owner.name
+            );
+        } else {
+            io.to(code).emit("joinLobbyOk", false);
+        }
     });
 
     socket.on("disconnect", (reason) => {

@@ -54,11 +54,15 @@
 .lobbyFooterWrapper {
     display: flex;
     font-size: 2rem;
-    gap: 0.5rem;
     font-weight: bold;
     align-items: center;
-    justify-content: center;
+    justify-content: space-evenly;
     padding: 1rem;
+}
+
+.userNumber {
+    display: flex;
+    gap: 0.5rem;
 }
 
 .currentPlayers {
@@ -71,4 +75,22 @@
 
 .requiredPlayers {
     letter-spacing: 0.5rem;
+}
+
+.leaveBtn {
+    background-color: transparent;
+    color: var(--main-color);
+    border: 2px solid var(--main-color);
+    border-radius: 2rem;
+    padding: 0.5rem 2rem;
+    font-weight: bold;
+    font-size: 1.2rem;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.leaveBtn:hover {
+    background-color: var(--main-color);
+    color: var(--main-background);
+    box-shadow: 0 0 10px var(--main-color);
 }
