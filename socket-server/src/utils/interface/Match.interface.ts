@@ -1,4 +1,8 @@
-export interface Match {
+import { GameType } from "../type/GameType.type";
+
+export interface MatchInterface {
     id: string;
-    joinCode: string;
+    gameType: GameType
+
+    start(): void;
 }

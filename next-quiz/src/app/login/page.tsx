@@ -56,6 +56,7 @@ const LoginPage: React.FC = () => {
     }
 
     async function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
+        // TODO: disable forms while waiting for response
         e.preventDefault();
 
         let path: string = e.currentTarget.id.replace("Form", "");

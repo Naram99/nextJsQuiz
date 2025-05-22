@@ -1,6 +1,7 @@
 import { Socket } from "socket.io";
 import { LobbySettings } from "../utils/interface/LobbySettings.interface";
 import { UserInLobby } from "../utils/type/UserInLobby.type";
+import Match from "./Match";
 
 export default class Lobby {
     private users: Map<string, UserInLobby> = new Map();
@@ -10,6 +11,7 @@ export default class Lobby {
         maxUsers: 2,
         game: "tictactoe",
     };
+    private match: Match | null = null;
 
     constructor(public readonly code: string, public owner: UserInLobby) {
         this.users.set(owner.userId, owner);
@@ -17,8 +19,6 @@ export default class Lobby {
     }
 
     /**
-     * Adding a user to the lobby.
-     * @param user User to be added.
      * @returns Whether the adding was successful or not.
      */
     public addUser(user: UserInLobby): boolean {
@@ -29,16 +29,11 @@ export default class Lobby {
         return false;
     }
 
-    /**
-     * Removing a user from the lobby.
-     * @param userId Id of the user to be removed.
-     */
     public removeUser(userId: string): void {
         this.users.delete(userId);
     }
 
     /**
-     * Sets a user's status to disconnected.
      * @param userId Id of the disconnected user.
      */
     public handleDisconnect(userId: string): void {
@@ -49,11 +44,6 @@ export default class Lobby {
         }
     }
 
-    /**
-     * Reconnects a disconnected user to the lobby.
-     * @param userId Id of the disconnected user.
-     * @param socket The new socket connection of the user.
-     */
     public reconnectUser(userId: string, socket: Socket): void {
         const user = this.users.get(userId);
         if (user) {
@@ -62,16 +52,11 @@ export default class Lobby {
         }
     }
 
-    /**
-     * @returns The number of users in the lobby.
-     */
     public getUserCount() {
         return this.users.size;
     }
 
     /**
-     * Determines if a user is in the lobby.
-     * @param userId The id of the user.
      * @returns Whether the user is in the lobby or not.
      */
     public hasUser(userId: string): boolean {
@@ -90,5 +75,9 @@ export default class Lobby {
      */
     public isFull(): boolean {
         return this.users.size >= this.settings.maxUsers;
+    }
+
+    public matchStart() {
+        this.match = new Match(this.code, this.settings.game)
     }
 }
