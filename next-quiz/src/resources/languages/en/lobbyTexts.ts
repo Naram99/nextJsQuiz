@@ -7,4 +7,5 @@ export const lobbyTexts: lobbyTextData = {
     validCode: "The given code is valid",
     invalidCode: "The given code is invalid",
     leave: "Leave lobby",
+    startMatch: "Start match"
 };

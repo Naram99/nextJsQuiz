@@ -7,17 +7,22 @@ export default function LobbyPageFooter({
     max,
     curr,
     leave,
+    start
 }: {
     min: number;
     max: number;
     curr: number;
     leave: () => void;
+    start: () => void;
 }) {
     const { texts } = useContext(LanguageContext)!;
     const lobbyText = texts.lobbyTexts!;
 
     return (
         <div className={styles.lobbyFooterWrapper}>
+            <div className={styles.startBtn} onClick={start}>
+                {lobbyText.startMatch}
+            </div>
             <div className={styles.userNumber}>
                 {curr < min ? (
                     <>

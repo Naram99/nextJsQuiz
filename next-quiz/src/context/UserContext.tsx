@@ -15,7 +15,7 @@ export function UserProvider({ children }: { children: ReactNode }) {
     const [user, setUser] = useState<User>(null);
 
     useEffect(() => {
-        fetch("/api/auth/token", {
+        fetch("/api/auth/token/me", {
             method: "GET",
             credentials: "include",
         })

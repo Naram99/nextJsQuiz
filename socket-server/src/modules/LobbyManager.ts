@@ -49,7 +49,7 @@ export default class LobbyManager {
     }
 
     public lobbySettings(code: string) {
-        return this.lobbies.get(code)!.settings;
+        return this.lobbies.get(code)?.settings;
     }
 
     public lobbyUsers(code: string): string[] {

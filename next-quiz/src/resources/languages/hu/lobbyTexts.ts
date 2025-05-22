@@ -7,4 +7,5 @@ export const lobbyTexts: lobbyTextData = {
     validCode: "A megadott kód helyes",
     invalidCode: "A megadott kód nem létezik",
     leave: "Szoba elhagyása",
+    startMatch: "Játék indítása"
 };

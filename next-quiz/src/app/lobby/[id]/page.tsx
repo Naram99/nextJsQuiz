@@ -14,7 +14,6 @@ import LobbyPageFooter from "./LobbyPageFooter";
 
 export default function LobbyPage() {
     const router = useRouter();
-    // TODO: useUser not working
     const me = useUser();
 
     const params = useParams();
@@ -78,6 +77,10 @@ export default function LobbyPage() {
         router.back();
     }
 
+    function handleStartMatch() {
+        socket.emit("startMatch", id);
+    }
+
     // TODO: Átírni, hogy fordítások esetén is működjenek a változtatások
     function handleLobbyTypeChange(e: React.MouseEvent) {
         setSettings({ ...settings, lobbyType: e.currentTarget.textContent as lobbyType });
@@ -108,6 +111,7 @@ export default function LobbyPage() {
                 max={settings.maxUsers}
                 curr={users.length}
                 leave={handleLeaveLobby}
+                start={handleStartMatch}
             />
         </div>
     );

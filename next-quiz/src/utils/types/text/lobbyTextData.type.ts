@@ -5,4 +5,5 @@ export type lobbyTextData = {
     validCode: string;
     invalidCode: string;
     leave: string;
+    startMatch: string;
 };
