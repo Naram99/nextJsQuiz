@@ -11,11 +11,13 @@ export default class Lobby {
         maxUsers: 2,
         game: "tictactoe",
     };
-    private match: Match | null = null;
+    private match: Match;
 
     constructor(public readonly code: string, public owner: UserInLobby) {
         this.users.set(owner.userId, owner);
         owner.socket?.join(code);
+
+        this.match = new Match(this.code, "tictactoe");
     }
 
     /**
@@ -78,6 +80,6 @@ export default class Lobby {
     }
 
     public matchStart() {
-        this.match = new Match(this.code, this.settings.game)
+        this.match.start();
     }
 }

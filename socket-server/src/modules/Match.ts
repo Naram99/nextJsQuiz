@@ -1,10 +1,20 @@
 import { MatchInterface } from "../utils/interface/Match.interface";
 import { GameType } from "../utils/type/GameType.type";
+import Quiz from "./games/Quiz";
+import TicTacToe from "./games/TicTacToe";
 
 export default class Match implements MatchInterface {
-    constructor(public readonly id: string, public readonly gameType: GameType) {}
+    public game: TicTacToe | Quiz | null = null;
 
-    start(): void {
-        
+    constructor(public readonly id: string, public readonly gameType: GameType) {
+        switch (gameType) {
+            case "tictactoe":
+                break;
+
+            case "quiz":
+                break;
+        }
     }
+
+    start(): void {}
 }
