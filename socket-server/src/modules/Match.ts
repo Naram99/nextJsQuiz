@@ -5,16 +5,26 @@ import TicTacToe from "./games/TicTacToe";
 
 export default class Match implements MatchInterface {
     public game: TicTacToe | Quiz | null = null;
+    public gameType: GameType = "tictactoe";
+    public playerScore: Map<string, number> = new Map();
 
-    constructor(public readonly id: string, public readonly gameType: GameType) {
-        switch (gameType) {
+    constructor(public readonly id: string) {}
+
+    start(): void {}
+
+    public setGameType(gt: GameType): void {
+        switch (gt) {
             case "tictactoe":
+                this.game = new TicTacToe(this.id, { O: "", X: "" }, this.updateScore);
                 break;
 
             case "quiz":
+                this.game = new Quiz(this.id);
                 break;
         }
     }
 
-    start(): void {}
+    updateScore(player: string, score: number): void {
+        this.playerScore.set(player, (this.playerScore.get(player) ?? 0) + score);
+    }
 }

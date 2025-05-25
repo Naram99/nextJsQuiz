@@ -15,6 +15,7 @@ export default class TicTacToe implements TicTacToeGame {
     constructor(
         public readonly id: string,
         public readonly players: Record<TicTacToePlayer, string>,
+        public onGameEnd: (player: string, score: number) => void,
         rounds: number = 1
     ) {
         this.settings.rounds = rounds;
@@ -48,6 +49,16 @@ export default class TicTacToe implements TicTacToeGame {
             [2, 4, 6],
         ];
         // TODO: checkGameEnd
+        for (const [a, b, c] of winningCombinations) {
+            if (
+                this.board[a] &&
+                this.board[a] === this.board[b] &&
+                this.board[a] === this.board[c]
+            ) {
+                return true;
+            }
+        }
+
         return true;
     }
 
