@@ -49,7 +49,7 @@ export default function LobbyPage() {
             // TODO: handle lobby leave (switched off because of strict mode double run)
             // socket.emit("leaveLobby", id);
         };
-    }, []);
+    }, [id]);
 
     function handleData(users: string[], settings: LobbySettings, owner: string) {
         console.log(users, settings, owner);
