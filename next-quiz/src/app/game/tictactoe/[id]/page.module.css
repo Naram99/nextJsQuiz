@@ -1,0 +1,7 @@
+.pageWrapper {
+    max-width: 1300px;
+    margin-inline: auto;
+    display: flex;
+    flex-direction: column;
+    gap: 2rem;
+}

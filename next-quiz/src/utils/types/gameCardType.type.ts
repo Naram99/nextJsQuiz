@@ -1,1 +1,1 @@
-export type gameCardType = "tictactoe" | "quiz";
+export type gameCardType = "tictactoe" | "quiz" | "quiztactoe" | "skinquiz";
