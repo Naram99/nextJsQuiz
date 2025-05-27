@@ -19,7 +19,7 @@ export default function LobbyPageHeader({
     
     // TODO: Owner can select lobbytype and gametype
     const lobbyTypes: lobbyType[] = ["computer", "friend", "open"];
-    const gameTypes: gameCardType[] = ["quiz", "tictactoe"];
+    const gameTypes: gameCardType[] = ["quiz", "tictactoe", "quiztactoe", "skinquiz"];
 
     return (
         <div className={styles.lobbyPageHeader}>

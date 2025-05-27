@@ -33,6 +33,27 @@ export default function LobbyPage() {
             connectSocketWithFreshToken();
         }
 
+        function handleData(users: string[], settings: LobbySettings, owner: string) {
+            console.log(users, settings, owner);
+            
+            setUsers(users);
+            setSettings(settings);
+            setOwner(owner);
+        }
+        
+        function handleValidAnswer(valid: boolean) {
+            if (!valid) router.back();
+            if (valid) socket.emit("checkIfUserInLobby", id);
+        }
+        
+        function handleUserInLobby(bool: boolean) {
+            if (!bool) socket.emit("joinLobby", id);
+        }
+        
+        function handleJoinLobby(bool: boolean) {
+            if (!bool) router.back();
+        }
+
         socket.emit("validateJoinCode", id);
         socket.emit("getLobbyData", id);
 
@@ -40,7 +61,7 @@ export default function LobbyPage() {
         socket.on("userInLobby", handleUserInLobby);
         socket.on("joinLobbyOk", handleJoinLobby);
         socket.on("lobbyData", handleData);
-
+        
         return () => {
             socket.off("validateJoinCodeAnswer", handleValidAnswer);
             socket.off("userInLobby", handleUserInLobby);
@@ -51,26 +72,6 @@ export default function LobbyPage() {
         };
     }, [id]);
 
-    function handleData(users: string[], settings: LobbySettings, owner: string) {
-        console.log(users, settings, owner);
-
-        setUsers(users);
-        setSettings(settings);
-        setOwner(owner);
-    }
-
-    function handleValidAnswer(valid: boolean) {
-        if (!valid) router.back();
-        if (valid) socket.emit("checkIfUserInLobby", id);
-    }
-
-    function handleUserInLobby(bool: boolean) {
-        if (!bool) socket.emit("joinLobby", id);
-    }
-
-    function handleJoinLobby(bool: boolean) {
-        if (!bool) router.back();
-    }
 
     function handleLeaveLobby() {
         socket.emit("leaveLobby", id);
@@ -78,7 +79,7 @@ export default function LobbyPage() {
     }
 
     function handleStartMatch() {
-        socket.emit("startMatch", id);
+        socket.emit("startMatch", id, me?.name);
     }
 
     // TODO: Átírni, hogy fordítások esetén is működjenek a változtatások
