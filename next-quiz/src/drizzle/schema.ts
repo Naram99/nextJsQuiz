@@ -8,3 +8,4 @@ export * from "./schema/report";
 export * from "./schema/chatmessage";
 export * from "./schema/chatroom";
 export * from "./schema/game";
+export * from "./schema/skins";

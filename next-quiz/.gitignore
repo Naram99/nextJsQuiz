@@ -43,3 +43,6 @@ next-env.d.ts
 
 # drizzle
 src/drizzle/migrations
+
+# lol
+public/lol
