@@ -9,6 +9,7 @@ import { SkinsTable } from "./drizzle/schema";
 
 async function updateData(patch: string, dir: string): Promise<boolean> {
     console.log(`Updating to patch: ${patch}`);
+    // return true; // Debugging JSON read
     try {
         if (!fs.existsSync(`./${dir}/${patch}`))
             fs.mkdirSync(`./${dir}/${patch}`, { recursive: true });
@@ -51,10 +52,16 @@ async function insertSkinsToDb(patch: string) {
             await tx.execute(sql`TRUNCATE TABLE skins RESTART IDENTITY`);
 
             // JSON betöltése
-            const res = await fetch(
-                `../next-quiz/public/lol/${patch}/${patch}/data/en_US/championFull.json`
-            );
-            const data = await res.json();
+            const filePath = path.resolve(
+                __dirname, 
+                `../../next-quiz/public/lol/${patch}/${patch}/data/en_US/championFull.json`
+            )
+            console.log(__dirname);
+            console.log(filePath);
+
+            const fileData = fs.readFileSync((filePath), 'utf-8');
+
+            const data = JSON.parse(fileData);
 
             const champions = data.data as Record<string, PartialChampionInfo>;
 
