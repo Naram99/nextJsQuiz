@@ -11,8 +11,8 @@ async function updateData(patch: string, dir: string): Promise<boolean> {
     console.log(`Updating to patch: ${patch}`);
     // return true; // Debugging JSON read
     try {
-        if (!fs.existsSync(`./${dir}/${patch}`))
-            fs.mkdirSync(`./${dir}/${patch}`, { recursive: true });
+        fs.rmSync(`./${dir}/`, { recursive: true, force: true });
+        if (!fs.existsSync(`./${dir}`)) fs.mkdirSync(`./${dir}`, { recursive: true });
 
         const response = await axios({
             method: "GET",
@@ -21,7 +21,7 @@ async function updateData(patch: string, dir: string): Promise<boolean> {
         });
 
         await new Promise((resolve, reject) => {
-            pipeline(response.data, tar.x({ C: `./${dir}/${patch}` }), (error) =>
+            pipeline(response.data, tar.x({ C: `./${dir}` }), (error) =>
                 error ? reject(error) : resolve(true)
             );
         });
@@ -53,13 +53,13 @@ async function insertSkinsToDb(patch: string) {
 
             // JSON betöltése
             const filePath = path.resolve(
-                __dirname, 
-                `../../next-quiz/public/lol/${patch}/${patch}/data/en_US/championFull.json`
-            )
+                __dirname,
+                `../../next-quiz/public/lol/${patch}/data/en_US/championFull.json`
+            );
             console.log(__dirname);
             console.log(filePath);
 
-            const fileData = fs.readFileSync((filePath), 'utf-8');
+            const fileData = fs.readFileSync(filePath, "utf-8");
 
             const data = JSON.parse(fileData);
 
@@ -73,7 +73,7 @@ async function insertSkinsToDb(patch: string) {
                         champion,
                         number: skin.num,
                         name: skin.name,
-                        src: `/lol/${patch}/img/champion/centered/${champion}_${skin.num}.jpg`,
+                        src: `/lol/img/champion/centered/${champion}_${skin.num}.jpg`,
                     });
                 }
             }

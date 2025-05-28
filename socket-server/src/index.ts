@@ -72,7 +72,7 @@ io.on("connection", (socket: Socket) => {
 
     socket.on("createLobby", () => {
         lm.removeUserFromAllLobbies(lobbyUser);
-        let newCode = generateLobbyCode(6);
+        let newCode = generateLobbyCode(Number(process.env.LOBBY_CODE_LENGTH));
         while (lm.checkIfLobbyExists(newCode)) newCode = generateLobbyCode(6);
         if (lm.createLobby(newCode, lobbyUser)) socket.emit("joinLobbyOk", true, newCode);
     });
