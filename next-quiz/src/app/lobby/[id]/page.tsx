@@ -54,6 +54,10 @@ export default function LobbyPage() {
             if (!bool) router.back();
         }
 
+        function handleMatchPrepare(gameType: gameCardType, code: string) {
+            router.push(`/game/${gameType}/${code}`);
+        }
+
         socket.emit("validateJoinCode", id);
         socket.emit("getLobbyData", id);
 
@@ -61,12 +65,14 @@ export default function LobbyPage() {
         socket.on("userInLobby", handleUserInLobby);
         socket.on("joinLobbyOk", handleJoinLobby);
         socket.on("lobbyData", handleData);
+        socket.on("matchPrepare", handleMatchPrepare)
         
         return () => {
             socket.off("validateJoinCodeAnswer", handleValidAnswer);
             socket.off("userInLobby", handleUserInLobby);
             socket.off("joinLobbyOk", handleJoinLobby);
             socket.off("lobbyData", handleData);
+            socket.off("matchPrepare", handleMatchPrepare);
             // TODO: handle lobby leave (switched off because of strict mode double run)
             // socket.emit("leaveLobby", id);
         };

@@ -5,10 +5,11 @@ import styles from "./page.module.css";
 import { connectSocketWithFreshToken, socket } from "@/socket/socket";
 import { TicTacToePlayer } from "@/utils/types/games/TicTacToePlayer.type";
 import { useUser } from "@/context/UserContext";
-import { useParams } from "next/navigation";
+import { useParams, useRouter } from "next/navigation";
 import React from "react";
 
 export default function TicTacToeGamePage() {
+    const router = useRouter();
     const me = useUser();
     // TODO: texts
 
@@ -16,22 +17,31 @@ export default function TicTacToeGamePage() {
     const id = params.id as string;
 
     const [ready, setReady] = useState(false);
-    const [score, setScore] = useState<Map<string, number>>(new Map());
+    // TODO: review Score data type
+    const [score, setScore] = useState<Map<string, {symbol: TicTacToePlayer, score: number}>>(new Map());
     const [board, setBoard] = useState<(TicTacToePlayer | null)[]>(Array(9).fill(null));
 
     useEffect(() => {
         if (!socket.connected) connectSocketWithFreshToken();
 
+        // TODO: Check if user in lobby, join or leave if not
+        socket.emit("validateJoinCode", id);
+
+        socket.on("joinLobbyOk", handleJoinLobby);
         socket.on("newGame", setNewGame);
         socket.on("scoreUpdate", updateScore);
-        socket.on("tictactoeMove", updateBoard);
+        socket.on("tictactoe:move", updateBoard);
+
+        function handleJoinLobby(bool: boolean) {
+            if (!bool) router.push(`/${me?.name}/dashboard`);
+        }
 
         function setNewGame() {
             setBoard(Array(9).fill(null));
             setReady(false);
         }
 
-        function updateScore(score: Map<string, number>) {
+        function updateScore(score: Map<string, {symbol: TicTacToePlayer, score: number}>) {
             setScore(score);
         }
 
@@ -42,7 +52,7 @@ export default function TicTacToeGamePage() {
         return () => {
             socket.off("newGame", setNewGame);
             socket.off("scoreUpdate", updateScore);
-            socket.off("tictactoeMove", updateBoard);
+            socket.off("tictactoe:move", updateBoard);
         };
     }, []);
 
@@ -51,7 +61,7 @@ export default function TicTacToeGamePage() {
     }
 
     function handleMove(index: number) {
-        socket.emit("tictactoeMoveSend", index, me?.name);
+        socket.emit("tictactoe:moveSend", id, index, me?.name);
     }
 
     return (
@@ -69,7 +79,7 @@ export default function TicTacToeGamePage() {
             </div>
             <div className={styles.footer}>
                 {ready && (
-                    <button type={"button"} onClick={handleReady}>
+                    <button type={"button"} onClick={handleReady} className={styles.readyBtn}>
                         {/* TODO: texts */}
                     </button>
                 )}

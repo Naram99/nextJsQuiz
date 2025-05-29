@@ -9,5 +9,5 @@ export interface TicTacToeGame {
 
     start(): void;
     handleMove(index: number): void;
-    checkGameEnd(): boolean;
+    checkGameEnd(): TicTacToePlayer | "tie" | null;
 }

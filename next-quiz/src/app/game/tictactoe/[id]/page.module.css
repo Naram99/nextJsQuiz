@@ -1,7 +1,26 @@
 .pageWrapper {
     max-width: 1300px;
+    width: 100%;
     margin-inline: auto;
     display: flex;
     flex-direction: column;
     gap: 2rem;
+}
+
+.board {
+    display: grid;
+    grid-template-columns: 150px 150px 150px;
+    gap: 5px;
+    width: 100%;
+    place-content: center;
+}
+
+.boardCell {
+    border: 1px solid var(--main-color);
+    height: 150px;
+    transition: all 0.3s ease;
+}
+
+.boardCell:hover {
+    box-shadow: 0 0 10px var(--main-color);
 }

@@ -22,7 +22,7 @@ export default class TicTacToe implements TicTacToeGame {
     }
 
     start(): void {
-        this.socketListenerSetup();
+        // this.socketListenerSetup();
         // TODO: start
     }
 
@@ -37,7 +37,7 @@ export default class TicTacToe implements TicTacToeGame {
         }
     }
 
-    checkGameEnd(): boolean {
+    checkGameEnd(): TicTacToePlayer | "tie" | null {
         const winningCombinations = [
             [0, 3, 6],
             [1, 4, 7],
@@ -48,22 +48,19 @@ export default class TicTacToe implements TicTacToeGame {
             [0, 4, 8],
             [2, 4, 6],
         ];
-        // TODO: checkGameEnd
+
         for (const [a, b, c] of winningCombinations) {
             if (
                 this.board[a] &&
                 this.board[a] === this.board[b] &&
                 this.board[a] === this.board[c]
             ) {
-                return true;
+                return this.activePlayer;
             }
         }
 
-        return true;
-    }
+        if (!this.board.includes(null)) return "tie";
 
-    private declareWinner(): TicTacToePlayer | "tie" {
-        // TODO: declareWinner
-        return this.activePlayer;
+        return null;
     }
 }
