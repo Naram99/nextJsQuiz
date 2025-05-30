@@ -67,7 +67,14 @@ export default function TicTacToeGamePage() {
     return (
         <div className={styles.pageWrapper}>
             <div className={styles.header}>
-                <div className={styles.scoreBoard}>{/* TODO: scoreboard */}</div>
+                <div className={styles.scoreBoard}>{
+                    Array.from(score.entries()).map(([player, data]) => (
+                        <div key={player} className={styles.playerScore}>
+                            <div className={styles.playerName}>{player} ({data.symbol}):</div>
+                            <div className={styles.playerScore}>{data.score}</div>
+                        </div>
+                    ))
+                }</div>
                 <div className={styles.announcer}>{/* TODO: announcer */}</div>
             </div>
             <div className={styles.board}>
