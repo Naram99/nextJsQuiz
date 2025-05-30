@@ -17,7 +17,7 @@ export default class Lobby {
         this.users.set(owner.userId, owner);
         owner.socket?.join(code);
 
-        this.match = new Match(this.code);
+        this.match = new Match(this.code, this.users);
     }
 
     /**

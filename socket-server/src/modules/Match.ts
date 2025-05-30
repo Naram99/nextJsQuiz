@@ -1,5 +1,6 @@
 import { MatchInterface } from "../utils/interface/Match.interface";
 import { GameType } from "../utils/type/GameType.type";
+import { UserInLobby } from "../utils/type/UserInLobby.type";
 import Quiz from "./games/Quiz";
 import TicTacToe from "./games/TicTacToe";
 
@@ -8,7 +9,9 @@ export default class Match implements MatchInterface {
     public gameType: GameType = "tictactoe";
     public playerScore: Map<string, number> = new Map();
 
-    constructor(public readonly id: string) {}
+    constructor(public readonly id: string, public readonly players: Map<string, UserInLobby>) {
+        players.forEach((user) => this.playerScore.set(user.name, 0));
+    }
 
     start(): void {}
 
