@@ -1,6 +1,7 @@
 import { TicTacToeGame } from "../../utils/interface/TicTacToeGame.interface";
 import { LobbyType } from "../../utils/type/LobbyType.type";
 import { TicTacToePlayer } from "../../utils/type/TicTacToePlayer.type";
+import { UserInLobby } from "../../utils/type/UserInLobby.type";
 import { TicTacToeSettings } from "../../utils/type/settings/TicTacToeSettings.type";
 
 export default class TicTacToe implements TicTacToeGame {
@@ -14,7 +15,7 @@ export default class TicTacToe implements TicTacToeGame {
 
     constructor(
         public readonly id: string,
-        public readonly players: Record<TicTacToePlayer, string>,
+        public readonly players: Record<TicTacToePlayer, UserInLobby>,
         public onGameEnd: (player: string, score: number) => void,
         rounds: number = 1
     ) {
@@ -22,7 +23,7 @@ export default class TicTacToe implements TicTacToeGame {
     }
 
     start(): void {
-        // this.socketListenerSetup();
+        this.socketListenerSetup();
         // TODO: start
     }
 
