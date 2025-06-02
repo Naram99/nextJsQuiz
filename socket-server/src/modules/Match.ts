@@ -10,12 +10,14 @@ export default class Match implements MatchInterface {
     public game: TicTacToe | Quiz | SkinQuiz | null = null;
     public gameType: GameType = "tictactoe";
     public playerScore: Map<string, number> = new Map();
+    public players: Map<string, UserInLobby> = new Map();
 
-    constructor(public readonly id: string, public readonly players: Map<string, UserInLobby>) {
+    constructor(public readonly id: string) {}
+
+    start(players: Map<string, UserInLobby>): void {
+        this.players = players;
         players.forEach((user) => this.playerScore.set(user.name, 0));
     }
-
-    start(): void {}
 
     public setGameType(gt: GameType): void {
         switch (gt) {

@@ -17,7 +17,7 @@ export default class Lobby {
         this.users.set(owner.userId, owner);
         owner.socket?.join(code);
 
-        this.match = new Match(this.code, this.users);
+        this.match = new Match(this.code);
     }
 
     /**
@@ -80,6 +80,6 @@ export default class Lobby {
     }
 
     public matchStart() {
-        this.match.start();
+        this.match.start(this.users);
     }
 }

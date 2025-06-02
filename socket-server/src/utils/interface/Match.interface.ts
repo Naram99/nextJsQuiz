@@ -11,7 +11,7 @@ export interface MatchInterface {
     game: TicTacToe | Quiz | SkinQuiz | null;
     playerScore: Map<string, number>;
 
-    start(): void;
+    start(players: Map<string, UserInLobby>): void;
     setGameType(gt: GameType): void;
     updateScore(player: string, score: number): void;
 }
