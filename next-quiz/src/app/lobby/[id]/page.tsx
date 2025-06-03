@@ -113,6 +113,7 @@ export default function LobbyPage() {
                     </div>
                 ))}
             </div>
+            {/* TODO: Round counter */}
             <LobbyPageFooter
                 min={settings.minUsers}
                 max={settings.maxUsers}
