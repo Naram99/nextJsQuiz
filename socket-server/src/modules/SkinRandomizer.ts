@@ -49,7 +49,7 @@ export default class SkinRandomizer {
         }
     }
 
-    public get skinArray() : SkinGameElement[] {
+    public get skinArray(): SkinGameElement[] {
         return this.skins;
     }
     
