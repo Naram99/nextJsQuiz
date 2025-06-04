@@ -35,7 +35,7 @@ export default class Match implements MatchInterface {
                 break;
 
             case "skinquiz":
-                this.game = new SkinQuiz(this.id);
+                this.game = new SkinQuiz(this.id, 5, this.players);
                 break;
         }
     }

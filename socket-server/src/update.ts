@@ -56,8 +56,6 @@ async function insertSkinsToDb(patch: string) {
                 __dirname,
                 `../../next-quiz/public/lol/${patch}/data/en_US/championFull.json`
             );
-            console.log(__dirname);
-            console.log(filePath);
 
             const fileData = fs.readFileSync(filePath, "utf-8");
 
