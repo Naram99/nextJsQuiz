@@ -18,7 +18,9 @@ export default function TicTacToeGamePage() {
 
     const [ready, setReady] = useState(false);
     // TODO: review Score data type
-    const [score, setScore] = useState<Map<string, {symbol: TicTacToePlayer, score: number}>>(new Map());
+    const [score, setScore] = useState<Map<string, { symbol: TicTacToePlayer; score: number }>>(
+        new Map()
+    );
     const [board, setBoard] = useState<(TicTacToePlayer | null)[]>(Array(9).fill(null));
 
     useEffect(() => {
@@ -26,6 +28,7 @@ export default function TicTacToeGamePage() {
 
         // TODO: Check if user in lobby, join or leave if not
         socket.emit("validateJoinCode", id);
+        socket.emit("tictactoe:requestData", id);
 
         socket.on("joinLobbyOk", handleJoinLobby);
         socket.on("tictactoe:newGame", setNewGame);
@@ -43,19 +46,23 @@ export default function TicTacToeGamePage() {
             setReady(false);
         }
 
-        function setPlayerData(data: Map<string, {symbol: TicTacToePlayer, score: number}>) {
-            console.log(data);
-            setScore(data);
+        function setPlayerData(data: [string, { symbol: TicTacToePlayer; score: number }][]) {
+            setScore(new Map(data));
         }
 
-        function updateScore(scoreData: Map<string, number>) {
+        function updateScore(scoreData: [string, number][]) {
             console.log(scoreData);
-            
-            const updated = new Map(score);
-            scoreData.forEach((num, name) => {
-                updated.set(name, {...updated.get(name)!, score: num})
-            })
-            setScore(updated);
+
+            setScore((prevScore) => {
+                const updated = new Map(prevScore);
+                scoreData.forEach(([name, newScore]) => {
+                    const current = updated.get(name);
+                    if (current) {
+                        updated.set(name, { ...current, score: newScore });
+                    }
+                });
+                return updated;
+            });
         }
 
         function updateBoard(board: (TicTacToePlayer | null)[]) {
@@ -82,14 +89,16 @@ export default function TicTacToeGamePage() {
     return (
         <div className={styles.pageWrapper}>
             <div className={styles.header}>
-                <div className={styles.scoreBoard}>{
-                    Array.from(score.entries()).map(([player, data]) => (
+                <div className={styles.scoreBoard}>
+                    {Array.from(score.entries()).map(([player, data]) => (
                         <div key={player} className={styles.playerScore}>
-                            <div className={styles.playerName}>{player} ({data.symbol}):</div>
+                            <div className={styles.playerName}>
+                                {player} ({data.symbol}):
+                            </div>
                             <div className={styles.score}>{data.score}</div>
                         </div>
-                    ))
-                }</div>
+                    ))}
+                </div>
                 <div className={styles.announcer}>{/* TODO: announcer */}</div>
             </div>
             <div className={styles.board}>
