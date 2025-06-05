@@ -1,8 +1,10 @@
+import ServerContext from "../utils/ServerContext";
 import { UserInLobby } from "../utils/type/UserInLobby.type";
 import Lobby from "./Lobby";
 
 export default class LobbyManager {
     // TODO: Socket emit-ek mindenhová!
+    constructor(private context: ServerContext) {}
 
     private lobbies: Map<string, Lobby> = new Map();
 
@@ -10,7 +12,7 @@ export default class LobbyManager {
      * createLobby
      */
     public createLobby(code: string, user: UserInLobby): Lobby {
-        const lobby = new Lobby(code, user);
+        const lobby = new Lobby(code, user, this.context);
         this.lobbies.set(code, lobby);
         return lobby;
     }

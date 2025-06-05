@@ -2,6 +2,7 @@ import { Socket } from "socket.io";
 import { LobbySettings } from "../utils/interface/LobbySettings.interface";
 import { UserInLobby } from "../utils/type/UserInLobby.type";
 import Match from "./Match";
+import ServerContext from "../utils/ServerContext";
 
 export default class Lobby {
     private users: Map<string, UserInLobby> = new Map();
@@ -13,11 +14,15 @@ export default class Lobby {
     };
     private match: Match;
 
-    constructor(public readonly code: string, public owner: UserInLobby) {
+    constructor(
+        public readonly code: string, 
+        public owner: UserInLobby,
+        private context: ServerContext
+    ) {
         this.users.set(owner.userId, owner);
         owner.socket?.join(code);
 
-        this.match = new Match(this.code);
+        this.match = new Match(this.code, context);
     }
 
     /**

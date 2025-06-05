@@ -9,7 +9,6 @@ export interface MatchInterface {
     players: Map<string, UserInLobby>;
     gameType: GameType;
     game: TicTacToe | Quiz | SkinQuiz | null;
-    playerScore: Map<string, number>;
 
     start(players: Map<string, UserInLobby>): void;
     setGameType(gt: GameType): void;

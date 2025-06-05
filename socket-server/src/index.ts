@@ -9,6 +9,7 @@ import UserHandler from "./modules/UserHandler";
 import ChatHandler from "./modules/ChatHandler";
 import LobbyManager from "./modules/LobbyManager";
 import { UserInLobby } from "./utils/type/UserInLobby.type";
+import ServerContext from "./utils/ServerContext";
 
 dotenv.config();
 
@@ -40,7 +41,8 @@ io.use(async (socket, next) => {
     }
 });
 
-const lm = new LobbyManager();
+const sc = new ServerContext(io);
+const lm = new LobbyManager(sc);
 
 io.on("connection", (socket: Socket) => {
     console.log(`User connected with id: ${socket.id}`);
@@ -51,6 +53,7 @@ io.on("connection", (socket: Socket) => {
         name: userData.name,
         socket: socket,
         isConnected: true,
+        score: 0
     };
     const uh = new UserHandler(userData.id, userData.name, userData.role);
     const ch = new ChatHandler(io, socket, uh.id, uh.name);
@@ -106,10 +109,6 @@ io.on("connection", (socket: Socket) => {
             lm.lobbiesData.get(code)?.matchStart();
             io.to(code).emit("matchPrepare", lm.lobbiesData.get(code)?.settings.game, code);
         }
-    })
-
-    socket.on("tictactoe:moveSend", (code: string, index: number, player: string) => {
-        // TODO: Move
     })
 
     socket.on("disconnect", (reason) => {

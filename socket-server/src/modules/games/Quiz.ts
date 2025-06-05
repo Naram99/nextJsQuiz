@@ -8,4 +8,8 @@ export default class Quiz implements QuizGame {
     };
 
     constructor(public readonly id: string) {}
+    
+    start(): void {
+        
+    }
 }

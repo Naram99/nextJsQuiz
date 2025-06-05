@@ -14,7 +14,9 @@ import LobbyPageFooter from "./LobbyPageFooter";
 
 export default function LobbyPage() {
     const router = useRouter();
+    // Az első belépésnél nem tudja kikérni, hogy ki az illető
     const me = useUser();
+    console.log(me?.name)
 
     const params = useParams();
     const id = params.id as string;
@@ -109,7 +111,7 @@ export default function LobbyPage() {
             <div className={styles.lobbyPageUsers}>
                 {users.map((user) => (
                     <div key={user}>
-                        <LobbyUser name={user} owner={owner === me?.name} />
+                        <LobbyUser name={user} owner={owner} />
                     </div>
                 ))}
             </div>

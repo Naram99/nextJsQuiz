@@ -28,9 +28,11 @@ export default function TicTacToeGamePage() {
         socket.emit("validateJoinCode", id);
 
         socket.on("joinLobbyOk", handleJoinLobby);
-        socket.on("newGame", setNewGame);
+        socket.on("tictactoe:newGame", setNewGame);
+        socket.on("tictactoe:playerData", setPlayerData);
         socket.on("scoreUpdate", updateScore);
         socket.on("tictactoe:move", updateBoard);
+        //socket.on("tictactoe:gameEnd", handleEnd);
 
         function handleJoinLobby(bool: boolean) {
             if (!bool) router.push(`/${me?.name}/dashboard`);
@@ -41,8 +43,19 @@ export default function TicTacToeGamePage() {
             setReady(false);
         }
 
-        function updateScore(score: Map<string, {symbol: TicTacToePlayer, score: number}>) {
-            setScore(score);
+        function setPlayerData(data: Map<string, {symbol: TicTacToePlayer, score: number}>) {
+            console.log(data);
+            setScore(data);
+        }
+
+        function updateScore(scoreData: Map<string, number>) {
+            console.log(scoreData);
+            
+            const updated = new Map(score);
+            scoreData.forEach((num, name) => {
+                updated.set(name, {...updated.get(name)!, score: num})
+            })
+            setScore(updated);
         }
 
         function updateBoard(board: (TicTacToePlayer | null)[]) {
@@ -50,7 +63,9 @@ export default function TicTacToeGamePage() {
         }
 
         return () => {
+            socket.off("joinLobbyOk", handleJoinLobby);
             socket.off("newGame", setNewGame);
+            socket.off("tictactoe:playerData", setPlayerData);
             socket.off("scoreUpdate", updateScore);
             socket.off("tictactoe:move", updateBoard);
         };
@@ -71,7 +86,7 @@ export default function TicTacToeGamePage() {
                     Array.from(score.entries()).map(([player, data]) => (
                         <div key={player} className={styles.playerScore}>
                             <div className={styles.playerName}>{player} ({data.symbol}):</div>
-                            <div className={styles.playerScore}>{data.score}</div>
+                            <div className={styles.score}>{data.score}</div>
                         </div>
                     ))
                 }</div>

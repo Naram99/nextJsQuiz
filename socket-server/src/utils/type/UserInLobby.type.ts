@@ -5,4 +5,5 @@ export type UserInLobby = {
     name: string;
     socket?: Socket;
     isConnected: boolean;
+    score: number;
 };
