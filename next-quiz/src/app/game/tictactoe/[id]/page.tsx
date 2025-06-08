@@ -38,15 +38,16 @@ export default function TicTacToeGamePage() {
         socket.on("tictactoe:ready", handlePlayerReady);
         socket.on("scoreUpdate", updateScore);
         socket.on("tictactoe:move", updateBoard);
-        //socket.on("tictactoe:gameEnd", handleEnd);
+        socket.on("matchEnd", handleEnd);
 
         function handleJoinLobby(bool: boolean) {
-            if (!bool) router.push(`/${me?.name}/dashboard`);
+            if (!bool) router.push(`/${me?.user?.name}/dashboard`);
         }
 
-        function setNewGame() {
-            setBoard(Array(9).fill(null));
+        function setNewGame(board: (TicTacToePlayer | null)[]) {
+            setBoard(board);
             setReady(false);
+            socket.emit("tictactoe:requestData", id);
         }
 
         function setPlayerData(
@@ -84,6 +85,10 @@ export default function TicTacToeGamePage() {
             setBoard(board);
         }
 
+        function handleEnd() {
+            router.back();
+        }
+
         return () => {
             socket.off("joinLobbyOk", handleJoinLobby);
             socket.off("newGame", setNewGame);
@@ -91,16 +96,17 @@ export default function TicTacToeGamePage() {
             socket.off("tictactoe:ready", handlePlayerReady);
             socket.off("scoreUpdate", updateScore);
             socket.off("tictactoe:move", updateBoard);
+            socket.off("matchEnd", handleEnd);
         };
     }, []);
 
     function handleReady() {
         setReady(true);
-        socket.emit("tictactoe:readySend", me?.name);
+        socket.emit("tictactoe:readySend", me?.user?.name);
     }
 
     function handleMove(index: number) {
-        socket.emit("tictactoe:moveSend", id, index, me?.name);
+        socket.emit("tictactoe:moveSend", id, index, me?.user?.name);
     }
 
     return (

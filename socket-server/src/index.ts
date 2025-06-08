@@ -104,21 +104,6 @@ io.on("connection", (socket: Socket) => {
         }
     });
 
-    socket.on("setRound", (code: string, name: string, round: number) => {
-        if (lm.lobbiesData.get(code)?.owner.name === name) {
-            lm.lobbiesData.get(code)?.matchRoundSet(round);
-            io.to(code).emit("roundChange", round);
-        }
-    });
-
-    socket.on("startMatch", (code: string, name: string) => {
-        // TODO: Ellenőrizni a játékosok számát, hogy megfelelő-e
-        if (lm.lobbiesData.get(code)?.owner.name === name) {
-            lm.lobbiesData.get(code)?.matchStart();
-            io.to(code).emit("matchPrepare", lm.lobbiesData.get(code)?.settings.game, code);
-        }
-    });
-
     socket.on("disconnect", (reason) => {
         console.log(`A user disconnected due to ${reason}.`);
         lm.removeUserFromAllLobbies(lobbyUser);

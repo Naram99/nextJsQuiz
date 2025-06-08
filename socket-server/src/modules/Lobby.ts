@@ -23,6 +23,28 @@ export default class Lobby {
         owner.socket?.join(code);
 
         this.match = new Match(this.code, context);
+        this.socketListenersSetup();
+    }
+
+    private socketListenersSetup(): void {
+        this.users.forEach((user) => {
+            user.socket?.removeAllListeners("setRound");
+            user.socket?.removeAllListeners("startMatch");
+
+            user.socket?.on("setRound", (id: string, name: string, round: number) => {
+                if (name === this.owner.name) {
+                    this.match.round = round;
+                    this.context.io.to(id).emit("roundChange", round);
+                }
+            });
+            user.socket?.on("startMatch", (code: string, name: string) => {
+                // TODO: Ellenőrizni a játékosok számát, hogy megfelelő-e
+                if (this.owner.name === name) {
+                    this.matchStart();
+                    this.context.io.to(code).emit("matchPrepare", this.settings.game, code);
+                }
+            });
+        });
     }
 
     /**

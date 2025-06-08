@@ -26,8 +26,12 @@ export default class TicTacToe implements TicTacToeGame {
 
     start(): void {
         this.active = true;
+        this.board = Array(9).fill(null);
         this.socketListenerSetup();
-        this.sc.io.to(this.id).emit("tictactoe:newGame");
+        this.sc.io.to(this.id).emit("tictactoe:newGame", this.board);
+        Object.entries(this.players).forEach(([symbol, user]) => {
+            this.players[symbol as TicTacToePlayer].isReady = false;
+        });
     }
 
     private socketListenerSetup(): void {
