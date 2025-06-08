@@ -11,8 +11,19 @@ import { socket } from "@/socket/socket";
 
 const LoginPage: React.FC = () => {
     const router = useRouter();
+    const { texts } = useContext(LanguageContext)!;
+    const loginTexts = texts.loginTexts!;
 
-    // TODO: join as guest
+    const [register, setRegister] = useState(false);
+    const [isLoading, setIsLoading] = useState(false);
+    const [error, setError] = useState<string | null>(null);
+    const [formValues, setFormValues] = useState<FormValuesInterface>({
+        userName: "",
+        email: "",
+        password: "",
+        passwordCheck: "",
+        gameId: "",
+    });
 
     useEffect(() => {
         async function checkAuth() {
@@ -31,47 +42,69 @@ const LoginPage: React.FC = () => {
             }
         }
 
-        checkAuth().then();
+        checkAuth();
     }, [router]);
-
-    const { texts } = useContext(LanguageContext)!;
-    const loginTexts = texts.loginTexts!;
-
-    const [register, setRegister] = useState(false);
-    const [formValues, setFormValues] = useState<FormValuesInterface>({
-        userName: "",
-        email: "",
-        password: "",
-        passwordCheck: "",
-        gameId: "",
-    });
 
     function handleSwitch(): void {
         setRegister(!register);
+        setError(null);
     }
 
     function handleChange(e: React.ChangeEvent<HTMLInputElement>): void {
         const { name, value } = e.target;
         setFormValues({ ...formValues, [name]: value });
+        setError(null);
     }
 
     async function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
-        // TODO: disable forms while waiting for response
         e.preventDefault();
+        setIsLoading(true);
+        setError(null);
 
-        let path: string = e.currentTarget.id.replace("Form", "");
-        if (register && path === "login") path = "register";
+        try {
+            let path: string = e.currentTarget.id.replace("Form", "");
+            if (register && path === "login") path = "register";
 
-        const resp = await fetch(`/api/auth/${path}`, {
-            method: "POST",
-            headers: { "Content-Type": "application/json" },
-            body: JSON.stringify(formValues),
-        });
+            const resp = await fetch(`/api/auth/${path}`, {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify(formValues),
+                credentials: "include",
+            });
 
-        // TODO: login response
-        const data = await resp.json();
-        console.log(data);
-        if (path === "login" && resp.status === 200) router.push(`${data.user}/dashboard`);
+            const data = await resp.json();
+            
+            if (!resp.ok) {
+                throw new Error(data.message || "Authentication failed");
+            }
+
+            if (path === "login") {
+                // Wait a short moment to ensure cookie is set
+                await new Promise(resolve => setTimeout(resolve, 100));
+                
+                // Verify the cookie is set by making a test request
+                const verifyResp = await fetch("/api/auth/token/me", {
+                    method: "GET",
+                    credentials: "include",
+                });
+                
+                if (verifyResp.ok) {
+                    const verifyData = await verifyResp.json();
+                    if (verifyData.user?.name) {
+                        router.push(`${data.user}/dashboard`);
+                    } else {
+                        throw new Error("Failed to verify authentication");
+                    }
+                } else {
+                    throw new Error("Failed to verify authentication");
+                }
+            }
+        } catch (error) {
+            setError(error instanceof Error ? error.message : "An error occurred");
+            console.error("Login error:", error);
+        } finally {
+            setIsLoading(false);
+        }
     }
 
     return (
@@ -86,7 +119,7 @@ const LoginPage: React.FC = () => {
                             value={formValues.gameId}
                             onChange={handleChange}
                         />
-                        <button type="submit" className={styles.loginBtn}>
+                        <button type="submit" className={styles.loginBtn} disabled={isLoading}>
                             {loginTexts.join}
                         </button>
                     </form>
@@ -101,6 +134,7 @@ const LoginPage: React.FC = () => {
                     />
                 </div>
                 <div className={styles.loginFormCt}>
+                    {error && <div className={styles.error}>{error}</div>}
                     <form id={"loginForm"} onSubmit={handleSubmit}>
                         <InputGroup
                             title={loginTexts.userName}
@@ -134,11 +168,11 @@ const LoginPage: React.FC = () => {
                                 />
                             </>
                         )}
-                        <button type="submit" className={styles.loginBtn}>
+                        <button type="submit" className={styles.loginBtn} disabled={isLoading}>
                             {register ? loginTexts.register : loginTexts.login}
                         </button>
                         <hr />
-                        <button type="button" onClick={handleSwitch} className={styles.loginBtn}>
+                        <button type="button" onClick={handleSwitch} className={styles.loginBtn} disabled={isLoading}>
                             {register ? loginTexts.login : loginTexts.register}
                         </button>
                     </form>

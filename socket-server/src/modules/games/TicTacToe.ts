@@ -34,24 +34,40 @@ export default class TicTacToe implements TicTacToeGame {
         // TODO: setup
         Object.values(this.players).forEach((user) => {
             user.socket?.removeAllListeners("tictactoe:requestData");
+            user.socket?.removeAllListeners("tictactoe:readySend");
             user.socket?.removeAllListeners("tictactoe:moveSend");
 
             user.socket?.on("tictactoe:requestData", (id: string) => {
                 this.emitUserData();
             });
+            user.socket?.on("tictactoe:readySend", (name: string) => {
+                Object.entries(this.players).forEach(([symbol, user]) => {
+                    if (user.name === name) {
+                        this.players[symbol as TicTacToePlayer].isReady = true;
+                    }
+                });
+                this.sc.io.to(this.id).emit("tictactoe:ready", name);
+            });
             user.socket?.on(
                 "tictactoe:moveSend",
                 (id: string, index: number, name: string | undefined) => {
-                    if (this.players[this.activePlayer].name === name) this.handleMove(index);
+                    if (!Object.values(this.players).some((user) => user.isReady === false)) {
+                        if (this.players[this.activePlayer].name === name) this.handleMove(index);
+                    }
                 }
             );
         });
     }
 
     private emitUserData(): void {
-        const startData: Map<string, { symbol: TicTacToePlayer; score: number }> = new Map();
+        const startData: Map<string, { symbol: TicTacToePlayer; score: number; ready: boolean }> =
+            new Map();
         Object.entries(this.players).forEach(([symbol, user]) => {
-            startData.set(user.name, { symbol: symbol as TicTacToePlayer, score: user.score });
+            startData.set(user.name, {
+                symbol: symbol as TicTacToePlayer,
+                score: user.score,
+                ready: false,
+            });
         });
         // TODO: Map-ek átírása!
         console.log(startData);

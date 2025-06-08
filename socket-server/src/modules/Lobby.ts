@@ -15,7 +15,7 @@ export default class Lobby {
     private match: Match;
 
     constructor(
-        public readonly code: string, 
+        public readonly code: string,
         public owner: UserInLobby,
         private context: ServerContext
     ) {
@@ -82,6 +82,10 @@ export default class Lobby {
      */
     public isFull(): boolean {
         return this.users.size >= this.settings.maxUsers;
+    }
+
+    public matchRoundSet(round: number) {
+        this.match.round = round;
     }
 
     public matchStart() {

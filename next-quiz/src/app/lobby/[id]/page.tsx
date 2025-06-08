@@ -11,12 +11,12 @@ import LobbyUser from "./LobbyUser";
 import { lobbyType } from "@/utils/types/lobbyType.type";
 import { gameCardType } from "@/utils/types/gameCardType.type";
 import LobbyPageFooter from "./LobbyPageFooter";
+import RoundCounter from "./RoundCounter";
 
 export default function LobbyPage() {
     const router = useRouter();
-    // Az első belépésnél nem tudja kikérni, hogy ki az illető
-    const me = useUser();
-    console.log(me?.name)
+    const { user: me, isLoading } = useUser();
+    console.log(me?.name);
 
     const params = useParams();
     const id = params.id as string;
@@ -31,27 +31,29 @@ export default function LobbyPage() {
     });
 
     useEffect(() => {
+        if (isLoading) return;
+        
         if (!socket.connected) {
             connectSocketWithFreshToken();
         }
 
         function handleData(users: string[], settings: LobbySettings, owner: string) {
             console.log(users, settings, owner);
-            
+
             setUsers(users);
             setSettings(settings);
             setOwner(owner);
         }
-        
+
         function handleValidAnswer(valid: boolean) {
             if (!valid) router.back();
             if (valid) socket.emit("checkIfUserInLobby", id);
         }
-        
+
         function handleUserInLobby(bool: boolean) {
             if (!bool) socket.emit("joinLobby", id);
         }
-        
+
         function handleJoinLobby(bool: boolean) {
             if (!bool) router.back();
         }
@@ -67,8 +69,8 @@ export default function LobbyPage() {
         socket.on("userInLobby", handleUserInLobby);
         socket.on("joinLobbyOk", handleJoinLobby);
         socket.on("lobbyData", handleData);
-        socket.on("matchPrepare", handleMatchPrepare)
-        
+        socket.on("matchPrepare", handleMatchPrepare);
+
         return () => {
             socket.off("validateJoinCodeAnswer", handleValidAnswer);
             socket.off("userInLobby", handleUserInLobby);
@@ -78,8 +80,7 @@ export default function LobbyPage() {
             // TODO: handle lobby leave (switched off because of strict mode double run)
             // socket.emit("leaveLobby", id);
         };
-    }, [id]);
-
+    }, [id, isLoading]);
 
     function handleLeaveLobby() {
         socket.emit("leaveLobby", id);
@@ -101,28 +102,34 @@ export default function LobbyPage() {
 
     return (
         <div className={styles.lobbyPageWrapper}>
-            <LobbyPageHeader
-                owner={owner === me?.name}
-                code={id}
-                settings={settings}
-                setLobbyType={handleLobbyTypeChange}
-                setGameType={handleGameTypeChange}
-            />
-            <div className={styles.lobbyPageUsers}>
-                {users.map((user) => (
-                    <div key={user}>
-                        <LobbyUser name={user} owner={owner} />
+            {isLoading ? (
+                <div>Loading...</div>
+            ) : (
+                <>
+                    <LobbyPageHeader
+                        owner={owner === me?.name}
+                        code={id}
+                        settings={settings}
+                        setLobbyType={handleLobbyTypeChange}
+                        setGameType={handleGameTypeChange}
+                    />
+                    <div className={styles.lobbyPageUsers}>
+                        {users.map((user) => (
+                            <div key={user}>
+                                <LobbyUser name={user} owner={owner} />
+                            </div>
+                        ))}
                     </div>
-                ))}
-            </div>
-            {/* TODO: Round counter */}
-            <LobbyPageFooter
-                min={settings.minUsers}
-                max={settings.maxUsers}
-                curr={users.length}
-                leave={handleLeaveLobby}
-                start={handleStartMatch}
-            />
+                    <RoundCounter id={id} name={me?.name} />
+                    <LobbyPageFooter
+                        min={settings.minUsers}
+                        max={settings.maxUsers}
+                        curr={users.length}
+                        leave={handleLeaveLobby}
+                        start={handleStartMatch}
+                    />
+                </>
+            )}
         </div>
     );
 }

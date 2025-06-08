@@ -7,6 +7,8 @@ import { TicTacToePlayer } from "@/utils/types/games/TicTacToePlayer.type";
 import { useUser } from "@/context/UserContext";
 import { useParams, useRouter } from "next/navigation";
 import React from "react";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faCheck } from "@fortawesome/free-solid-svg-icons/faCheck";
 
 export default function TicTacToeGamePage() {
     const router = useRouter();
@@ -18,9 +20,9 @@ export default function TicTacToeGamePage() {
 
     const [ready, setReady] = useState(false);
     // TODO: review Score data type
-    const [score, setScore] = useState<Map<string, { symbol: TicTacToePlayer; score: number }>>(
-        new Map()
-    );
+    const [score, setScore] = useState<
+        Map<string, { symbol: TicTacToePlayer; score: number; ready: boolean }>
+    >(new Map());
     const [board, setBoard] = useState<(TicTacToePlayer | null)[]>(Array(9).fill(null));
 
     useEffect(() => {
@@ -33,6 +35,7 @@ export default function TicTacToeGamePage() {
         socket.on("joinLobbyOk", handleJoinLobby);
         socket.on("tictactoe:newGame", setNewGame);
         socket.on("tictactoe:playerData", setPlayerData);
+        socket.on("tictactoe:ready", handlePlayerReady);
         socket.on("scoreUpdate", updateScore);
         socket.on("tictactoe:move", updateBoard);
         //socket.on("tictactoe:gameEnd", handleEnd);
@@ -46,8 +49,20 @@ export default function TicTacToeGamePage() {
             setReady(false);
         }
 
-        function setPlayerData(data: [string, { symbol: TicTacToePlayer; score: number }][]) {
+        function setPlayerData(
+            data: [string, { symbol: TicTacToePlayer; score: number; ready: boolean }][]
+        ) {
             setScore(new Map(data));
+        }
+
+        function handlePlayerReady(name: string) {
+            setScore((prevData) => {
+                const updated = new Map(prevData);
+                const data = updated.get(name);
+                if (data) updated.set(name, { ...data, ready: true });
+
+                return updated;
+            });
         }
 
         function updateScore(scoreData: [string, number][]) {
@@ -73,6 +88,7 @@ export default function TicTacToeGamePage() {
             socket.off("joinLobbyOk", handleJoinLobby);
             socket.off("newGame", setNewGame);
             socket.off("tictactoe:playerData", setPlayerData);
+            socket.off("tictactoe:ready", handlePlayerReady);
             socket.off("scoreUpdate", updateScore);
             socket.off("tictactoe:move", updateBoard);
         };
@@ -80,6 +96,7 @@ export default function TicTacToeGamePage() {
 
     function handleReady() {
         setReady(true);
+        socket.emit("tictactoe:readySend", me?.name);
     }
 
     function handleMove(index: number) {
@@ -96,6 +113,11 @@ export default function TicTacToeGamePage() {
                                 {player} ({data.symbol}):
                             </div>
                             <div className={styles.score}>{data.score}</div>
+                            {data.ready && (
+                                <div className={styles.ready}>
+                                    <FontAwesomeIcon icon={faCheck} />
+                                </div>
+                            )}
                         </div>
                     ))}
                 </div>
@@ -109,9 +131,9 @@ export default function TicTacToeGamePage() {
                 ))}
             </div>
             <div className={styles.footer}>
-                {ready && (
+                {!ready && (
                     <button type={"button"} onClick={handleReady} className={styles.readyBtn}>
-                        {/* TODO: texts */}
+                        {/* TODO: texts */}Ready
                     </button>
                 )}
             </div>

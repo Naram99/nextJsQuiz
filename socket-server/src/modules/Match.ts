@@ -10,16 +10,23 @@ export default class Match implements MatchInterface {
     public game: TicTacToe | Quiz | SkinQuiz | null = null;
     public gameType: GameType = "tictactoe";
     public players: Map<string, UserInLobby> = new Map();
+    private rounds: number = 1;
+    private currentRound: number = 1;
 
     constructor(public readonly id: string, private context: ServerContext) {}
 
-    start(players: Map<string, UserInLobby>): void {
+    public start(players: Map<string, UserInLobby>): void {
         this.players = players;
         for (const [id, user] of this.players.entries()) {
             this.players.set(id, { ...user, score: 0 });
         }
         this.setGameType(this.gameType);
         this.game!.start();
+    }
+
+    public nextRound() {
+        this.currentRound++;
+        if (this.currentRound <= this.rounds) this.game!.start();
     }
 
     public setGameType(gt: GameType): void {
@@ -30,7 +37,8 @@ export default class Match implements MatchInterface {
                     this.context,
                     this.id,
                     { O: playerArray[0], X: playerArray[1] },
-                    this.updateScore
+                    this.updateScore,
+                    this.rounds
                 );
                 break;
 
@@ -58,4 +66,8 @@ export default class Match implements MatchInterface {
         // TODO: Map-ek átírása
         this.context.emitMap(this.id, "scoreUpdate", sendData);
     };
+
+    public set round(round: number) {
+        this.rounds = round;
+    }
 }
