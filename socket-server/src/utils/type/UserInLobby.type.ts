@@ -7,4 +7,5 @@ export type UserInLobby = {
     isConnected: boolean;
     isReady: boolean;
     score: number;
+    correct?: boolean;
 };

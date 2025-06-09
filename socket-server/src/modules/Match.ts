@@ -18,7 +18,7 @@ export default class Match implements MatchInterface {
     public start(players: Map<string, UserInLobby>): void {
         this.players = players;
         for (const [id, user] of this.players.entries()) {
-            this.players.set(id, { ...user, score: 0 });
+            this.players.set(id, { ...user, score: 0, correct: false });
         }
         this.setGameType(this.gameType);
         this.game!.start();
@@ -47,7 +47,12 @@ export default class Match implements MatchInterface {
                 break;
 
             case "skinquiz":
-                this.game = new SkinQuiz(this.id, 5, this.players);
+                this.game = new SkinQuiz(
+                    this.id, 
+                    this.rounds, 
+                    this.players, 
+                    this.updateScore
+                );
                 break;
         }
     }
@@ -56,6 +61,7 @@ export default class Match implements MatchInterface {
         this.players.set(player, {
             ...this.players.get(player)!,
             score: (this.players.get(player)!.score ?? 0) + score,
+            correct: this.players.get(player)!.correct ?? true
         });
 
         const sendData: Map<string, number> = new Map();

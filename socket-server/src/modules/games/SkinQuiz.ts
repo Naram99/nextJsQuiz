@@ -7,7 +7,8 @@ export default class SkinQuiz {
     constructor(
         public readonly id: string,
         public readonly rounds: number,
-        public readonly players: Map<string, UserInLobby>
+        public readonly players: Map<string, UserInLobby>,
+        public readonly updateScore: (player: string, score: number) => void
     ) {
         this.randomizer = new SkinRandomizer(rounds);
     }
@@ -17,7 +18,13 @@ export default class SkinQuiz {
         this.socketListenersSetup();   
     }
 
-    private socketListenersSetup(): void {}
+    private socketListenersSetup(): void {
+        this.players.forEach((player, id) => {
+            player.socket?.removeAllListeners("skinQuiz:answer");
+
+            player.socket?.on("skinQuiz:answer", (answer: string) => {})
+        });
+    }
 
     private nextRound() {}
 }
