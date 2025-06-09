@@ -30,6 +30,13 @@
     justify-content: center;
 }
 
+.announcer {
+    display: flex;
+    justify-content: center;
+    font-size: 2rem;
+    text-align: center;
+}
+
 .board {
     display: grid;
     grid-template-columns: 150px 150px 150px;
@@ -72,4 +79,19 @@
     background-color: var(--main-color);
     color: var(--main-background);
     box-shadow: 0 0 10px var(--main-color);
+}
+
+@media (max-width: 800px) {
+    /* .footer {
+        flex-direction: column;
+    } */
+
+    .board {
+        padding: 1rem;
+        grid-template-columns: repeat(3, 1fr);
+    }
+
+    .boardCell {
+        height: calc(100vw / 3 - 10px - 4px);
+    }
 }

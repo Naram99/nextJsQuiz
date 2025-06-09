@@ -16,7 +16,6 @@ import RoundCounter from "./RoundCounter";
 export default function LobbyPage() {
     const router = useRouter();
     const { user: me, isLoading } = useUser();
-    console.log(me?.name);
 
     const params = useParams();
     const id = params.id as string;
@@ -94,10 +93,12 @@ export default function LobbyPage() {
     // TODO: Átírni, hogy fordítások esetén is működjenek a változtatások
     function handleLobbyTypeChange(e: React.MouseEvent) {
         setSettings({ ...settings, lobbyType: e.currentTarget.textContent as lobbyType });
+        socket.emit("lobbyTypeChange", id, me?.name, e.currentTarget.textContent as lobbyType);
     }
 
     function handleGameTypeChange(e: React.MouseEvent) {
         setSettings({ ...settings, game: e.currentTarget.textContent as gameCardType });
+        socket.emit("gameTypeChange", id, me?.name, e.currentTarget.textContent as gameCardType);
     }
 
     return (

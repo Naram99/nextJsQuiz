@@ -27,15 +27,15 @@ export default class TicTacToe implements TicTacToeGame {
     start(): void {
         this.active = true;
         this.board = Array(9).fill(null);
+        this.activePlayer = this.activePlayer === "X" ? "O" : "X";
         this.socketListenerSetup();
-        this.sc.io.to(this.id).emit("tictactoe:newGame", this.board);
+        this.sc.io.to(this.id).emit("tictactoe:newGame", this.board, this.activePlayer);
         Object.entries(this.players).forEach(([symbol, user]) => {
             this.players[symbol as TicTacToePlayer].isReady = false;
         });
     }
 
     private socketListenerSetup(): void {
-        // TODO: setup
         Object.values(this.players).forEach((user) => {
             user.socket?.removeAllListeners("tictactoe:requestData");
             user.socket?.removeAllListeners("tictactoe:readySend");
@@ -73,14 +73,11 @@ export default class TicTacToe implements TicTacToeGame {
                 ready: false,
             });
         });
-        // TODO: Map-ek átírása!
-        console.log(startData);
-        this.sc.emitMap(this.id, "tictactoe:playerData", startData);
+        
+        this.sc.emitMap(this.id, "tictactoe:playerData", startData, this.activePlayer);
     }
 
     handleMove(index: number): void {
-        console.log(index, this.activePlayer);
-
         if (!this.board[index] && this.active) {
             this.board[index] = this.activePlayer;
             const end = this.checkGameEnd();
@@ -90,6 +87,7 @@ export default class TicTacToe implements TicTacToeGame {
                 this.sc.io.to(this.id).emit("tictactoe:move", this.board, this.activePlayer);
                 this.sc.io.to(this.id).emit("tictactoe:gameEnd", end);
                 this.onGameEnd(this.players[this.activePlayer].userId, end === "tie" ? 0 : 1);
+                this.setScore(this.activePlayer, end === "tie" ? 0 : 1);
             } else {
                 this.activePlayer = this.activePlayer === "X" ? "O" : "X";
                 this.sc.io.to(this.id).emit("tictactoe:move", this.board, this.activePlayer);
@@ -122,5 +120,9 @@ export default class TicTacToe implements TicTacToeGame {
         if (!this.board.includes(null)) return "tie";
 
         return null;
+    }
+
+    private setScore(player: TicTacToePlayer, score: number): void {
+        this.players[player].score = score;
     }
 }

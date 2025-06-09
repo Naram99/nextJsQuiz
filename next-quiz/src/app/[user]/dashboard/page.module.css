@@ -84,7 +84,21 @@
 }
 
 @media (max-width: 800px) {
+
+    .mainWrapper {
+        flex-direction: column;
+        height: auto;
+        overflow: auto;
+    }
+
     .cardsCt {
         flex-direction: column;
+        justify-content: start;
+        height: 100%;
+    }
+
+    .card {
+        height: 10rem;
+        width: 100%;
     }
 }

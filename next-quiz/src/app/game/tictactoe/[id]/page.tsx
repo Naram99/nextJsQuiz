@@ -12,7 +12,7 @@ import { faCheck } from "@fortawesome/free-solid-svg-icons/faCheck";
 
 export default function TicTacToeGamePage() {
     const router = useRouter();
-    const me = useUser();
+    const { user: me, isLoading } = useUser();
     // TODO: texts
 
     const params = useParams();
@@ -24,8 +24,10 @@ export default function TicTacToeGamePage() {
         Map<string, { symbol: TicTacToePlayer; score: number; ready: boolean }>
     >(new Map());
     const [board, setBoard] = useState<(TicTacToePlayer | null)[]>(Array(9).fill(null));
+    const [announcer, setAnnouncer] = useState<string | null>(null);
 
     useEffect(() => {
+        if (isLoading) return;
         if (!socket.connected) connectSocketWithFreshToken();
 
         // TODO: Check if user in lobby, join or leave if not
@@ -38,22 +40,29 @@ export default function TicTacToeGamePage() {
         socket.on("tictactoe:ready", handlePlayerReady);
         socket.on("scoreUpdate", updateScore);
         socket.on("tictactoe:move", updateBoard);
+        socket.on("tictactoe:gameEnd", handleGameEnd);
         socket.on("matchEnd", handleEnd);
 
         function handleJoinLobby(bool: boolean) {
-            if (!bool) router.push(`/${me?.user?.name}/dashboard`);
+            if (!bool) router.push(`/${me?.name}/dashboard`);
         }
 
-        function setNewGame(board: (TicTacToePlayer | null)[]) {
+        function setNewGame(
+            board: (TicTacToePlayer | null)[], 
+            activePlayer: TicTacToePlayer
+        ) {
             setBoard(board);
             setReady(false);
-            socket.emit("tictactoe:requestData", id);
+            setAnnouncer(`${activePlayer}'s turn`);
+            if (score.size === 0) socket.emit("tictactoe:requestData", id);
         }
 
         function setPlayerData(
-            data: [string, { symbol: TicTacToePlayer; score: number; ready: boolean }][]
+            data: [string, { symbol: TicTacToePlayer; score: number; ready: boolean }][],
+            activePlayer: TicTacToePlayer
         ) {
             setScore(new Map(data));
+            setAnnouncer(`${activePlayer}'s turn`);
         }
 
         function handlePlayerReady(name: string) {
@@ -81,8 +90,16 @@ export default function TicTacToeGamePage() {
             });
         }
 
-        function updateBoard(board: (TicTacToePlayer | null)[]) {
+        function updateBoard(
+            board: (TicTacToePlayer | null)[], 
+            activePlayer: TicTacToePlayer
+        ) {
             setBoard(board);
+            setAnnouncer(`${activePlayer}'s turn`);
+        }
+
+        function handleGameEnd(end: TicTacToePlayer | "tie" | null) {
+            setAnnouncer(end === "tie" ? "Tie!" : `${end} won!`);
         }
 
         function handleEnd() {
@@ -96,17 +113,18 @@ export default function TicTacToeGamePage() {
             socket.off("tictactoe:ready", handlePlayerReady);
             socket.off("scoreUpdate", updateScore);
             socket.off("tictactoe:move", updateBoard);
+            socket.off("tictactoe:gameEnd", handleGameEnd);
             socket.off("matchEnd", handleEnd);
         };
     }, []);
 
     function handleReady() {
         setReady(true);
-        socket.emit("tictactoe:readySend", me?.user?.name);
+        socket.emit("tictactoe:readySend", me?.name);
     }
 
     function handleMove(index: number) {
-        socket.emit("tictactoe:moveSend", id, index, me?.user?.name);
+        socket.emit("tictactoe:moveSend", id, index, me?.name);
     }
 
     return (
@@ -127,11 +145,17 @@ export default function TicTacToeGamePage() {
                         </div>
                     ))}
                 </div>
-                <div className={styles.announcer}>{/* TODO: announcer */}</div>
+                <div className={styles.announcer}>
+                    {announcer}
+                </div>
             </div>
             <div className={styles.board}>
                 {board.map((cell, index) => (
-                    <div key={index} className={styles.boardCell} onClick={() => handleMove(index)}>
+                    <div 
+                        key={index} 
+                        className={styles.boardCell} 
+                        onClick={() => handleMove(index)}
+                    >
                         {cell}
                     </div>
                 ))}

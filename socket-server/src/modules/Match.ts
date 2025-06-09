@@ -62,8 +62,7 @@ export default class Match implements MatchInterface {
         this.players.forEach((player) => {
             sendData.set(player.name, player.score);
         });
-        console.log(sendData);
-        // TODO: Map-ek átírása
+
         this.context.emitMap(this.id, "scoreUpdate", sendData);
         if (this.currentRound < this.rounds) setTimeout(() => this.nextRound(), 3000);
         else setTimeout(() => this.context.io.to(this.id).emit("matchEnd"), 3000);
