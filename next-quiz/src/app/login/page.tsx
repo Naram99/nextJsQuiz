@@ -8,9 +8,11 @@ import InputGroup from "@/components/InputGroup";
 import FormValuesInterface from "@/utils/interfaces/FormValues.interface";
 import { useRouter } from "next/navigation";
 import { socket } from "@/socket/socket";
+import { useUser } from "@/context/UserContext";
 
 const LoginPage: React.FC = () => {
     const router = useRouter();
+    const { setUser } = useUser();
     const { texts } = useContext(LanguageContext)!;
     const loginTexts = texts.loginTexts!;
 
@@ -91,6 +93,7 @@ const LoginPage: React.FC = () => {
                 if (verifyResp.ok) {
                     const verifyData = await verifyResp.json();
                     if (verifyData.user?.name) {
+                        setUser(verifyData.user);
                         router.push(`${data.user}/dashboard`);
                     } else {
                         throw new Error("Failed to verify authentication");

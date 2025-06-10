@@ -10,11 +10,13 @@ type User = {
 type UserContextType = {
     user: User;
     isLoading: boolean;
+    setUser: (user: User) => void;
 };
 
 const UserContext = createContext<UserContextType>({
     user: null,
     isLoading: true,
+    setUser: () => {}
 });
 
 export const useUser = () => useContext(UserContext);
@@ -66,7 +68,7 @@ export function UserProvider({ children }: { children: ReactNode }) {
     }, [retryCount]); // Re-run when retryCount changes
 
     return (
-        <UserContext.Provider value={{ user, isLoading }}>
+        <UserContext.Provider value={{ user, isLoading, setUser }}>
             {children}
         </UserContext.Provider>
     );

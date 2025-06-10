@@ -64,7 +64,7 @@ export default function SkinQuizGamePage() {
                 scoreData.forEach(([name, newScore]) => {
                     const current = updated.get(name);
                     if (current) {
-                        updated.set(name, { ...current, score: newScore });
+                        updated.set(name, { ...current, score: newScore, correct: true });
                     }
                 });
                 return updated;
