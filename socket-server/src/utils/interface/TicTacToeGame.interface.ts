@@ -8,6 +8,7 @@ export interface TicTacToeGame {
     players: Record<TicTacToePlayer, UserInLobby>;
     onGameEnd: (player: string, score: number) => void;
 
+    initialize(): void;
     start(): void;
     handleMove(index: number): void;
     checkGameEnd(): TicTacToePlayer | "tie" | null;

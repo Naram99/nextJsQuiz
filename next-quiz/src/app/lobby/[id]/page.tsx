@@ -25,7 +25,7 @@ export default function LobbyPage() {
     const [settings, setSettings] = useState<LobbySettings>({
         lobbyType: "open",
         minUsers: 2,
-        maxUsers: 2,
+        maxUsers: 9,
         game: "tictactoe",
     });
 

@@ -28,7 +28,7 @@ export default class SkinRandomizer {
             name: SkinsTable.name,
             src: SkinsTable.src, 
             filter: sql`''`
-        }).from(SkinsTable).orderBy(sql`RANDOM()`).limit(this.count)
+        }).from(SkinsTable).orderBy(sql`RANDOM()`).limit(this.count);
     }
 
     private randomizeFilters() {
@@ -46,7 +46,7 @@ export default class SkinRandomizer {
                 value: randomFilter.value,
                 zoom: randomFilter.zoom
             }
-        }
+        }        
     }
 
     public get skinArray(): SkinGameElement[] {

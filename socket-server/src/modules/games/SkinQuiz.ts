@@ -1,29 +1,39 @@
 import SkinRandomizer from "../SkinRandomizer";
 import {UserInLobby} from "../../utils/type/UserInLobby.type";
+import SkinQuizRound from "./SkinQuizRound";
 
 export default class SkinQuiz {
     private randomizer: SkinRandomizer;
+    public settings = {
+        minPlayers: 1,
+        maxPlayers: 20,
+        rounds: 5,
+        levelPerRound: 5,
+    }
+    public quizRound: SkinQuizRound | null = null;
 
     constructor(
         public readonly id: string,
-        public readonly rounds: number,
         public readonly players: Map<string, UserInLobby>,
-        public readonly updateScore: (player: string, score: number) => void
+        public readonly updateScore: (player: string, score: number) => void,
+        rounds: number,
     ) {
         this.randomizer = new SkinRandomizer(rounds);
+        this.settings.rounds = rounds;
     }
-
-    public async start(): Promise<void> {
+    
+    public async initialize() {
         await this.randomizer.start();
-        this.socketListenersSetup();   
     }
-
-    private socketListenersSetup(): void {
-        this.players.forEach((player, id) => {
-            player.socket?.removeAllListeners("skinQuiz:answer");
-
-            player.socket?.on("skinQuiz:answer", (answer: string) => {})
-        });
+    
+    public start(): void {
+        this.quizRound = new SkinQuizRound(
+            this.id,
+            this.players,
+            this.updateScore,
+            this.settings.levelPerRound,
+            this.randomizer.skinArray.pop()!
+        )
     }
 
     private nextRound() {}

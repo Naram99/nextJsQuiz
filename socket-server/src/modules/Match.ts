@@ -15,12 +15,12 @@ export default class Match implements MatchInterface {
 
     constructor(public readonly id: string, private context: ServerContext) {}
 
-    public start(players: Map<string, UserInLobby>): void {
+    public async start(players: Map<string, UserInLobby>): Promise<void> {
         this.players = players;
         for (const [id, user] of this.players.entries()) {
             this.players.set(id, { ...user, score: 0, correct: false });
         }
-        this.setGameType(this.gameType);
+        await this.setGameType(this.gameType);
         this.game!.start();
     }
 
@@ -29,7 +29,7 @@ export default class Match implements MatchInterface {
         if (this.currentRound <= this.rounds) this.game!.start();
     }
 
-    public setGameType(gt: GameType): void {
+    public async setGameType(gt: GameType): Promise<void> {
         switch (gt) {
             case "tictactoe":
                 const playerArray = Array.from(this.players.values());
@@ -48,13 +48,16 @@ export default class Match implements MatchInterface {
 
             case "skinquiz":
                 this.game = new SkinQuiz(
-                    this.id, 
-                    this.rounds, 
+                    this.id,
                     this.players, 
-                    this.updateScore
+                    this.updateScore,
+                    this.rounds
                 );
+                
                 break;
         }
+
+        await this.game!.initialize();
     }
 
     updateScore = (player: string, score: number): void => {

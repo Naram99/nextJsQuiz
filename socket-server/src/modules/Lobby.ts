@@ -11,7 +11,7 @@ export default class Lobby {
     public settings: LobbySettings = {
         lobbyType: "open",
         minUsers: 2,
-        maxUsers: 2,
+        maxUsers: 9,
         game: "tictactoe",
     };
     private match: Match;
@@ -72,6 +72,7 @@ export default class Lobby {
             ) => {
                 if (this.owner.name === name) {
                     this.settings.game = gameType;
+                    this.match.gameType = gameType;
                     this.context.io.to(code).emit(
                         "lobbyData", 
                         Array.from(this.users.values()).map(

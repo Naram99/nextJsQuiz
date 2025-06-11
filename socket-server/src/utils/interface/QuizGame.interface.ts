@@ -4,5 +4,6 @@ export default interface QuizGame {
     id: string;
     settings: QuizSettings;
 
+    initialize(): void;
     start(): void;
 }

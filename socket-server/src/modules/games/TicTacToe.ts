@@ -24,6 +24,8 @@ export default class TicTacToe implements TicTacToeGame {
         this.settings.rounds = rounds;
     }
 
+    initialize(): void {}
+
     start(): void {
         this.active = true;
         this.board = Array(9).fill(null);
