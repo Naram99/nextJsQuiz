@@ -18,7 +18,7 @@ export default class TicTacToe implements TicTacToeGame {
         private sc: ServerContext,
         public readonly id: string,
         public readonly players: Record<TicTacToePlayer, UserInLobby>,
-        public onGameEnd: (player: string, score: number) => void,
+        public onGameEnd: (data: { player: string; score: number }[]) => void,
         rounds: number = 1
     ) {
         this.settings.rounds = rounds;
@@ -75,7 +75,7 @@ export default class TicTacToe implements TicTacToeGame {
                 ready: false,
             });
         });
-        
+
         this.sc.emitMap(this.id, "tictactoe:playerData", startData, this.activePlayer);
     }
 
@@ -88,7 +88,12 @@ export default class TicTacToe implements TicTacToeGame {
                 this.active = false;
                 this.sc.io.to(this.id).emit("tictactoe:move", this.board, this.activePlayer);
                 this.sc.io.to(this.id).emit("tictactoe:gameEnd", end);
-                this.onGameEnd(this.players[this.activePlayer].userId, end === "tie" ? 0 : 1);
+                this.onGameEnd([
+                    {
+                        player: this.players[this.activePlayer].userId,
+                        score: end === "tie" ? 0 : 1,
+                    },
+                ]);
                 this.setScore(this.activePlayer, end === "tie" ? 0 : 1);
             } else {
                 this.activePlayer = this.activePlayer === "X" ? "O" : "X";

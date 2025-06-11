@@ -6,7 +6,7 @@ export interface TicTacToeGame {
     id: string;
     settings: TicTacToeSettings;
     players: Record<TicTacToePlayer, UserInLobby>;
-    onGameEnd: (player: string, score: number) => void;
+    onGameEnd: (data: { player: string; score: number }[]) => void;
 
     initialize(): void;
     start(): void;

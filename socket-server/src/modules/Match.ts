@@ -48,23 +48,25 @@ export default class Match implements MatchInterface {
 
             case "skinquiz":
                 this.game = new SkinQuiz(
+                    this.context,
                     this.id,
-                    this.players, 
+                    this.players,
                     this.updateScore,
                     this.rounds
                 );
-                
+
                 break;
         }
 
         await this.game!.initialize();
     }
 
-    updateScore = (player: string, score: number): void => {
-        this.players.set(player, {
-            ...this.players.get(player)!,
-            score: (this.players.get(player)!.score ?? 0) + score,
-            correct: this.players.get(player)!.correct ?? true
+    updateScore = (dataObj: { player: string; score: number }[]): void => {
+        dataObj.forEach((data) => {
+            this.players.set(data.player, {
+                ...this.players.get(data.player)!,
+                score: (this.players.get(data.player)!.score ?? 0) + data.score,
+            });
         });
 
         const sendData: Map<string, number> = new Map();

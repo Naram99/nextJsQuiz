@@ -12,5 +12,5 @@ export interface MatchInterface {
 
     start(players: Map<string, UserInLobby>): void;
     setGameType(gt: GameType): void;
-    updateScore(player: string, score: number): void;
+    updateScore(data: { player: string; score: number }[]): void;
 }
