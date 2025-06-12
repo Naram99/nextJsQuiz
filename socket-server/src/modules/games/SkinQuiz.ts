@@ -37,6 +37,6 @@ export default class SkinQuiz {
             this.settings.levelPerRound,
             this.randomizer.skinArray.pop()!
         );
-        this.context.io.to(this.id).emit("");
+        //this.context.io.to(this.id).emit("");
     }
 }

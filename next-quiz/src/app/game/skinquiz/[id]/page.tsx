@@ -11,10 +11,11 @@ import SkinView from "./SkinView";
 
 export default function SkinQuizGamePage() {
     const router = useRouter();
-    const { user: me, isLoading } = useUser();
+    const { user: me } = useUser();
 
     const params = useParams();
     const id = params.id as string;
+    
 
     const [level, setLevel] = useState<number>(0);
     const [score, setScore] = useState<
@@ -24,11 +25,10 @@ export default function SkinQuizGamePage() {
     const [currentSkin, setCurrentSkin] = useState<CurrentSkin | null>(null);
 
     useEffect(() => {
-        if (isLoading) return;
         if (!socket.connected) connectSocketWithFreshToken();
 
         socket.emit("validateJoinCode", id);
-        socket.emit("skinQuiz:requestData", id);
+        //socket.emit("skinQuiz:requestData", id);
 
         socket.on("joinLobbyOk", handleJoinLobby);
         //socket.on("skinQuiz:allSkins", handleAllSkins);
@@ -43,10 +43,12 @@ export default function SkinQuizGamePage() {
         }
 
         function handleNewRound(skin: CurrentSkin) {
+            console.log(skin);
             setCurrentSkin(skin);
         }
 
         function handleNextLevel(level: number, skin: CurrentSkin) {
+            console.log("next level");
             setLevel(level);
             setCurrentSkin(skin);
         }
@@ -62,6 +64,7 @@ export default function SkinQuizGamePage() {
                 { score: number; ready: boolean; correct: boolean }
             ][]
         ) {
+            console.log("playerData");
             const newScore = new Map(data);
             setScore(newScore);
         }
@@ -96,14 +99,15 @@ export default function SkinQuizGamePage() {
             socket.off("scoreUpdate", handleScore);
             socket.off("matchEnd", handleEnd);
         };
-    }, [isLoading]);
+    }, []);
 
     return (
         <div className={styles.pageWrapper}>
             <h1>
                 SkinQuizPage, {id}, {me?.name}
             </h1>
-            <SkinView skin={currentSkin} level={level} />
+            {currentSkin === null ? "" : <SkinView skin={currentSkin} level={level} />}
+            
             <SkinSelector />
         </div>
     );

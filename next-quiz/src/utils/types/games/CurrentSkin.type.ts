@@ -1,6 +1,6 @@
 export type CurrentSkin = {
     name: string;
-    champion: string;
+    champ: string;
     src: string;
     filter: {
         type: string;

@@ -21,7 +21,7 @@ export default class SkinQuizRound {
         this.nextLevel(true, true);
     }
 
-    private socketListenersSetup(): void {
+    private socketListenersSetup(): void {        
         this.players.forEach((player, id) => {
             player.socket?.removeAllListeners("skinQuiz:answer");
 
@@ -46,14 +46,13 @@ export default class SkinQuizRound {
     private nextLevel(fullReset: boolean = false, start: boolean = false) {
         if (!start) this.currentLevel++;
         this.resetCorrect(fullReset);
-        this.context.io
-            .to(this.id)
-            .emit("skinQuiz:nextLevel", this.currentLevel);
-        this.emitPlayerData();
         this.emitSkinData();
+        this.emitPlayerData();
     }
 
     private emitPlayerData() {
+        console.log("playerData emit");
+        
         const data: Map<
             string,
             { score: number; ready: boolean; correct: boolean }
@@ -70,9 +69,10 @@ export default class SkinQuizRound {
     }
 
     private emitSkinData() {
+        console.log("skin emit", this.id);
         this.context.io
             .to(this.id)
-            .emit("skinQuiz:nextLevel", this.currentSkin, this.currentLevel);
+            .emit("skinQuiz:nextLevel", this.currentLevel, this.currentSkin);
     }
 
     private resetCorrect(full: boolean) {
