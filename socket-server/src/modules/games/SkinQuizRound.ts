@@ -18,12 +18,18 @@ export default class SkinQuizRound {
     ) {
         this.socketListenersSetup();
         console.log(currentSkin);
-        this.nextLevel(true, true);
+        this.resetCorrect(true)
     }
 
     private socketListenersSetup(): void {        
         this.players.forEach((player, id) => {
+            player.socket?.removeAllListeners("skinQuiz:requestData");
             player.socket?.removeAllListeners("skinQuiz:answer");
+
+            player.socket?.on("skinQuiz:requestData", (code: string) => {
+                this.emitPlayerData();
+                this.emitSkinData();
+            });
 
             player.socket?.on("skinQuiz:answer", (answer: string) => {
                 if (answer === this.currentSkin.name) {
@@ -58,7 +64,7 @@ export default class SkinQuizRound {
             { score: number; ready: boolean; correct: boolean }
         > = new Map();
         this.players.forEach((player, id) => {
-            data.set(id, {
+            data.set(player.name, {
                 score: player.score,
                 ready: player.isReady,
                 correct: player.correct!,

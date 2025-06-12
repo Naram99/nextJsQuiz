@@ -5,3 +5,14 @@
     flex-direction: column;
     gap: 2rem;
 }
+
+.skinWrapper {
+    width: 100%;
+    display: grid;
+    place-content: center;
+}
+
+.skin {
+    height: 30rem;
+    width: auto;
+}

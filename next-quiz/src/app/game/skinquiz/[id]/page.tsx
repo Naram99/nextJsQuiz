@@ -8,6 +8,8 @@ import { connectSocketWithFreshToken, socket } from "@/socket/socket";
 import SkinSelector from "./SkinSelector";
 import { CurrentSkin } from "@/utils/types/games/CurrentSkin.type";
 import SkinView from "./SkinView";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faCheck, faX } from "@fortawesome/free-solid-svg-icons";
 
 export default function SkinQuizGamePage() {
     const router = useRouter();
@@ -28,7 +30,7 @@ export default function SkinQuizGamePage() {
         if (!socket.connected) connectSocketWithFreshToken();
 
         socket.emit("validateJoinCode", id);
-        //socket.emit("skinQuiz:requestData", id);
+        socket.emit("skinQuiz:requestData", id);
 
         socket.on("joinLobbyOk", handleJoinLobby);
         //socket.on("skinQuiz:allSkins", handleAllSkins);
@@ -43,12 +45,11 @@ export default function SkinQuizGamePage() {
         }
 
         function handleNewRound(skin: CurrentSkin) {
-            console.log(skin);
             setCurrentSkin(skin);
         }
 
         function handleNextLevel(level: number, skin: CurrentSkin) {
-            console.log("next level");
+            console.log(level, skin);
             setLevel(level);
             setCurrentSkin(skin);
         }
@@ -64,7 +65,7 @@ export default function SkinQuizGamePage() {
                 { score: number; ready: boolean; correct: boolean }
             ][]
         ) {
-            console.log("playerData");
+            console.log(data);
             const newScore = new Map(data);
             setScore(newScore);
         }
@@ -103,9 +104,29 @@ export default function SkinQuizGamePage() {
 
     return (
         <div className={styles.pageWrapper}>
-            <h1>
-                SkinQuizPage, {id}, {me?.name}
-            </h1>
+             <div className={styles.header}>
+                <div className={styles.scoreBoard}>
+                    {Array.from(score.entries()).map(([player, data]) => (
+                        <div key={player} className={styles.playerScore}>
+                            <div className={styles.playerName}>
+                                {player}:
+                            </div>
+                            <div className={styles.score}>{data.score}</div>
+                            {data.correct === null ? "" : (
+                                <div className={styles.correct}>
+                                    {data.correct ? 
+                                        (<FontAwesomeIcon icon={faCheck} />)
+                                        :  (<FontAwesomeIcon icon={faX} />)
+                                    }
+                                </div>
+                            )}
+                        </div>
+                    ))}
+                </div>
+                {/* <div className={styles.announcer}>
+                    {announcer}
+                </div> */}
+            </div>
             {currentSkin === null ? "" : <SkinView skin={currentSkin} level={level} />}
             
             <SkinSelector />
