@@ -17,11 +17,13 @@ export default function SkinQuizGamePage() {
 
     const params = useParams();
     const id = params.id as string;
-    
 
-    const [level, setLevel] = useState<number>(0);
+    const [level, setLevel] = useState<{
+        maxLevel: number;
+        currentLevel: number;
+    }>({ maxLevel: 5, currentLevel: 0 });
     const [score, setScore] = useState<
-        Map<string, { score: number; ready: boolean; correct: boolean }>
+        Map<string, { score: number; ready: boolean; correct: boolean | null }>
     >(new Map());
 
     const [currentSkin, setCurrentSkin] = useState<CurrentSkin | null>(null);
@@ -45,11 +47,18 @@ export default function SkinQuizGamePage() {
         }
 
         function handleNewRound(skin: CurrentSkin) {
+            console.log("New round skin:", skin);
             setCurrentSkin(skin);
         }
 
-        function handleNextLevel(level: number, skin: CurrentSkin) {
-            console.log(level, skin);
+        function handleNextLevel(
+            level: {
+                maxLevel: number;
+                currentLevel: number;
+            },
+            skin: CurrentSkin
+        ) {
+            console.log("Next level data:", { level, skin });
             setLevel(level);
             setCurrentSkin(skin);
         }
@@ -62,7 +71,7 @@ export default function SkinQuizGamePage() {
         function handlePlayerData(
             data: [
                 string,
-                { score: number; ready: boolean; correct: boolean }
+                { score: number; ready: boolean; correct: boolean | null }
             ][]
         ) {
             console.log(data);
@@ -104,20 +113,21 @@ export default function SkinQuizGamePage() {
 
     return (
         <div className={styles.pageWrapper}>
-             <div className={styles.header}>
+            <div className={styles.header}>
                 <div className={styles.scoreBoard}>
                     {Array.from(score.entries()).map(([player, data]) => (
                         <div key={player} className={styles.playerScore}>
-                            <div className={styles.playerName}>
-                                {player}:
-                            </div>
+                            <div className={styles.playerName}>{player}:</div>
                             <div className={styles.score}>{data.score}</div>
-                            {data.correct === null ? "" : (
+                            {data.correct === null ? (
+                                ""
+                            ) : (
                                 <div className={styles.correct}>
-                                    {data.correct ? 
-                                        (<FontAwesomeIcon icon={faCheck} />)
-                                        :  (<FontAwesomeIcon icon={faX} />)
-                                    }
+                                    {data.correct ? (
+                                        <FontAwesomeIcon icon={faCheck} />
+                                    ) : (
+                                        <FontAwesomeIcon icon={faX} />
+                                    )}
                                 </div>
                             )}
                         </div>
@@ -127,9 +137,17 @@ export default function SkinQuizGamePage() {
                     {announcer}
                 </div> */}
             </div>
-            {currentSkin === null ? "" : <SkinView skin={currentSkin} level={level} />}
-            
-            <SkinSelector />
+            {currentSkin === null ? (
+                ""
+            ) : (
+                <SkinView
+                    skin={currentSkin}
+                    level={level.currentLevel}
+                    maxLevel={level.maxLevel}
+                />
+            )}
+
+            <SkinSelector correct={score.get(me!.name)?.correct} />
         </div>
     );
 }

@@ -55,6 +55,7 @@ io.on("connection", (socket: Socket) => {
         isConnected: true,
         isReady: false,
         score: 0,
+        correct: null,
     };
     const uh = new UserHandler(userData.id, userData.name, userData.role);
     const ch = new ChatHandler(io, socket, uh.id, uh.name);
@@ -65,7 +66,10 @@ io.on("connection", (socket: Socket) => {
     });
 
     socket.on("checkIfUserInLobby", (code) => {
-        socket.emit("userInLobby", lm.lobbiesData.get(code)?.hasUser(lobbyUser.userId));
+        socket.emit(
+            "userInLobby",
+            lm.lobbiesData.get(code)?.hasUser(lobbyUser.userId)
+        );
     });
 
     socket.on("joinLobby", (code) => {
@@ -78,7 +82,8 @@ io.on("connection", (socket: Socket) => {
         lm.removeUserFromAllLobbies(lobbyUser);
         let newCode = generateLobbyCode(Number(process.env.LOBBY_CODE_LENGTH));
         while (lm.checkIfLobbyExists(newCode)) newCode = generateLobbyCode(6);
-        if (lm.createLobby(newCode, lobbyUser)) socket.emit("joinLobbyOk", true, newCode);
+        if (lm.createLobby(newCode, lobbyUser))
+            socket.emit("joinLobbyOk", true, newCode);
     });
 
     socket.on("getLobbyData", (code: string) => {

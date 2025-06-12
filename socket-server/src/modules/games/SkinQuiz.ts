@@ -28,7 +28,18 @@ export default class SkinQuiz {
         await this.randomizer.start();
     }
 
+    private cleanupRound() {
+        if (this.quizRound) {
+            this.players.forEach((player) => {
+                player.socket?.removeAllListeners("skinQuiz:requestData");
+                player.socket?.removeAllListeners("skinQuiz:answer");
+            });
+            this.quizRound = null;
+        }
+    }
+
     public start(): void {
+        this.cleanupRound();
         this.quizRound = new SkinQuizRound(
             this.context,
             this.id,

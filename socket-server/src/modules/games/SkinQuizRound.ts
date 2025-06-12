@@ -18,33 +18,67 @@ export default class SkinQuizRound {
     ) {
         this.socketListenersSetup();
         console.log(currentSkin);
-        this.resetCorrect(true)
+        this.resetCorrect(true);
+        this.nextLevel(true, true);
     }
 
-    private socketListenersSetup(): void {        
-        this.players.forEach((player, id) => {
+    private socketListenersSetup(): void {
+        // First remove all existing listeners
+        this.players.forEach((player) => {
             player.socket?.removeAllListeners("skinQuiz:requestData");
             player.socket?.removeAllListeners("skinQuiz:answer");
+        });
 
+        // Then set up new listeners
+        this.players.forEach((player, id) => {
             player.socket?.on("skinQuiz:requestData", (code: string) => {
                 this.emitPlayerData();
                 this.emitSkinData();
             });
 
             player.socket?.on("skinQuiz:answer", (answer: string) => {
+                console.log("Answer received:", answer);
+                console.log("Current skin:", this.currentSkin);
+                console.log("Expected name:", this.currentSkin.name);
+                console.log("Player correct status:", player.correct);
+
                 if (answer === this.currentSkin.name) {
-                    player.score += this.maxPoints - this.currentLevel * 10;
-                    player.correct = true;
+                    console.log(`${player.name} guessed correctly!`);
+                    this.players.set(id, {
+                        ...this.players.get(id)!,
+                        score:
+                            this.players.get(id)!.score +
+                            (this.maxPoints - this.currentLevel * 10),
+                        correct: true,
+                    });
                 } else {
-                    player.correct = false;
+                    console.log("Answer was incorrect");
+                    this.players.set(id, {
+                        ...this.players.get(id)!,
+                        correct: false,
+                    });
                 }
+
                 if (
                     !Array.from(this.players).some(
                         ([key, user]) => user.correct === null
                     )
                 ) {
-                    if (this.currentLevel < this.maxLevel) this.nextLevel();
-                }
+                    if (
+                        this.currentLevel < this.maxLevel &&
+                        Array.from(this.players).some(
+                            ([key, user]) => user.correct === false
+                        )
+                    )
+                        this.nextLevel();
+                    else {
+                        const data: { player: string; score: number }[] = [];
+                        this.players.forEach((user, key) => {
+                            data.push({ player: key, score: user.score });
+                        });
+                        this.updateScore(data);
+                    }
+                } else this.emitPlayerData();
             });
         });
     }
@@ -57,17 +91,19 @@ export default class SkinQuizRound {
     }
 
     private emitPlayerData() {
-        console.log("playerData emit");
-        
         const data: Map<
             string,
-            { score: number; ready: boolean; correct: boolean }
+            {
+                score: number;
+                ready: boolean;
+                correct: boolean | null | undefined;
+            }
         > = new Map();
         this.players.forEach((player, id) => {
             data.set(player.name, {
                 score: player.score,
                 ready: player.isReady,
-                correct: player.correct!,
+                correct: player.correct,
             });
         });
 
@@ -75,10 +111,14 @@ export default class SkinQuizRound {
     }
 
     private emitSkinData() {
-        console.log("skin emit", this.id);
+        console.log("Emitting skin data:", this.currentSkin);
         this.context.io
             .to(this.id)
-            .emit("skinQuiz:nextLevel", this.currentLevel, this.currentSkin);
+            .emit(
+                "skinQuiz:nextLevel",
+                { currentLevel: this.currentLevel, maxLevel: this.maxLevel },
+                this.currentSkin
+            );
     }
 
     private resetCorrect(full: boolean) {

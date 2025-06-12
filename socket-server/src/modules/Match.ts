@@ -62,10 +62,12 @@ export default class Match implements MatchInterface {
     }
 
     updateScore = (dataObj: { player: string; score: number }[]): void => {
+        console.log("updateScore");
+
         dataObj.forEach((data) => {
             this.players.set(data.player, {
                 ...this.players.get(data.player)!,
-                score: (this.players.get(data.player)!.score ?? 0) + data.score,
+                score: (this.players.get(data.player)?.score ?? 0) + data.score,
             });
         });
 
@@ -75,8 +77,13 @@ export default class Match implements MatchInterface {
         });
 
         this.context.emitMap(this.id, "scoreUpdate", sendData);
-        if (this.currentRound < this.rounds) setTimeout(() => this.nextRound(), 3000);
-        else setTimeout(() => this.context.io.to(this.id).emit("matchEnd"), 3000);
+        if (this.currentRound < this.rounds)
+            setTimeout(() => this.nextRound(), 3000);
+        else
+            setTimeout(
+                () => this.context.io.to(this.id).emit("matchEnd"),
+                3000
+            );
     };
 
     public set round(round: number) {

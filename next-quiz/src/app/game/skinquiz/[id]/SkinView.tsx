@@ -5,25 +5,28 @@ import Image from "next/image";
 export default function SkinView({
     skin,
     level,
+    maxLevel,
 }: {
     skin: CurrentSkin | null;
     level: number;
+    maxLevel: number;
 }) {
-    console.log(skin?.filter);
-    const currentFilterValue = skin!.filter.start - (skin!.filter.start - skin!.filter.final) * level;
+    const currentFilterValue =
+        skin!.filter.start -
+        ((skin!.filter.start - skin!.filter.final) / maxLevel) * level;
     const styleFilter = {
-        filter: `${skin?.filter.type}(${currentFilterValue}${skin?.filter.value})` 
-    }
+        filter: `${skin?.filter.type}(${currentFilterValue}${skin?.filter.value})`,
+    };
     return (
         <div className={styles.skinWrapper}>
-            <Image 
-                src={skin!.src} 
-                alt={"skin"} 
-                height={100} 
-                width={100} 
+            <Image
+                src={skin!.src}
+                alt={"skin"}
+                height={100}
+                width={100}
                 quality={100}
                 unoptimized={true}
-                className={styles.skin} 
+                className={styles.skin}
                 style={styleFilter}
             />
         </div>
