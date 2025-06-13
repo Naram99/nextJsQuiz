@@ -39,7 +39,7 @@ export default class SkinQuiz {
     }
 
     public start(): void {
-        this.cleanupRound();
+        //this.cleanupRound();
         this.quizRound = new SkinQuizRound(
             this.context,
             this.id,
@@ -48,6 +48,5 @@ export default class SkinQuiz {
             this.settings.levelPerRound,
             this.randomizer.skinArray.pop()!
         );
-        //this.context.io.to(this.id).emit("");
     }
 }

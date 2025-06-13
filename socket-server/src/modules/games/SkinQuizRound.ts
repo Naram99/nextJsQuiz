@@ -23,26 +23,23 @@ export default class SkinQuizRound {
     }
 
     private socketListenersSetup(): void {
-        // First remove all existing listeners
-        this.players.forEach((player) => {
+        this.players.forEach((player, id) => {
             player.socket?.removeAllListeners("skinQuiz:requestData");
             player.socket?.removeAllListeners("skinQuiz:answer");
-        });
 
-        // Then set up new listeners
-        this.players.forEach((player, id) => {
+
             player.socket?.on("skinQuiz:requestData", (code: string) => {
                 this.emitPlayerData();
                 this.emitSkinData();
             });
 
-            player.socket?.on("skinQuiz:answer", (answer: string) => {
-                console.log("Answer received:", answer);
+            player.socket?.on("skinQuiz:answer", (answer: string, champion: string) => {
+                console.log("Answer received:", champion, answer);
                 console.log("Current skin:", this.currentSkin);
                 console.log("Expected name:", this.currentSkin.name);
                 console.log("Player correct status:", player.correct);
 
-                if (answer === this.currentSkin.name) {
+                if (answer === this.currentSkin.name && champion === this.currentSkin.champ) {
                     console.log(`${player.name} guessed correctly!`);
                     this.players.set(id, {
                         ...this.players.get(id)!,
@@ -74,7 +71,7 @@ export default class SkinQuizRound {
                     else {
                         const data: { player: string; score: number }[] = [];
                         this.players.forEach((user, key) => {
-                            data.push({ player: key, score: user.score });
+                            data.push({ player: key, score: 0 });
                         });
                         this.updateScore(data);
                     }

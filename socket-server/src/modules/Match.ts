@@ -18,7 +18,7 @@ export default class Match implements MatchInterface {
     public async start(players: Map<string, UserInLobby>): Promise<void> {
         this.players = players;
         for (const [id, user] of this.players.entries()) {
-            this.players.set(id, { ...user, score: 0, correct: false });
+            this.players.set(id, { ...user, score: 0, correct: null });
         }
         await this.setGameType(this.gameType);
         this.game!.start();

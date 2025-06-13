@@ -39,7 +39,7 @@ export default function SkinSelector({
     }
 
     function handleSubmit() {
-        if (selectedSkin) socket.emit("skinQuiz:answer", selectedSkin);
+        if (selectedSkin) socket.emit("skinQuiz:answer", selectedSkin, selectedChampion);
     }
 
     return (
