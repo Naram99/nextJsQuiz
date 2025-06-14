@@ -1,19 +1,57 @@
 import { sql } from "drizzle-orm";
 import { db } from "../drizzle/db";
 import { SkinsTable } from "../drizzle/schema";
-import { SkinGameElement } from "../utils/type/SkinGameElement.type";
+import {
+    SkinGameElement,
+    SkinGameElementZoom,
+} from "../utils/type/SkinGameElement.type";
 
 export default class SkinRandomizer {
     private filters = [
-        {type: "blur", min: 33, max: 33, final: 0, value: "px", zoom: false},
-        // {type: "brightness", min: 0, max: 300, final: 100, value: "%", zoom: true},
-        // {type: "contrast", min: 20, max: 200, final: 100, value: "%", zoom: true},
-        // {type: "grayscale", min: 100, max: 100, final: 0, value: "%", zoom: true},
-        // {type: "hue-rotate", min: 60, max: 180, final: 0, value: "deg", zoom: true},
-        // {type: "invert", min: 60, max: 100, final: 0, value: "%", zoom: true},
-        // {type: "saturate", min: 500, max: 5000, final: 0, value: "%", zoom: true},
-    ]
-    public skins: SkinGameElement[] = []
+        { type: "blur", min: 33, max: 33, final: 0, value: "px", zoom: false },
+        /*{
+            type: "brightness",
+            min: 0,
+            max: 300,
+            final: 100,
+            value: "%",
+            zoom: true,
+        },*/
+        {
+            type: "contrast",
+            min: 20,
+            max: 200,
+            final: 100,
+            value: "%",
+            zoom: true,
+        },
+        {
+            type: "grayscale",
+            min: 100,
+            max: 100,
+            final: 0,
+            value: "%",
+            zoom: true,
+        },
+        {
+            type: "hue-rotate",
+            min: 60,
+            max: 180,
+            final: 0,
+            value: "deg",
+            zoom: true,
+        },
+        { type: "invert", min: 60, max: 100, final: 0, value: "%", zoom: true },
+        {
+            type: "saturate",
+            min: 500,
+            max: 5000,
+            final: 0,
+            value: "%",
+            zoom: true,
+        },
+    ];
+    public skins: SkinGameElement[] = [];
 
     constructor(public readonly count: number) {}
 
@@ -23,34 +61,48 @@ export default class SkinRandomizer {
     }
 
     private async selectFromDb() {
-        this.skins = await db.select({
-            champ: SkinsTable.champion,
-            name: SkinsTable.name,
-            src: SkinsTable.src, 
-            filter: sql`''`
-        }).from(SkinsTable).orderBy(sql`RANDOM()`).limit(this.count);
+        this.skins = await db
+            .select({
+                champ: SkinsTable.champion,
+                name: SkinsTable.name,
+                src: SkinsTable.src,
+                filter: sql`''`,
+            })
+            .from(SkinsTable)
+            .orderBy(sql`RANDOM()`)
+            .limit(this.count);
     }
 
     private randomizeFilters() {
         for (let i = 0; i < this.skins.length; i++) {
-            const random = Math.floor(Math.random() * Object.keys(this.filters).length);
+            const random = Math.floor(
+                Math.random() * Object.keys(this.filters).length
+            );
             const randomFilter = this.filters[random];
 
             this.skins[i].filter = {
                 type: randomFilter.type,
                 start: Math.round(
-                    Math.random() * (
-                        randomFilter.max - randomFilter.min
-                    ) + randomFilter.min),
+                    Math.random() * (randomFilter.max - randomFilter.min) +
+                        randomFilter.min
+                ),
                 final: randomFilter.final,
                 value: randomFilter.value,
-                zoom: randomFilter.zoom
-            }
-        }        
+                zoom: randomFilter.zoom ? this.generateRandomZoom() : false,
+            };
+        }
+    }
+
+    private generateRandomZoom(): SkinGameElementZoom {
+        return {
+            scaleStart: Math.random() + 2,
+            scaleEnd: 1,
+            top: Math.round(Math.random()) === 1,
+            left: Math.round(Math.random()) === 1,
+        };
     }
 
     public get skinArray(): SkinGameElement[] {
         return this.skins;
     }
-    
 }

@@ -27,56 +27,57 @@ export default class SkinQuizRound {
             player.socket?.removeAllListeners("skinQuiz:requestData");
             player.socket?.removeAllListeners("skinQuiz:answer");
 
-
             player.socket?.on("skinQuiz:requestData", (code: string) => {
                 this.emitPlayerData();
                 this.emitSkinData();
             });
 
-            player.socket?.on("skinQuiz:answer", (answer: string, champion: string) => {
-                console.log("Answer received:", champion, answer);
-                console.log("Current skin:", this.currentSkin);
-                console.log("Expected name:", this.currentSkin.name);
-                console.log("Player correct status:", player.correct);
-
-                if (answer === this.currentSkin.name && champion === this.currentSkin.champ) {
-                    console.log(`${player.name} guessed correctly!`);
-                    this.players.set(id, {
-                        ...this.players.get(id)!,
-                        score:
-                            this.players.get(id)!.score +
-                            (this.maxPoints - this.currentLevel * 10),
-                        correct: true,
-                    });
-                } else {
-                    console.log("Answer was incorrect");
-                    this.players.set(id, {
-                        ...this.players.get(id)!,
-                        correct: false,
-                    });
-                }
-
-                if (
-                    !Array.from(this.players).some(
-                        ([key, user]) => user.correct === null
-                    )
-                ) {
+            player.socket?.on(
+                "skinQuiz:answer",
+                (answer: string, champion: string) => {
                     if (
-                        this.currentLevel < this.maxLevel &&
-                        Array.from(this.players).some(
-                            ([key, user]) => user.correct === false
-                        )
-                    )
-                        this.nextLevel();
-                    else {
-                        const data: { player: string; score: number }[] = [];
-                        this.players.forEach((user, key) => {
-                            data.push({ player: key, score: 0 });
+                        answer === this.currentSkin.name &&
+                        champion === this.currentSkin.champ
+                    ) {
+                        console.log(`${player.name} guessed correctly!`);
+                        this.players.set(id, {
+                            ...this.players.get(id)!,
+                            score:
+                                this.players.get(id)!.score +
+                                (this.maxPoints - this.currentLevel * 10),
+                            correct: true,
                         });
-                        this.updateScore(data);
+                    } else {
+                        console.log("Answer was incorrect");
+                        this.players.set(id, {
+                            ...this.players.get(id)!,
+                            correct: false,
+                        });
                     }
-                } else this.emitPlayerData();
-            });
+
+                    if (
+                        !Array.from(this.players).some(
+                            ([key, user]) => user.correct === null
+                        )
+                    ) {
+                        if (
+                            this.currentLevel < this.maxLevel &&
+                            Array.from(this.players).some(
+                                ([key, user]) => user.correct === false
+                            )
+                        )
+                            this.nextLevel();
+                        else {
+                            const data: { player: string; score: number }[] =
+                                [];
+                            this.players.forEach((user, key) => {
+                                data.push({ player: key, score: 0 });
+                            });
+                            this.updateScore(data);
+                        }
+                    } else this.emitPlayerData();
+                }
+            );
         });
     }
 
@@ -108,7 +109,6 @@ export default class SkinQuizRound {
     }
 
     private emitSkinData() {
-        console.log("Emitting skin data:", this.currentSkin);
         this.context.io
             .to(this.id)
             .emit(
