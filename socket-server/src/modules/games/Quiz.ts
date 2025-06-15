@@ -1,14 +1,25 @@
 import QuizGame from "../../utils/interface/QuizGame.interface";
+import ServerContext from "../../utils/ServerContext";
+import { QuizFullData } from "../../utils/type/quiz/QuizFullData.type";
 import { QuizSettings } from "../../utils/type/settings/QuizSettings.type";
+import { UserInLobby } from "../../utils/type/UserInLobby.type";
 
 export default class Quiz implements QuizGame {
     public readonly settings: QuizSettings = {
         minPlayers: 2,
         maxPlayers: 10,
     };
+    private fullData: QuizFullData = {};
 
-    constructor(public readonly id: string) {}
-    
+    constructor(
+        private context: ServerContext,
+        public readonly id: string,
+        public readonly players: Map<string, UserInLobby>,
+        public readonly updateScore: (
+            data: { player: string; score: number }[]
+        ) => void
+    ) {}
+
     public async initialize(): Promise<void> {}
     start(): void {}
 }

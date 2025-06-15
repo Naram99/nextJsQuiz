@@ -17,7 +17,9 @@ export default class SkinQuiz {
         private context: ServerContext,
         public readonly id: string,
         public readonly players: Map<string, UserInLobby>,
-        public readonly updateScore: (data: { player: string; score: number }[]) => void,
+        public readonly updateScore: (
+            data: { player: string; score: number }[]
+        ) => void,
         rounds: number
     ) {
         this.randomizer = new SkinRandomizer(rounds);
