@@ -58,7 +58,6 @@ export default function SkinQuizGamePage() {
             },
             skin: CurrentSkin
         ) {
-            console.log("Next level data:", { level, skin });
             setLevel(level);
             setCurrentSkin(skin);
         }
