@@ -8,5 +8,12 @@ export default function MainDisplay({
     isPlayer: boolean;
     questionData: QuestionData;
 }) {
-    return <div>Main display {isPlayer ? "player" : "display"}</div>;
+    return <div className={styles.mainDisplay}>
+        <div className={styles.question}>
+            <h2>{questionData.question}</h2>
+        </div>
+        <div className={styles.answers}>
+            
+        </div>
+    </div>;
 }
