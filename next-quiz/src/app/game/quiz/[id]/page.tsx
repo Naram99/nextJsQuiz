@@ -6,6 +6,7 @@ import { socket, connectSocketWithFreshToken } from "@/socket/socket";
 import AdminPage from "./AdminPage";
 import MainDisplay from "./MainDisplay";
 import ScoreBoard from "./ScoreBoard";
+import { QuestionData } from "@/utils/types/games/QuestionData.type";
 
 export default function QuizGamePage() {
     const router = useRouter();
@@ -17,7 +18,11 @@ export default function QuizGamePage() {
     const [playerType, setPlayerType] = useState<
         "admin" | "player" | "display"
     >("player");
-    const [questionData, setQuestionData] = useState<object>({});
+    const [questionData, setQuestionData] = useState<QuestionData>({
+        question: "",
+        answer: 0,
+        multipleCorrect: false,
+    });
     const [score, setScore] = useState<
         Map<
             string,
@@ -36,7 +41,8 @@ export default function QuizGamePage() {
         socket.emit("quiz:requestData", id);
 
         socket.on("joinLobbyOk", handleJoinLobby);
-        socket.on("skinQuiz:playerData", handlePlayerData);
+        socket.on("quiz:playerData", handlePlayerData);
+        socket.on("quiz:questionData", handleQuestionData);
         socket.on("matchEnd", handleEnd);
 
         function handleJoinLobby(bool: boolean) {
@@ -62,24 +68,36 @@ export default function QuizGamePage() {
             );
         }
 
+        function handleQuestionData(data: QuestionData) {
+            setQuestionData(data);
+        }
+
         function handleEnd() {
             router.back();
         }
 
         return () => {
             socket.off("joinLobbyOk", handleJoinLobby);
-            socket.off("skinQuiz:playerData", handlePlayerData);
+            socket.off("quiz:playerData", handlePlayerData);
+            socket.off("quiz:playerData", handleQuestionData);
             socket.off("matchEnd", handleEnd);
         };
     }, [id, router, me]);
 
     return (
         <div className={styles.pageWrapper}>
-            <ScoreBoard name={me?.name} score={score} />
+            <ScoreBoard
+                name={me?.name}
+                score={score}
+                isPlayer={playerType === "player"}
+            />
             {playerType === "admin" ? (
-                <AdminPage />
+                <AdminPage questionData={questionData} />
             ) : (
-                <MainDisplay isPlayer={playerType !== "display"} />
+                <MainDisplay
+                    isPlayer={playerType !== "display"}
+                    questionData={questionData}
+                />
             )}
         </div>
     );
