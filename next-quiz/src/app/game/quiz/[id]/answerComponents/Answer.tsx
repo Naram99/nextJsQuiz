@@ -6,6 +6,8 @@ import { socket } from "@/socket/socket";
 import { useState } from "react";
 import NumberGuess from "./NumberGuess";
 import DateGuess from "./DateGuess";
+import SingleAnswer from "./SingleAnswer";
+import MultiSelect from "./MultiSelect";
 
 export default function Answer({data}: {data: AnswerData}) {
     const [answer, setAnswer] = useState<string | string[] | number>("")
@@ -23,8 +25,10 @@ export default function Answer({data}: {data: AnswerData}) {
     }
 
     return <div className={styles.answerWrapper}>
+        {data.type === "single" ? <SingleAnswer setAnswer={handleAnswer} /> : ""}
         {data.type === "guessNumber" ? <NumberGuess setAnswer={handleAnswer} /> : ""}
         {data.type === "guessDate" ? <DateGuess setAnswer={handleAnswer} /> : ""}
+        {data.type === "multiSelect" ? <MultiSelect setAnswer={handleAnswer} /> : ""}
         {data.type === "handRaise" 
             ? (
                 <button 

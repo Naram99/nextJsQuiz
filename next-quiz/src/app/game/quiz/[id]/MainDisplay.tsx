@@ -6,9 +6,11 @@ import AnswerDisplay from "./answerComponents/AnswerDisplay";
 export default function MainDisplay({
     isPlayer,
     questionData,
+    hasAnswered,
 }: {
     isPlayer: boolean;
     questionData: QuestionData;
+    hasAnswered: boolean;
 }) {
     return <div className={styles.mainDisplay}>
         <div className={styles.question}>
@@ -16,9 +18,9 @@ export default function MainDisplay({
         </div>
         
         <div className={styles.answers}>
-            {isPlayer 
-                ? <Answer data={questionData.answer} />
-                : <AnswerDisplay />
+            {!isPlayer
+                ? <AnswerDisplay />
+                : !hasAnswered ? <Answer data={questionData.answer} /> : ""
             }
         </div>
     </div>;

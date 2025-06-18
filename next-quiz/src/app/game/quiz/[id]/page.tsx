@@ -98,6 +98,7 @@ export default function QuizGamePage() {
                 <MainDisplay
                     isPlayer={playerType !== "display"}
                     questionData={questionData}
+                    hasAnswered={score.get(me!.name)?.correct !== null}
                 />
             )}
         </div>
