@@ -1,20 +1,20 @@
-import { SkinData } from "@/utils/types/games/SkinData.type";
 import { NextResponse } from "next/server";
-import getSkins from "./getSkins";
+import getChampions from "./getChampions";
 
 export async function GET() {
     const resp = {
         error: false,
         message: "",
-        data: [] as SkinData[]
+        data: [] as string[]
     }
 
     try {
-        resp.data = await getSkins();
+        const champs = await getChampions();
+        resp.data = champs.map(champ => champ.champion);
     } catch (error) {
         resp.error = true;
         resp.message = error as string;
-        resp.data = [] as SkinData[];
+        resp.data = [] as string[]
     }
 
     return NextResponse.json(resp, { status: resp.error ? 500 : 200 });
