@@ -29,10 +29,10 @@ type GuessDateAnswerData = {
     confirm: true;
 }
 
-type MultiSelectAnswerData = {
+export type MultiSelectAnswerData = {
     text: string;
     type: "multiSelect"
-    selectType: "champion" | "event"
+    selectType: "champion" | "event" | "car"
     amount: number
     confirm: true
 }
