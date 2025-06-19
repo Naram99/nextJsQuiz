@@ -1,6 +1,6 @@
 "use client";
 
-import { AnswerData } from "@/utils/types/games/QuestionData.type";
+import { AnswerData } from "@/utils/types/games/AnswerData.type";
 import styles from "../page.module.css";
 import { socket } from "@/socket/socket";
 import { useState } from "react";
@@ -28,7 +28,7 @@ export default function Answer({data}: {data: AnswerData}) {
         {data.type === "single" ? <SingleAnswer setAnswer={handleAnswer} /> : ""}
         {data.type === "guessNumber" ? <NumberGuess setAnswer={handleAnswer} /> : ""}
         {data.type === "guessDate" ? <DateGuess setAnswer={handleAnswer} /> : ""}
-        {data.type === "multiSelect" ? <MultiSelect setAnswer={handleAnswer} /> : ""}
+        {data.type === "multiSelect" ? <MultiSelect data={data} setAnswer={handleAnswer} /> : ""}
         {data.type === "handRaise" 
             ? (
                 <button 
