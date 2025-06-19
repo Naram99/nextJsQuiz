@@ -60,16 +60,28 @@ export default function MultiSelect({
         }
     }, [])
 
-    // let myArray = Array.from({ length }, (_, i) => i);
+    // Initialize selected array when options or data.amount changes
+    useEffect(() => {
+        setSelected(Array(data.amount).fill(""));
+    }, [options, data.amount]);
 
-    function handleChange(e: React.ChangeEvent<HTMLSelectElement>) {
-        // TODO: setSelected()
-        setAnswer(selected)
+    function handleChange(index: number, e: React.ChangeEvent<HTMLSelectElement>) {
+        const newSelected = [...selected];
+        newSelected[index] = e.target.value;
+        setSelected(newSelected);
+        setAnswer(newSelected);
     }
 
     return <div className={styles.multiSelectCt}>
-        {Array.from({length: data.amount}, (_, i) => i).map(index => (
-            <div key={index} className={styles.select}>{/* TODO: Selects */}</div>
+        {Array.from({length: data.amount}, (_, i) => (
+            <div key={i} className={styles.select}>
+                <select value={selected[i] || ""} onChange={e => handleChange(i, e)}>
+                    <option value="" disabled>Select...</option>
+                    {options.map(option => (
+                        <option key={option} value={option}>{option}</option>
+                    ))}
+                </select>
+            </div>
         ))}
     </div>
 }
