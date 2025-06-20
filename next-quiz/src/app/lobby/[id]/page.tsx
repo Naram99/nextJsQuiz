@@ -12,6 +12,7 @@ import { lobbyType } from "@/utils/types/lobbyType.type";
 import { gameCardType } from "@/utils/types/gameCardType.type";
 import LobbyPageFooter from "./LobbyPageFooter";
 import RoundCounter from "./RoundCounter";
+import QuizSelector from "./QuizSelector";
 
 export default function LobbyPage() {
     const router = useRouter();
@@ -31,12 +32,16 @@ export default function LobbyPage() {
 
     useEffect(() => {
         if (isLoading) return;
-        
+
         if (!socket.connected) {
             connectSocketWithFreshToken();
         }
 
-        function handleData(users: string[], settings: LobbySettings, owner: string) {
+        function handleData(
+            users: string[],
+            settings: LobbySettings,
+            owner: string
+        ) {
             console.log(users, settings, owner);
 
             setUsers(users);
@@ -92,13 +97,29 @@ export default function LobbyPage() {
 
     // TODO: Átírni, hogy fordítások esetén is működjenek a változtatások
     function handleLobbyTypeChange(e: React.MouseEvent) {
-        setSettings({ ...settings, lobbyType: e.currentTarget.textContent as lobbyType });
-        socket.emit("lobbyTypeChange", id, me?.name, e.currentTarget.textContent as lobbyType);
+        setSettings({
+            ...settings,
+            lobbyType: e.currentTarget.textContent as lobbyType,
+        });
+        socket.emit(
+            "lobbyTypeChange",
+            id,
+            me?.name,
+            e.currentTarget.textContent as lobbyType
+        );
     }
 
     function handleGameTypeChange(e: React.MouseEvent) {
-        setSettings({ ...settings, game: e.currentTarget.textContent as gameCardType });
-        socket.emit("gameTypeChange", id, me?.name, e.currentTarget.textContent as gameCardType);
+        setSettings({
+            ...settings,
+            game: e.currentTarget.textContent as gameCardType,
+        });
+        socket.emit(
+            "gameTypeChange",
+            id,
+            me?.name,
+            e.currentTarget.textContent as gameCardType
+        );
     }
 
     return (
@@ -121,6 +142,11 @@ export default function LobbyPage() {
                             </div>
                         ))}
                     </div>
+                    {settings.game === "quiz" ? (
+                        <QuizSelector id={me?.id} />
+                    ) : (
+                        <RoundCounter id={id} name={me?.name} />
+                    )}
                     <RoundCounter id={id} name={me?.name} />
                     <LobbyPageFooter
                         min={settings.minUsers}

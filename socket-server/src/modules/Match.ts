@@ -12,6 +12,7 @@ export default class Match implements MatchInterface {
     public players: Map<string, UserInLobby> = new Map();
     private rounds: number = 1;
     private currentRound: number = 1;
+    private quizId: string = "";
 
     constructor(public readonly id: string, private context: ServerContext) {}
 
@@ -43,7 +44,13 @@ export default class Match implements MatchInterface {
                 break;
 
             case "quiz":
-                this.game = new Quiz(this.context, this.id, this.players, this.updateScore);
+                this.game = new Quiz(
+                    this.context,
+                    this.id,
+                    this.quizId,
+                    this.players,
+                    this.updateScore
+                );
                 break;
 
             case "skinquiz":
@@ -77,11 +84,20 @@ export default class Match implements MatchInterface {
         });
 
         this.context.emitMap(this.id, "scoreUpdate", sendData);
-        if (this.currentRound < this.rounds) setTimeout(() => this.nextRound(), 3000);
-        else setTimeout(() => this.context.io.to(this.id).emit("matchEnd"), 3000);
+        if (this.currentRound < this.rounds)
+            setTimeout(() => this.nextRound(), 3000);
+        else
+            setTimeout(
+                () => this.context.io.to(this.id).emit("matchEnd"),
+                3000
+            );
     };
 
     public set round(round: number) {
         this.rounds = round;
+    }
+
+    public set quiz(id: string) {
+        this.quizId = id;
     }
 }

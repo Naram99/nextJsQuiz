@@ -1,20 +1,27 @@
-import { NextResponse } from "next/server";
+import { NextRequest, NextResponse } from "next/server";
 import getChampions from "./getChampions";
+import selectQuiz from "./selectQuiz";
 
-export async function GET() {
+export async function GET(req: NextRequest) {
+    const type = req.nextUrl.searchParams.get("type");
     const resp = {
         error: false,
         message: "",
-        data: [] as string[]
-    }
+        data: [] as string[],
+    };
 
     try {
-        const champs = await getChampions();
-        resp.data = champs.map(champ => champ.champion);
+        if (type === "champions") {
+            const champs = await getChampions();
+            resp.data = champs.map((champ) => champ.champion);
+        }
+        if (type === "quiz") {
+            const quizzes = await selectQuiz();
+        }
     } catch (error) {
         resp.error = true;
         resp.message = error as string;
-        resp.data = [] as string[]
+        resp.data = [] as string[];
     }
 
     return NextResponse.json(resp, { status: resp.error ? 500 : 200 });

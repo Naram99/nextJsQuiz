@@ -14,7 +14,7 @@ export default function MultiSelect({
 
     useEffect(() => {
         async function getOptions() {
-            const resp = await fetch("/api/games/quiz", {
+            const resp = await fetch("/api/games/quiz?type=champions", {
                 method: "GET",
                 credentials: "include",
             });
