@@ -34,53 +34,61 @@ export default class Lobby {
             user.socket?.removeAllListeners("startMatch");
             user.socket?.removeAllListeners("lobbyTypeChange");
             user.socket?.removeAllListeners("gameTypeChange");
+            user.socket?.removeAllListeners("quizChange");
 
-            user.socket?.on("setRound", 
+            user.socket?.on(
+                "setRound",
                 (id: string, name: string, round: number) => {
-                if (name === this.owner.name) {
-                    this.match.round = round;
-                    this.context.io.to(id).emit("roundChange", round);
+                    if (name === this.owner.name) {
+                        this.match.round = round;
+                        this.context.io.to(id).emit("roundChange", round);
+                    }
                 }
-            });
+            );
             user.socket?.on("startMatch", (code: string, name: string) => {
                 // TODO: Ellenőrizni a játékosok számát, hogy megfelelő-e
                 if (this.owner.name === name) {
                     this.matchStart();
-                    this.context.io.to(code).emit("matchPrepare", this.settings.game, code);
+                    this.context.io
+                        .to(code)
+                        .emit("matchPrepare", this.settings.game, code);
                 }
             });
-            user.socket?.on("lobbyTypeChange", (
-                code: string, 
-                name: string, 
-                lobbyType: LobbyType
-            ) => {
-                if (this.owner.name === name) {
-                    this.settings.lobbyType = lobbyType;
-                    this.context.io.to(code).emit(
-                        "lobbyData", 
-                        Array.from(this.users.values()).map(
-                            (user) => user.name), 
-                        this.settings, 
-                        this.owner.name
-                    );
+            user.socket?.on(
+                "lobbyTypeChange",
+                (code: string, name: string, lobbyType: LobbyType) => {
+                    if (this.owner.name === name) {
+                        this.settings.lobbyType = lobbyType;
+                        this.context.io.to(code).emit(
+                            "lobbyData",
+                            Array.from(this.users.values()).map(
+                                (user) => user.name
+                            ),
+                            this.settings,
+                            this.owner.name
+                        );
+                    }
                 }
-            });
-            user.socket?.on("gameTypeChange", (
-                code: string, 
-                name: string, 
-                gameType: GameType
-            ) => {
-                if (this.owner.name === name) {
-                    this.settings.game = gameType;
-                    this.match.gameType = gameType;
-                    this.context.io.to(code).emit(
-                        "lobbyData", 
-                        Array.from(this.users.values()).map(
-                            (user) => user.name), 
-                        this.settings, 
-                        this.owner.name
-                    );
+            );
+            user.socket?.on(
+                "gameTypeChange",
+                (code: string, name: string, gameType: GameType) => {
+                    if (this.owner.name === name) {
+                        this.settings.game = gameType;
+                        this.match.gameType = gameType;
+                        this.context.io.to(code).emit(
+                            "lobbyData",
+                            Array.from(this.users.values()).map(
+                                (user) => user.name
+                            ),
+                            this.settings,
+                            this.owner.name
+                        );
+                    }
                 }
+            );
+            user.socket?.on("quizChange", (id: string) => {
+                if (this.owner.name === user.name) this.match.quiz = id;
             });
         });
     }

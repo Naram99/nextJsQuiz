@@ -1,6 +1,5 @@
 import { NextRequest, NextResponse } from "next/server";
 import getChampions from "./getChampions";
-import selectQuiz from "./selectQuiz";
 
 export async function GET(req: NextRequest) {
     const type = req.nextUrl.searchParams.get("type");
@@ -14,9 +13,6 @@ export async function GET(req: NextRequest) {
         if (type === "champions") {
             const champs = await getChampions();
             resp.data = champs.map((champ) => champ.champion);
-        }
-        if (type === "quiz") {
-            const quizzes = await selectQuiz();
         }
     } catch (error) {
         resp.error = true;
