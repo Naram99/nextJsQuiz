@@ -40,6 +40,12 @@ export default function MultiSelect({
                     "Piltover",
                     "Zaun",
                     "Shadow Isles",
+                    "Void",
+                    "Ixtal",
+                    "Mount Targon",
+                    "Bilgewater",
+                    "Hextech",
+                    "Beta",
                 ].sort()
             );
         }

@@ -4,4 +4,5 @@ export type QuestionData = {
     question: string;
     answer: AnswerData;
     pictureSrc?: string;
+    used: boolean;
 };

@@ -1,11 +1,13 @@
-import {boolean, jsonb, pgTable, text, uuid} from "drizzle-orm/pg-core";
-import {createdAt, id, updatedAt} from "@/drizzle/schemaHelper";
-import {relations} from "drizzle-orm";
-import {UserTable} from "@/drizzle/schema/user";
+import { boolean, jsonb, pgTable, text, uuid } from "drizzle-orm/pg-core";
+import { createdAt, id, updatedAt } from "@/drizzle/schemaHelper";
+import { relations } from "drizzle-orm";
+import { UserTable } from "@/drizzle/schema/user";
 
-export const QuizTable = pgTable('quiz', {
+export const QuizTable = pgTable("quiz", {
     id,
-    userId: uuid().references(() => UserTable.id, {onDelete: "cascade"}),
+    userId: uuid()
+        .notNull()
+        .references(() => UserTable.id, { onDelete: "cascade" }),
     title: text().notNull(),
     coverImg: text(),
     type: text().notNull(),
@@ -13,11 +15,11 @@ export const QuizTable = pgTable('quiz', {
     questions: jsonb().notNull().default({}),
     createdAt,
     updatedAt,
-})
+});
 
-export const QuizRelations = relations(QuizTable, ({one}) => ({
+export const QuizRelations = relations(QuizTable, ({ one }) => ({
     user: one(UserTable, {
         fields: [QuizTable.userId],
-        references: [UserTable.id]
-    })
-}))
+        references: [UserTable.id],
+    }),
+}));

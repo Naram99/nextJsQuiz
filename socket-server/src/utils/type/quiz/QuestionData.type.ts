@@ -1,8 +1,8 @@
+import { AnswerData } from "./AnswerData.type";
+
 export type QuestionData = {
     question: string;
-    answer: string | number | string[];
-    type: "singleAnswer" | "typeGuess" | "selectGuess" | "multiSelect";
-    pictureSrc: string | null;
-    points: number;
-    multipleCorrect: boolean;
+    answer: AnswerData;
+    pictureSrc?: string;
+    used: boolean;
 };
