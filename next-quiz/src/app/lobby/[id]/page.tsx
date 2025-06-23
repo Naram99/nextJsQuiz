@@ -147,7 +147,6 @@ export default function LobbyPage() {
                     ) : (
                         <RoundCounter id={id} name={me?.name} />
                     )}
-                    <RoundCounter id={id} name={me?.name} />
                     <LobbyPageFooter
                         min={settings.minUsers}
                         max={settings.maxUsers}

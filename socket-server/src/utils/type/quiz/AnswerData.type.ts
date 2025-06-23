@@ -1,5 +1,5 @@
 export type AnswerData = {
-    text: string;
+    text: string | number | string[];
 } & (
     | HandRaiseAnswerData
     | SingleAnswerData

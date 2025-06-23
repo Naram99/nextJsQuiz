@@ -22,6 +22,8 @@ export default function QuizSelector({ id }: { id?: string }) {
             });
 
             const respData = await resp.json();
+            console.log(respData.data);
+
             setOptions(respData.data);
         }
 

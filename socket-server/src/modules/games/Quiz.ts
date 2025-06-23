@@ -36,6 +36,8 @@ export default class Quiz implements QuizGame {
             throw new Error(`Quiz with id ${this.quizId} not found`);
         }
         this.fullData = result[0] as QuizFullData;
+        console.log(this.fullData);
+
         if (this.fullData.hasCategories) {
             this.quizType = new WinnerSelectQuiz(
                 this.context,
