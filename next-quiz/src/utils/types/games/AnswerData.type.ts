@@ -1,5 +1,6 @@
 export type AnswerData = {
     text: string | number | string[];
+    points: number;
 } & (
     | HandRaiseAnswerData
     | SingleAnswerData
@@ -33,4 +34,5 @@ export type MultiSelectAnswerData = {
     selectType: "champion" | "event" | "car";
     amount: number;
     confirm: true;
+    pointsPerCorrect: true;
 };
