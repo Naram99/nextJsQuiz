@@ -61,6 +61,11 @@ io.on("connection", (socket: Socket) => {
     const ch = new ChatHandler(io, socket, uh.id, uh.name);
     ch.initialize();
 
+    lm.lobbiesData.forEach(lobby => {
+        if (lobby.hasUser(lobbyUser.userId))
+            lobby.reconnectUser(lobbyUser.userId, socket)
+    })
+
     socket.on("validateJoinCode", (code) => {
         socket.emit("validateJoinCodeAnswer", lm.checkIfLobbyExists(code));
     });
@@ -111,7 +116,11 @@ io.on("connection", (socket: Socket) => {
 
     socket.on("disconnect", (reason) => {
         console.log(`A user disconnected due to ${reason}.`);
-        lm.removeUserFromAllLobbies(lobbyUser);
+        lm.lobbiesData.forEach(lobby => {
+            if (lobby.hasUser(lobbyUser.userId))
+                lobby.handleDisconnect(lobbyUser.userId)
+        })
+        // lm.removeUserFromAllLobbies(lobbyUser);
         console.log(lm.lobbiesData);
     });
 });

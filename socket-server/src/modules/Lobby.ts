@@ -115,7 +115,9 @@ export default class Lobby {
         const user = this.users.get(userId);
         if (user) {
             user.isConnected = false;
+            user.isReady = false;
             user.socket = undefined;
+            this.context.io.to(this.code).emit("userDisconnect", user.name)
         }
     }
 
@@ -124,6 +126,7 @@ export default class Lobby {
         if (user) {
             user.isConnected = true;
             user.socket = socket;
+            this.context.io.to(this.code).emit("userReconnect", user.name)
         }
     }
 

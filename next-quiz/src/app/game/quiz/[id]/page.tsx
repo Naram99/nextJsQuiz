@@ -22,7 +22,8 @@ export default function QuizGamePage() {
     >("player");
     const [questionData, setQuestionData] = useState<QuestionData>({
         question: "",
-        answer: {text: "", type: "handRaise", confirm: false}
+        used: false,
+        answer: {text: "", type: "handRaise", confirm: false, points: 0}
     });
     const [score, setScore] = useState<
         Map<
