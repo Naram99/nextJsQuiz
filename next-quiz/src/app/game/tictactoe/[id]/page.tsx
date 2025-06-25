@@ -23,16 +23,28 @@ export default function TicTacToeGamePage() {
     const [score, setScore] = useState<
         Map<string, { symbol: TicTacToePlayer; score: number; ready: boolean }>
     >(new Map());
-    const [board, setBoard] = useState<(TicTacToePlayer | null)[]>(Array(9).fill(null));
+    const [board, setBoard] = useState<(TicTacToePlayer | null)[]>(
+        Array(9).fill(null)
+    );
     const [announcer, setAnnouncer] = useState<string | null>(null);
 
     useEffect(() => {
         if (isLoading) return;
-        if (!socket.connected) connectSocketWithFreshToken();
+        console.log("socket.connected", socket.connected);
+        if (!socket.connected) {
+            console.log("socket not connected, connecting...");
+            connectSocketWithFreshToken();
+            socket.once("connect", () => {
+                console.log("socket connected, emitting validateJoinCode and tictactoe:requestData");
+                socket.emit("validateJoinCode", id);
+                socket.emit("tictactoe:requestData", id);
+            });
+        } else {
+            socket.emit("validateJoinCode", id);
+            socket.emit("tictactoe:requestData", id);
+        }
 
         // TODO: Check if user in lobby, join or leave if not
-        socket.emit("validateJoinCode", id);
-        socket.emit("tictactoe:requestData", id);
 
         socket.on("joinLobbyOk", handleJoinLobby);
         socket.on("tictactoe:newGame", setNewGame);
@@ -48,7 +60,7 @@ export default function TicTacToeGamePage() {
         }
 
         function setNewGame(
-            board: (TicTacToePlayer | null)[], 
+            board: (TicTacToePlayer | null)[],
             activePlayer: TicTacToePlayer
         ) {
             setBoard(board);
@@ -58,7 +70,10 @@ export default function TicTacToeGamePage() {
         }
 
         function setPlayerData(
-            data: [string, { symbol: TicTacToePlayer; score: number; ready: boolean }][],
+            data: [
+                string,
+                { symbol: TicTacToePlayer; score: number; ready: boolean }
+            ][],
             activePlayer: TicTacToePlayer
         ) {
             setScore(new Map(data));
@@ -91,7 +106,7 @@ export default function TicTacToeGamePage() {
         }
 
         function updateBoard(
-            board: (TicTacToePlayer | null)[], 
+            board: (TicTacToePlayer | null)[],
             activePlayer: TicTacToePlayer
         ) {
             setBoard(board);
@@ -116,7 +131,7 @@ export default function TicTacToeGamePage() {
             socket.off("tictactoe:gameEnd", handleGameEnd);
             socket.off("matchEnd", handleEnd);
         };
-    }, []);
+    }, [id, isLoading, me?.name]);
 
     function handleReady() {
         setReady(true);
@@ -145,15 +160,13 @@ export default function TicTacToeGamePage() {
                         </div>
                     ))}
                 </div>
-                <div className={styles.announcer}>
-                    {announcer}
-                </div>
+                <div className={styles.announcer}>{announcer}</div>
             </div>
             <div className={styles.board}>
                 {board.map((cell, index) => (
-                    <div 
-                        key={index} 
-                        className={styles.boardCell} 
+                    <div
+                        key={index}
+                        className={styles.boardCell}
                         onClick={() => handleMove(index)}
                     >
                         {cell}
@@ -162,7 +175,11 @@ export default function TicTacToeGamePage() {
             </div>
             <div className={styles.footer}>
                 {!ready && (
-                    <button type={"button"} onClick={handleReady} className={styles.readyBtn}>
+                    <button
+                        type={"button"}
+                        onClick={handleReady}
+                        className={styles.readyBtn}
+                    >
                         {/* TODO: texts */}Ready
                     </button>
                 )}

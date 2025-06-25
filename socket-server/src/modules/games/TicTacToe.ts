@@ -31,7 +31,9 @@ export default class TicTacToe implements TicTacToeGame {
         this.board = Array(9).fill(null);
         this.activePlayer = this.activePlayer === "X" ? "O" : "X";
         this.socketListenerSetup();
-        this.sc.io.to(this.id).emit("tictactoe:newGame", this.board, this.activePlayer);
+        this.sc.io
+            .to(this.id)
+            .emit("tictactoe:newGame", this.board, this.activePlayer);
         Object.entries(this.players).forEach(([symbol, user]) => {
             this.players[symbol as TicTacToePlayer].isReady = false;
         });
@@ -57,8 +59,13 @@ export default class TicTacToe implements TicTacToeGame {
             user.socket?.on(
                 "tictactoe:moveSend",
                 (id: string, index: number, name: string | undefined) => {
-                    if (!Object.values(this.players).some((user) => user.isReady === false)) {
-                        if (this.players[this.activePlayer].name === name) this.handleMove(index);
+                    if (
+                        !Object.values(this.players).some(
+                            (user) => user.isReady === false
+                        )
+                    ) {
+                        if (this.players[this.activePlayer].name === name)
+                            this.handleMove(index);
                     }
                 }
             );
@@ -66,8 +73,12 @@ export default class TicTacToe implements TicTacToeGame {
     }
 
     private emitUserData(): void {
-        const startData: Map<string, { symbol: TicTacToePlayer; score: number; ready: boolean }> =
-            new Map();
+        console.log(this.players);
+
+        const startData: Map<
+            string,
+            { symbol: TicTacToePlayer; score: number; ready: boolean }
+        > = new Map();
         Object.entries(this.players).forEach(([symbol, user]) => {
             startData.set(user.name, {
                 symbol: symbol as TicTacToePlayer,
@@ -76,7 +87,12 @@ export default class TicTacToe implements TicTacToeGame {
             });
         });
 
-        this.sc.emitMap(this.id, "tictactoe:playerData", startData, this.activePlayer);
+        this.sc.emitMap(
+            this.id,
+            "tictactoe:playerData",
+            startData,
+            this.activePlayer
+        );
     }
 
     handleMove(index: number): void {
@@ -86,7 +102,9 @@ export default class TicTacToe implements TicTacToeGame {
             // Tie check review later
             if (end) {
                 this.active = false;
-                this.sc.io.to(this.id).emit("tictactoe:move", this.board, this.activePlayer);
+                this.sc.io
+                    .to(this.id)
+                    .emit("tictactoe:move", this.board, this.activePlayer);
                 this.sc.io.to(this.id).emit("tictactoe:gameEnd", end);
                 this.onGameEnd([
                     {
@@ -97,7 +115,9 @@ export default class TicTacToe implements TicTacToeGame {
                 this.setScore(this.activePlayer, end === "tie" ? 0 : 1);
             } else {
                 this.activePlayer = this.activePlayer === "X" ? "O" : "X";
-                this.sc.io.to(this.id).emit("tictactoe:move", this.board, this.activePlayer);
+                this.sc.io
+                    .to(this.id)
+                    .emit("tictactoe:move", this.board, this.activePlayer);
             }
         }
     }
