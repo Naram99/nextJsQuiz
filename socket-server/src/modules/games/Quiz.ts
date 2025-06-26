@@ -3,9 +3,8 @@ import ServerContext from "../../utils/ServerContext";
 import { QuizFullData } from "../../utils/type/quiz/QuizFullData.type";
 import { QuizSettings } from "../../utils/type/settings/QuizSettings.type";
 import { UserInLobby } from "../../utils/type/UserInLobby.type";
-import LinearQuiz from "./quiz/LinearQuiz";
+import Question from "./quiz/Question";
 import selectQuiz from "./quiz/selectQuiz";
-import WinnerSelectQuiz from "./quiz/WinnerSelectQuiz";
 
 export default class Quiz implements QuizGame {
     public readonly settings: QuizSettings = {
@@ -18,7 +17,7 @@ export default class Quiz implements QuizGame {
         hasCategories: false,
         categories: [],
     };
-    private quizType: LinearQuiz | WinnerSelectQuiz = new LinearQuiz([]);
+    private question?: Question;
 
     constructor(
         private context: ServerContext,
@@ -37,15 +36,70 @@ export default class Quiz implements QuizGame {
         }
         this.fullData = result[0] as QuizFullData;
         console.log(this.fullData);
-
-        if (this.fullData.hasCategories) {
-            this.quizType = new WinnerSelectQuiz(
-                this.context,
-                this.fullData.categories
-            );
-        }
     }
-    start(): void {}
+    start(): void {
+        this.emitUserData();
+    }
 
-    public reconnectSocket(): void {}
+    public reconnectSocket(): void {
+        this.emitUserData();
+    }
+
+    private emitUserData(): void {
+        console.log(this.players);
+
+        const startData: Map<
+            string,
+            { ready: boolean; score: number; correct: boolean | null }
+        > = new Map();
+        this.players.forEach((user, userId) => {
+            startData.set(user.name, {
+                ready: user.isReady,
+                score: user.score,
+                correct: user.correct!,
+            });
+        });
+
+        this.context.emitMap(this.id, "quiz:playerData", startData);
+    }
+
+    private socketListenerSetup(): void {
+        this.players.forEach((user) => {
+            user.socket?.removeAllListeners("quiz:requestData");
+            user.socket?.removeAllListeners("quiz:answer");
+            user.socket?.removeAllListeners("quiz:handRaise");
+            user.socket?.removeAllListeners("quiz:selectQuestion");
+
+            user.socket?.on("quiz:requestData", (id: string) => {
+                this.emitUserData();
+            });
+
+            user.socket?.on("quiz:handRaise", (name: string) => {
+                if (user.correct === null) this.question?.handleHandRaise(name);
+            });
+
+            user.socket?.on(
+                "quiz:answer",
+                (answer: number | string | string[]) => {
+                    this.question?.handleAnswer(user.name, answer);
+                }
+            );
+
+            user.socket?.on("quiz:selectQuestion", (questionId: string) => {
+                this.fullData.categories.forEach((category, index) => {
+                    category.questions.forEach((question, ind) => {
+                        if (question.id === questionId)
+                            this.fullData.categories[index].questions[
+                                ind
+                            ].used = true;
+                        this.question = new Question(
+                            this.context,
+                            this.id,
+                            this.fullData.categories[index].questions[ind]
+                        );
+                    });
+                });
+            });
+        });
+    }
 }

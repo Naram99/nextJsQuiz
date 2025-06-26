@@ -143,7 +143,11 @@ export default function LobbyPage() {
                         ))}
                     </div>
                     {settings.game === "quiz" ? (
-                        <QuizSelector id={me?.id} />
+                        owner === me?.name ? (
+                            <QuizSelector id={me?.id} />
+                        ) : (
+                            ""
+                        )
                     ) : (
                         <RoundCounter id={id} name={me?.name} />
                     )}

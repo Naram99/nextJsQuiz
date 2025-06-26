@@ -7,6 +7,7 @@ export const DRVQuizData: CategoryData[] = [
         iconsPath: "/quiz/top",
         questions: [
             {
+                id: "top1",
                 question:
                     "Nevezz meg egy hőst, aki le tudja szedni magáról a CC-t miközben az hat rá!",
                 used: false,
@@ -21,7 +22,9 @@ export const DRVQuizData: CategoryData[] = [
                 },
             },
             {
-                question: "Melyik tanknak nincs hard CC-je egyik alap képességén sem?",
+                id: "top2",
+                question:
+                    "Melyik tanknak nincs hard CC-je egyik alap képességén sem?",
                 used: false,
                 answer: {
                     text: "Malphite",
@@ -31,6 +34,7 @@ export const DRVQuizData: CategoryData[] = [
                 },
             },
             {
+                id: "top3",
                 question: "Nevezz meg egy hőst, akinek 5 különböző CC-je van!",
                 used: false,
                 answer: {
@@ -41,6 +45,7 @@ export const DRVQuizData: CategoryData[] = [
                 },
             },
             {
+                id: "top4",
                 question: "Melyik knockup tart a legtovább?",
                 used: false,
                 answer: {
@@ -51,7 +56,9 @@ export const DRVQuizData: CategoryData[] = [
                 },
             },
             {
-                question: "Sorold fel azokat a hősöket, akiknek semmilyen CC-je nincs!",
+                id: "top5",
+                question:
+                    "Sorold fel azokat a hősöket, akiknek semmilyen CC-je nincs!",
                 used: false,
                 answer: {
                     text: [
@@ -80,6 +87,7 @@ export const DRVQuizData: CategoryData[] = [
         iconsPath: "/quiz/jungle",
         questions: [
             {
+                id: "jng1",
                 question: "",
                 used: false,
                 answer: {
@@ -87,10 +95,11 @@ export const DRVQuizData: CategoryData[] = [
                     type: "handRaise",
                     points: 10,
                     confirm: false,
-                    pictureSrc: ""
-                }
+                    pictureSrc: "",
+                },
             },
             {
+                id: "jng2",
                 question: "Melyik Caitlyn skinek fegyverei lettek összegyúrva?",
                 used: false,
                 answer: {
@@ -98,9 +107,9 @@ export const DRVQuizData: CategoryData[] = [
                     type: "handRaise",
                     points: 20,
                     confirm: false,
-                    pictureSrc: []
-                }
-            }
+                    pictureSrc: [],
+                },
+            },
         ],
     },
     {
@@ -109,7 +118,9 @@ export const DRVQuizData: CategoryData[] = [
         iconsPath: "/quiz/mid",
         questions: [
             {
-                question: "Nevezz meg egy kizárólag mobilos Riot Games játékot!",
+                id: "mid1",
+                question:
+                    "Nevezz meg egy kizárólag mobilos Riot Games játékot!",
                 used: false,
                 answer: {
                     text: "Wild Rift, Golden Spatula",
@@ -119,6 +130,7 @@ export const DRVQuizData: CategoryData[] = [
                 },
             },
             {
+                id: "mid2",
                 question: "Hány irodája van a Riot Games-nek világszerte?",
                 used: false,
                 answer: {
@@ -129,7 +141,9 @@ export const DRVQuizData: CategoryData[] = [
                 },
             },
             {
-                question: "Melyik tárgyat nevezték el a Riot Games első dolgozója után?",
+                id: "mid3",
+                question:
+                    "Melyik tárgyat nevezték el a Riot Games első dolgozója után?",
                 used: false,
                 answer: {
                     text: "Guinsoo's Rageblade",
@@ -139,6 +153,7 @@ export const DRVQuizData: CategoryData[] = [
                 },
             },
             {
+                id: "mid4",
                 question:
                     "Nevezz meg minél több hőst, aki a nevét egy Riot dolgozó 'Neve' után kapta!",
                 used: false,
@@ -153,6 +168,7 @@ export const DRVQuizData: CategoryData[] = [
                 },
             },
             {
+                id: "mid5",
                 question: "Mikor alapították a Riot Games céget?",
                 used: false,
                 answer: {
@@ -170,6 +186,7 @@ export const DRVQuizData: CategoryData[] = [
         iconsPath: "/quiz/bot",
         questions: [
             {
+                id: "bot1",
                 question: "Mikor volt az első LoLos buli?",
                 used: false,
                 answer: {
@@ -180,7 +197,9 @@ export const DRVQuizData: CategoryData[] = [
                 },
             },
             {
-                question: "Hány különböző ruhadarabból áll a full DROVE merch szett?",
+                id: "bot2",
+                question:
+                    "Hány különböző ruhadarabból áll a full DROVE merch szett?",
                 used: false,
                 answer: {
                     text: 4,
@@ -190,6 +209,7 @@ export const DRVQuizData: CategoryData[] = [
                 },
             },
             {
+                id: "bot3",
                 question: "Milyen típusú Clash-t nyert már a DROVE?",
                 used: false,
                 answer: {
@@ -203,7 +223,9 @@ export const DRVQuizData: CategoryData[] = [
                 },
             },
             {
-                question: "Nevezz meg 4-et a Sebinél felírt idézői nevek közül!",
+                id: "bot4",
+                question:
+                    "Nevezz meg 4-et a Sebinél felírt idézői nevek közül!",
                 used: false,
                 answer: {
                     text: [],
@@ -213,11 +235,18 @@ export const DRVQuizData: CategoryData[] = [
                 },
             },
             {
+                id: "bot5",
                 question:
                     "Mi volt a legelső esport bajnokságon a DROVE teamcompja amin elindultunk?",
                 used: false,
                 answer: {
-                    text: ["Gangplank", "Sejuani", "Vladimir", "Ashe", "Thresh"],
+                    text: [
+                        "Gangplank",
+                        "Sejuani",
+                        "Vladimir",
+                        "Ashe",
+                        "Thresh",
+                    ],
                     type: "multiSelect",
                     selectType: "champion",
                     amount: 5,
@@ -234,6 +263,7 @@ export const DRVQuizData: CategoryData[] = [
         iconsPath: "/quiz/support",
         questions: [
             {
+                id: "sup1",
                 question: "Hány hős rendelkezik 20+ skinnel?",
                 used: false,
                 answer: {
@@ -244,7 +274,9 @@ export const DRVQuizData: CategoryData[] = [
                 },
             },
             {
-                question: "Összesen hányan Co-Stream-elték a 2024-es Worlds-öt?",
+                id: "sup2",
+                question:
+                    "Összesen hányan Co-Stream-elték a 2024-es Worlds-öt?",
                 used: false,
                 answer: {
                     text: 90,
@@ -254,7 +286,9 @@ export const DRVQuizData: CategoryData[] = [
                 },
             },
             {
-                question: "Mikor mondja Draven a következő szöveget: 'Nice axe, I'll take it!'",
+                id: "sup3",
+                question:
+                    "Mikor mondja Draven a következő szöveget: 'Nice axe, I'll take it!'",
                 used: false,
                 answer: {
                     text: "Amikor elkapja egy másik Draven baltáját.",
@@ -264,6 +298,7 @@ export const DRVQuizData: CategoryData[] = [
                 },
             },
             {
+                id: "sup4",
                 question:
                     "Melyik az egyetlen hős, aki rework-öt kapott, később mégis teljesen visszaállították az eredeti verzióját?",
                 used: false,
@@ -275,10 +310,19 @@ export const DRVQuizData: CategoryData[] = [
                 },
             },
             {
-                question: "Nevezz meg minél több hőst, akinek csak egyetlen sebző képessége van!",
+                id: "sup5",
+                question:
+                    "Nevezz meg minél több hőst, akinek csak egyetlen sebző képessége van!",
                 used: false,
                 answer: {
-                    text: ["Tryndamere", "Zilean", "Taric", "Shen", "MasterYi", "Bard"],
+                    text: [
+                        "Tryndamere",
+                        "Zilean",
+                        "Taric",
+                        "Shen",
+                        "MasterYi",
+                        "Bard",
+                    ],
                     type: "multiSelect",
                     selectType: "champion",
                     confirm: true,
