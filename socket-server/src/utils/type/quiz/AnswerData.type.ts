@@ -1,6 +1,7 @@
 export type AnswerData = {
     text: string | number | string[];
     points: number;
+    pictureSrc?: string | string[];
 } & (
     | HandRaiseAnswerData
     | SingleAnswerData

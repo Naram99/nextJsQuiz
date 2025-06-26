@@ -78,7 +78,30 @@ export const DRVQuizData: CategoryData[] = [
         id: "cat2",
         name: "Skins",
         iconsPath: "/quiz/jungle",
-        questions: [],
+        questions: [
+            {
+                question: "",
+                used: false,
+                answer: {
+                    text: "",
+                    type: "handRaise",
+                    points: 10,
+                    confirm: false,
+                    pictureSrc: ""
+                }
+            },
+            {
+                question: "Melyik Caitlyn skinek fegyverei lettek összegyúrva?",
+                used: false,
+                answer: {
+                    text: ["Headhunter", "Pulsefire"],
+                    type: "handRaise",
+                    points: 20,
+                    confirm: false,
+                    pictureSrc: []
+                }
+            }
+        ],
     },
     {
         id: "cat3",

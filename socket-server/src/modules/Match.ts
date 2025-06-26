@@ -93,6 +93,10 @@ export default class Match implements MatchInterface {
             );
     };
 
+    public reconnectSocket(): void {
+        this.game?.reconnectSocket()
+    }
+
     public set round(round: number) {
         this.rounds = round;
     }

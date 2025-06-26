@@ -51,4 +51,6 @@ export default class SkinQuiz {
             this.randomizer.skinArray.pop()!
         );
     }
+
+    public reconnectSocket(): void {}
 }

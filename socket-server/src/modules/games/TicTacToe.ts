@@ -83,7 +83,7 @@ export default class TicTacToe implements TicTacToeGame {
             startData.set(user.name, {
                 symbol: symbol as TicTacToePlayer,
                 score: user.score,
-                ready: false,
+                ready: user.isReady,
             });
         });
 
@@ -151,5 +151,11 @@ export default class TicTacToe implements TicTacToeGame {
 
     private setScore(player: TicTacToePlayer, score: number): void {
         this.players[player].score = score;
+    }
+
+    public reconnectSocket(): void {
+        this.socketListenerSetup();
+        this.emitUserData();
+        this.sc.io.to(this.id).emit("tictactoe:move", this.board, this.activePlayer);
     }
 }

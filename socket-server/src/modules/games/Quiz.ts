@@ -46,4 +46,6 @@ export default class Quiz implements QuizGame {
         }
     }
     start(): void {}
+
+    public reconnectSocket(): void {}
 }
