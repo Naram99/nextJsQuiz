@@ -39,12 +39,12 @@ export default class Quiz implements QuizGame {
     }
     start(): void {
         this.emitUserData();
-        this.socketListenerSetup()
+        this.socketListenerSetup();
     }
 
     public reconnectSocket(): void {
         this.emitUserData();
-        this.socketListenerSetup()
+        this.socketListenerSetup();
     }
 
     private emitUserData(): void {
@@ -62,7 +62,12 @@ export default class Quiz implements QuizGame {
             });
         });
 
-        this.context.emitMap(this.id, "quiz:playerData", startData);
+        this.context.emitMap(
+            this.id,
+            "quiz:playerData",
+            startData,
+            this.fullData.owner
+        );
     }
 
     private socketListenerSetup(): void {
@@ -77,17 +82,21 @@ export default class Quiz implements QuizGame {
                 this.emitUserData();
             });
 
-            user.socket?.on("quiz:handRaise", (name: string) => {
-                if (user.correct === null) this.question?.handleHandRaise(name);
+            user.socket?.on("quiz:handRaise", () => {
+                if (user.correct === null)
+                    this.question?.handleHandRaise(user.name);
             });
 
             user.socket?.on(
                 "quiz:answer",
                 (answer: number | string | string[]) => {
                     this.question?.handleAnswer(user.userId, answer);
-                    if (this.question?.answers.length === this.players.size - 2) {
+                    if (
+                        this.question?.answers.length ===
+                        this.players.size - 2
+                    ) {
                         const corrects = this.question.evaluateAnswers();
-                        this.updateScores(corrects)
+                        this.updateScores(corrects);
                     }
                 }
             );
@@ -109,17 +118,18 @@ export default class Quiz implements QuizGame {
             });
 
             user.socket?.on("quiz:admin:evaluate", () => {
-                const corrects = this.question!.evaluateAnswers()
-                this.updateScores(corrects)
-            })
+                const corrects = this.question!.evaluateAnswers();
+                this.updateScores(corrects);
+            });
         });
     }
 
-    private updateScores(data: {id: string, points: number}[]): void {
+    private updateScores(data: { id: string; points: number }[]): void {
         data.forEach((obj) => {
-            this.players.set(
-                obj.id, 
-                {...this.players.get(obj.id)!, score: this.players.get(obj.id)!.score})
-        })
+            this.players.set(obj.id, {
+                ...this.players.get(obj.id)!,
+                score: this.players.get(obj.id)!.score,
+            });
+        });
     }
 }

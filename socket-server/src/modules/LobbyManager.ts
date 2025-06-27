@@ -38,7 +38,11 @@ export default class LobbyManager {
     public removeUserFromLobby(user: UserInLobby, lobbyCode: string): void {
         this.lobbies.get(lobbyCode)?.removeUser(user.userId);
         user.socket?.leave(lobbyCode);
-        if (!this.lobbies.get(lobbyCode)?.hasUser(this.lobbies.get(lobbyCode)!.owner.userId))
+        if (
+            !this.lobbies
+                .get(lobbyCode)
+                ?.hasUser(this.lobbies.get(lobbyCode)!.owner.userId)
+        )
             this.lobbies.delete(lobbyCode);
     }
 

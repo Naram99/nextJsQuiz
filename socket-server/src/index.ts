@@ -80,7 +80,7 @@ io.on("connection", (socket: Socket) => {
     socket.on("joinLobby", (code) => {
         lm.removeUserFromAllLobbies(lobbyUser);
         socket.emit("joinLobbyOk", lm.addUserToLobby(lobbyUser, code), code);
-        console.log(lm.lobbiesData);
+        // console.log(lm.lobbiesData);
     });
 
     socket.on("createLobby", () => {
