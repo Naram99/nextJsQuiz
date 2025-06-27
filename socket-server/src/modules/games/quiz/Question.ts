@@ -70,7 +70,9 @@ export default class Question {
     private evaluateMultiSelect(): {id: string, points: number}[] {
         const pointsObj: {id: string, points: number}[] = []
         for (const [id, guesses] of Object.entries(this.answers)) {
-            
+
         }
+
+        return pointsObj
     }
 }

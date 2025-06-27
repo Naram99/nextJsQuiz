@@ -41,7 +41,7 @@ export default class SkinRandomizer {
             value: "deg",
             zoom: true,
         },
-        { type: "invert", min: 60, max: 100, final: 0, value: "%", zoom: true },
+        // { type: "invert", min: 60, max: 100, final: 0, value: "%", zoom: true },
         {
             type: "saturate",
             min: 500,
@@ -95,7 +95,7 @@ export default class SkinRandomizer {
 
     private generateRandomZoom(): SkinGameElementZoom {
         return {
-            scaleStart: Math.random() + 2,
+            scaleStart: 2,
             scaleEnd: 1,
             top: Math.round(Math.random()) === 1,
             left: Math.round(Math.random()) === 1,
