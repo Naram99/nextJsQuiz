@@ -39,10 +39,12 @@ export default class Quiz implements QuizGame {
     }
     start(): void {
         this.emitUserData();
+        this.socketListenerSetup()
     }
 
     public reconnectSocket(): void {
         this.emitUserData();
+        this.socketListenerSetup()
     }
 
     private emitUserData(): void {
@@ -69,6 +71,7 @@ export default class Quiz implements QuizGame {
             user.socket?.removeAllListeners("quiz:answer");
             user.socket?.removeAllListeners("quiz:handRaise");
             user.socket?.removeAllListeners("quiz:selectQuestion");
+            user.socket?.removeAllListeners("quiz:admin:evaluate");
 
             user.socket?.on("quiz:requestData", (id: string) => {
                 this.emitUserData();
@@ -81,7 +84,11 @@ export default class Quiz implements QuizGame {
             user.socket?.on(
                 "quiz:answer",
                 (answer: number | string | string[]) => {
-                    this.question?.handleAnswer(user.name, answer);
+                    this.question?.handleAnswer(user.userId, answer);
+                    if (this.question?.answers.length === this.players.size - 2) {
+                        const corrects = this.question.evaluateAnswers();
+                        this.updateScores(corrects)
+                    }
                 }
             );
 
@@ -100,6 +107,19 @@ export default class Quiz implements QuizGame {
                     });
                 });
             });
+
+            user.socket?.on("quiz:admin:evaluate", () => {
+                const corrects = this.question!.evaluateAnswers()
+                this.updateScores(corrects)
+            })
         });
+    }
+
+    private updateScores(data: {id: string, points: number}[]): void {
+        data.forEach((obj) => {
+            this.players.set(
+                obj.id, 
+                {...this.players.get(obj.id)!, score: this.players.get(obj.id)!.score})
+        })
     }
 }

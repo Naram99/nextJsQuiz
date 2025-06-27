@@ -19,12 +19,16 @@ export default class Question {
         console.log(this.answers);
     }
 
-    public evaluateAnswers() {
+    public evaluateAnswers(): {id: string, points: number}[] {
+        console.log("Evaluating answers");
+        this.context.io.to(this.id).emit("quiz:allAnswers", this.answers);
+
+        let corrects: {id: string, points: number}[] = [];
+        
         switch (this.fullData.answer.type) {
             case "guessDate":
-                break;
-
             case "guessNumber":
+                corrects = this.findClosestNumber()
                 break;
 
             case "multiSelect":
@@ -33,6 +37,8 @@ export default class Question {
             default:
                 break;
         }
+
+        return corrects
     }
 
     public handleHandRaise(user: string): void {
@@ -40,5 +46,31 @@ export default class Question {
         this.context.io
             .to(this.id)
             .emit("quiz:handRaiseOrder", this.handRaiseOrder);
+    }
+
+    private findClosestNumber(): {id: string, points: number}[] {
+        let closest: {id: string, points: number}[] = [];
+        let minDiff = Infinity;
+        
+        for (const [id, guess] of Object.entries(this.answers)) {
+            if (typeof guess === "number" && typeof this.fullData.answer.text === "number") {
+                const diff = Math.abs(guess - this.fullData.answer.text)
+                if (diff < minDiff) {
+                    minDiff = diff;
+                    closest = [{id: id, points: this.fullData.answer.points}];
+                } else if (diff === minDiff) {
+                    closest.push({id: id, points: this.fullData.answer.points});
+                }
+            }
+        }
+
+        return closest
+    }
+
+    private evaluateMultiSelect(): {id: string, points: number}[] {
+        const pointsObj: {id: string, points: number}[] = []
+        for (const [id, guesses] of Object.entries(this.answers)) {
+            
+        }
     }
 }
