@@ -3,13 +3,15 @@ import { createServer } from "http";
 import { Server, Socket } from "socket.io";
 import dotenv from "dotenv";
 import { db } from "./drizzle/db";
-import { ChatRoomTable } from "./drizzle/schema";
+import { ChatRoomTable, QuizTable } from "./drizzle/schema";
 import verifyToken from "./utils/verifyToken";
 import UserHandler from "./modules/UserHandler";
 import ChatHandler from "./modules/ChatHandler";
 import LobbyManager from "./modules/LobbyManager";
 import { UserInLobby } from "./utils/type/UserInLobby.type";
 import ServerContext from "./utils/ServerContext";
+import { fullTestQuiz } from "./utils/FullTestQuiz";
+import { DRVQuizData } from "./utils/DRVQuiz4";
 
 dotenv.config();
 
@@ -127,21 +129,21 @@ io.on("connection", (socket: Socket) => {
 
 app.get("/", () => {
     console.log("Welcome to the server");
-    // test().then();
+    test().then();
 });
 
 async function test() {
     console.log(process.env.DB_USER);
 
-    const testInsert = await db.insert(ChatRoomTable).values({
-        userIdArray: [
-            "adfa6e48-587a-43a0-9d95-479418724e77",
-            "cf85752e-56db-49f4-867f-c855db35bc66",
-        ],
-        name: "Tesztnév",
+    const testInsert = await db.insert(QuizTable).values({
+        userId: "22ee4737-db18-4e85-8f56-e766c828b166",
+        title: "DRV Quiz 4",
+        type: "WinnerSelect",
+        hasCategories: true,
+        questions: DRVQuizData,
     });
 
-    const data = await db.select().from(ChatRoomTable);
+    const data = await db.select().from(QuizTable);
     console.log(data);
 }
 

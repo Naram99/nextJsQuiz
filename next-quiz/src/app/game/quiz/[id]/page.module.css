@@ -1,0 +1,25 @@
+.pageWrapper {
+    max-width: 1300px;
+    margin-inline: auto;
+    display: flex;
+    flex-direction: column;
+}
+
+.scoreBoard {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    gap: 1rem;
+    flex-wrap: wrap;
+    padding-block: 1rem;
+}
+
+.playerScore {
+    display: flex;
+    gap: 0.5rem;
+}
+
+.playerName,
+.score {
+    font-size: 1.2rem;
+}

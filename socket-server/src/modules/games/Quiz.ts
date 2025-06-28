@@ -40,6 +40,7 @@ export default class Quiz implements QuizGame {
     start(): void {
         this.emitUserData();
         this.socketListenerSetup();
+        this.selectNextQuestion([]);
     }
 
     public reconnectSocket(): void {
@@ -90,13 +91,24 @@ export default class Quiz implements QuizGame {
             user.socket?.on(
                 "quiz:answer",
                 (answer: number | string | string[]) => {
-                    this.question?.handleAnswer(user.userId, answer);
-                    if (
-                        this.question?.answers.length ===
-                        this.players.size - 2
-                    ) {
-                        const corrects = this.question.evaluateAnswers();
-                        this.updateScores(corrects);
+                    if (!this.players.get(user.userId)?.correct) {
+                        this.question?.handleAnswer(user.userId, answer);
+                        this.players.set(user.userId, {
+                            ...this.players.get(user.userId)!,
+                            correct: true,
+                        });
+                        this.emitUserData();
+                        if (
+                            this.question?.answers.length ===
+                            this.players.size - 2
+                        ) {
+                            const corrects = this.question.evaluateAnswers();
+                            setTimeout(() => this.updateScores(corrects), 5000);
+                            setTimeout(
+                                () => this.selectNextQuestion(corrects),
+                                5000
+                            );
+                        }
                     }
                 }
             );
@@ -120,6 +132,7 @@ export default class Quiz implements QuizGame {
             user.socket?.on("quiz:admin:evaluate", () => {
                 const corrects = this.question!.evaluateAnswers();
                 this.updateScores(corrects);
+                this.selectNextQuestion(corrects);
             });
         });
     }
@@ -131,5 +144,29 @@ export default class Quiz implements QuizGame {
                 score: this.players.get(obj.id)!.score,
             });
         });
+        this.emitUserData();
+    }
+
+    private selectNextQuestion(data: { id: string; points: number }[]) {
+        let selector = "";
+        const order = data.sort((a, b) => a.points - b.points);
+        if (order.length > 0) {
+            selector = order[0].id;
+        } else {
+            this.players.forEach((player) => {
+                if (
+                    player.name !== "display" &&
+                    player.name !== this.fullData.owner
+                )
+                    selector = player.userId;
+            });
+        }
+        this.context.io
+            .to(this.id)
+            .emit(
+                "quiz:nextQuestionSelect",
+                this.players.get(selector)?.name,
+                this.fullData.categories
+            );
     }
 }

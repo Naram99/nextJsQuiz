@@ -32,6 +32,7 @@ export default class Question {
                 break;
 
             case "multiSelect":
+                corrects = this.evaluateMultiSelect();
                 break;
 
             default:
@@ -75,7 +76,26 @@ export default class Question {
 
     private evaluateMultiSelect(): { id: string; points: number }[] {
         const pointsObj: { id: string; points: number }[] = [];
+        const answerText = this.fullData.answer.text;
         for (const [id, guesses] of Object.entries(this.answers)) {
+            const check: { [index: string]: number } = {};
+            if (Array.isArray(guesses) && Array.isArray(answerText)) {
+                guesses.forEach((guess) => {
+                    if (answerText.includes(guess)) {
+                        check[guess] = this.fullData.answer.points;
+                    }
+                });
+            }
+            let points = 0;
+            if (Object.values(check).length > 0) {
+                points = Object.values(check).reduce(
+                    (prev, curr) => prev + curr
+                );
+            }
+            pointsObj.push({
+                id: id,
+                points: points,
+            });
         }
 
         return pointsObj;

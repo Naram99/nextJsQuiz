@@ -9,6 +9,9 @@ import AdminPage from "./AdminPage";
 import MainDisplay from "./MainDisplay";
 import ScoreBoard from "./ScoreBoard";
 import { QuestionData } from "@/utils/types/games/QuestionData.type";
+import { CategoryData } from "@/utils/types/games/CategoryData.type";
+
+type GameState = "select" | "question" | "showdown";
 
 export default function QuizGamePage() {
     const router = useRouter();
@@ -17,6 +20,7 @@ export default function QuizGamePage() {
     const params = useParams();
     const id = params.id as string;
 
+    const [gameState, setGameState] = useState<GameState>("select");
     const [playerType, setPlayerType] = useState<
         "admin" | "player" | "display"
     >("player");
@@ -45,7 +49,9 @@ export default function QuizGamePage() {
 
         socket.on("joinLobbyOk", handleJoinLobby);
         socket.on("quiz:playerData", handlePlayerData);
+        socket.on("quiz:nextQuestionSelect", handleNextSelect);
         socket.on("quiz:questionData", handleQuestionData);
+        socket.on("quiz:allAnswers", handleAllAnswers);
         socket.on("matchEnd", handleEnd);
 
         function handleJoinLobby(bool: boolean) {
@@ -71,9 +77,16 @@ export default function QuizGamePage() {
             );
         }
 
+        function handleNextSelect(selector: string, categories: CategoryData) {
+            setGameState("select");
+        }
+
         function handleQuestionData(data: QuestionData) {
+            setGameState("question");
             setQuestionData(data);
         }
+
+        function handleAllAnswers() {}
 
         function handleEnd() {
             router.back();
@@ -82,7 +95,9 @@ export default function QuizGamePage() {
         return () => {
             socket.off("joinLobbyOk", handleJoinLobby);
             socket.off("quiz:playerData", handlePlayerData);
-            socket.off("quiz:playerData", handleQuestionData);
+            socket.off("quiz:nextQuestionSelect", handleNextSelect);
+            socket.off("quiz:questionData", handleQuestionData);
+            socket.off("quiz:allAnswers", handleAllAnswers);
             socket.off("matchEnd", handleEnd);
         };
     }, [id, router, me]);
@@ -101,6 +116,7 @@ export default function QuizGamePage() {
                     isPlayer={playerType !== "display"}
                     questionData={questionData}
                     hasAnswered={score.get(me!.name)?.correct !== null}
+                    gameState={gameState}
                 />
             )}
         </div>

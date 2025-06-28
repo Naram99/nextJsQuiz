@@ -1,4 +1,4 @@
-import { CategoryData } from "./types/games/CategoryData.type";
+import { CategoryData } from "./type/quiz/CategoryData.type";
 
 export const DRVQuizData: CategoryData[] = [
     {
@@ -83,15 +83,15 @@ export const DRVQuizData: CategoryData[] = [
     },
     {
         id: "cat2",
-        name: "Skins",
+        name: "AI",
         iconsPath: "/quiz/jungle",
         questions: [
             {
                 id: "jng1",
-                question: "",
+                question: "Melyik két Esportoló látható a képen?",
                 used: false,
                 answer: {
-                    text: "",
+                    text: ["Rekkles", "Gumayusi"],
                     type: "handRaise",
                     points: 10,
                     confirm: false,
@@ -106,6 +106,54 @@ export const DRVQuizData: CategoryData[] = [
                     text: ["Headhunter", "Pulsefire"],
                     type: "handRaise",
                     points: 20,
+                    confirm: false,
+                    pictureSrc: [],
+                },
+            },
+            {
+                id: "jng3",
+                question:
+                    "Melyik három hősből lett összegyúrva a képen látható figura?",
+                used: false,
+                answer: {
+                    text: ["Illaoi", "Ivern", "Zed"],
+                    type: "multiSelect",
+                    points: 10,
+                    confirm: true,
+                    selectType: "champion",
+                    pointsPerCorrect: true,
+                    amount: 3,
+                    pictureSrc: [],
+                },
+            },
+            {
+                id: "jng4",
+                question:
+                    "Melyik három hős kardjából lett összegyúrva az alábbi?",
+                used: false,
+                answer: {
+                    text: ["Aatrox", "Garen", "Leona"],
+                    type: "multiSelect",
+                    points: 15,
+                    confirm: true,
+                    pictureSrc: [],
+                    amount: 3,
+                    pointsPerCorrect: true,
+                    selectType: "champion",
+                },
+            },
+            {
+                id: "jng5",
+                question: "Melyik három skin lett átalakítva?",
+                used: false,
+                answer: {
+                    text: [
+                        "Pool Party Caitlyn",
+                        "Pool Party Gangplank",
+                        "Pool Party Zoe",
+                    ],
+                    type: "handRaise",
+                    points: 50,
                     confirm: false,
                     pictureSrc: [],
                 },
