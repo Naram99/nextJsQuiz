@@ -9,7 +9,10 @@ export default class Question {
         private context: ServerContext,
         private id: string,
         public fullData: QuestionData
-    ) {}
+    ) {
+        console.log(fullData);
+        context.io.to(id).emit("quiz:questionData", fullData);
+    }
 
     public handleAnswer(
         player: string,
@@ -44,6 +47,8 @@ export default class Question {
 
     public handleHandRaise(user: string): void {
         this.handRaiseOrder.push(user);
+        console.log(this.handRaiseOrder);
+
         this.context.io
             .to(this.id)
             .emit("quiz:handRaiseOrder", this.handRaiseOrder);

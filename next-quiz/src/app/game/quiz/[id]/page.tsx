@@ -91,10 +91,13 @@ export default function QuizGamePage() {
         }
 
         function handleQuestionData(data: QuestionData) {
+            console.log(data);
+
             setGameState("question");
             setQuestionData(data);
         }
 
+        // TODO
         function handleAllAnswers() {}
 
         function handleEnd() {

@@ -102,10 +102,10 @@ export default class Quiz implements QuizGame {
                         });
                         this.emitUserData();
                         if (
-                            this.question?.answers.length ===
+                            Object.values(this.question!.answers).length ===
                             this.players.size - 2
                         ) {
-                            const corrects = this.question.evaluateAnswers();
+                            const corrects = this.question!.evaluateAnswers();
                             setTimeout(() => this.updateScores(corrects), 5000);
                             setTimeout(
                                 () => this.selectNextQuestion(corrects),
@@ -121,15 +121,17 @@ export default class Quiz implements QuizGame {
 
                 this.fullData.categories.forEach((category, index) => {
                     category.questions.forEach((question, ind) => {
-                        if (question.id === questionId)
+                        if (question.id === questionId) {
                             this.fullData.categories[index].questions[
                                 ind
                             ].used = true;
-                        this.question = new Question(
-                            this.context,
-                            this.id,
-                            this.fullData.categories[index].questions[ind]
-                        );
+
+                            this.question = new Question(
+                                this.context,
+                                this.id,
+                                this.fullData.categories[index].questions[ind]
+                            );
+                        }
                     });
                 });
             });

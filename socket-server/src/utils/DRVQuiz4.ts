@@ -90,24 +90,26 @@ export const DRVQuizData: CategoryData[] = [
                 id: "jng1",
                 question: "Melyik két Esportoló látható a képen?",
                 used: false,
+                pictureSrc: "/quiz/ai/esport.png",
                 answer: {
                     text: ["Rekkles", "Gumayusi"],
                     type: "handRaise",
                     points: 10,
                     confirm: false,
-                    pictureSrc: "",
+                    pictureSrc: ["/quiz/ai/esport.png"],
                 },
             },
             {
                 id: "jng2",
                 question: "Melyik Caitlyn skinek fegyverei lettek összegyúrva?",
                 used: false,
+                pictureSrc: "/quiz/ai/weapon.png",
                 answer: {
                     text: ["Headhunter", "Pulsefire"],
                     type: "handRaise",
                     points: 20,
                     confirm: false,
-                    pictureSrc: [],
+                    pictureSrc: ["/quiz/ai/weapon.png"],
                 },
             },
             {
@@ -115,6 +117,7 @@ export const DRVQuizData: CategoryData[] = [
                 question:
                     "Melyik három hősből lett összegyúrva a képen látható figura?",
                 used: false,
+                pictureSrc: "/quiz/ai/mash.png",
                 answer: {
                     text: ["Illaoi", "Ivern", "Zed"],
                     type: "multiSelect",
@@ -123,7 +126,7 @@ export const DRVQuizData: CategoryData[] = [
                     selectType: "champion",
                     pointsPerCorrect: true,
                     amount: 3,
-                    pictureSrc: [],
+                    pictureSrc: ["/quiz/ai/mash.png"],
                 },
             },
             {
@@ -131,12 +134,13 @@ export const DRVQuizData: CategoryData[] = [
                 question:
                     "Melyik három hős kardjából lett összegyúrva az alábbi?",
                 used: false,
+                pictureSrc: "/quiz/ai/sword.png",
                 answer: {
                     text: ["Aatrox", "Garen", "Leona"],
                     type: "multiSelect",
                     points: 15,
                     confirm: true,
-                    pictureSrc: [],
+                    pictureSrc: ["/quiz/ai/sword.png"],
                     amount: 3,
                     pointsPerCorrect: true,
                     selectType: "champion",
@@ -146,6 +150,7 @@ export const DRVQuizData: CategoryData[] = [
                 id: "jng5",
                 question: "Melyik három skin lett átalakítva?",
                 used: false,
+                pictureSrc: "/quiz/ai/winter.png",
                 answer: {
                     text: [
                         "Pool Party Caitlyn",
@@ -155,7 +160,7 @@ export const DRVQuizData: CategoryData[] = [
                     type: "handRaise",
                     points: 50,
                     confirm: false,
-                    pictureSrc: [],
+                    pictureSrc: ["/quiz/ai/winter.png"],
                 },
             },
         ],

@@ -9,7 +9,7 @@ export const fullTestQuiz: CategoryData[] = [
             {
                 id: "top1",
                 question:
-                    "Nevezz meg egy hőst, akinek a neve C betűvel kezdődik!",
+                    "Nevezz meg két hőst, akinek a neve C betűvel kezdődik!",
                 used: false,
                 answer: {
                     type: "multiSelect",
@@ -21,7 +21,7 @@ export const fullTestQuiz: CategoryData[] = [
                         "Cassiopeia",
                     ],
                     selectType: "champion",
-                    amount: 1,
+                    amount: 2,
                     confirm: true,
                     pointsPerCorrect: true,
                     points: 10,

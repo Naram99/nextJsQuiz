@@ -29,7 +29,11 @@ export default function QuestionSelector({
                                             ? styles.usedQuestionIcon
                                             : styles.questionIcon
                                     }
-                                    src={category.iconsPath + question.id}
+                                    src={
+                                        category.iconsPath +
+                                        question.id +
+                                        ".png"
+                                    }
                                     onClick={() => handleSelect(question.id)}
                                 />
                             </div>

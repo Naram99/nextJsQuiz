@@ -137,7 +137,7 @@ async function test() {
 
     const testInsert = await db.insert(QuizTable).values({
         userId: "22ee4737-db18-4e85-8f56-e766c828b166",
-        title: "Full Test",
+        title: "FullTest",
         type: "WinnerSelect",
         hasCategories: true,
         questions: fullTestQuiz,
