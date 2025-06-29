@@ -39,23 +39,28 @@ export default function ScoreBoard({
                     )}
                 </div>
             ) : (
-                Array.from(score.entries()).map(([player, data]) => (
-                    <div key={player} className={styles.playerScore}>
-                        <div className={styles.playerName}>{player}:</div>
-                        <div className={styles.score}>{data.score}</div>
-                        {data.correct === null ? (
-                            ""
-                        ) : (
-                            <div className={styles.correct}>
-                                {data.correct ? (
-                                    <FontAwesomeIcon icon={faCheck} />
-                                ) : (
-                                    <FontAwesomeIcon icon={faX} />
-                                )}
-                            </div>
-                        )}
-                    </div>
-                ))
+                Array.from(score.entries())
+                    .filter(
+                        ([player, data]) =>
+                            !["display", "Naram"].includes(player)
+                    )
+                    .map(([player, data]) => (
+                        <div key={player} className={styles.playerScore}>
+                            <div className={styles.playerName}>{player}:</div>
+                            <div className={styles.score}>{data.score}</div>
+                            {data.correct === null ? (
+                                ""
+                            ) : (
+                                <div className={styles.correct}>
+                                    {data.correct ? (
+                                        <FontAwesomeIcon icon={faCheck} />
+                                    ) : (
+                                        <FontAwesomeIcon icon={faX} />
+                                    )}
+                                </div>
+                            )}
+                        </div>
+                    ))
             )}
         </div>
     );

@@ -4,7 +4,7 @@ export const fullTestQuiz: CategoryData[] = [
     {
         id: "cat1",
         name: "Cat1",
-        iconsPath: "/quiz/top",
+        iconsPath: "/quiz/top/",
         questions: [
             {
                 id: "top1",
@@ -43,7 +43,7 @@ export const fullTestQuiz: CategoryData[] = [
     {
         id: "cat2",
         name: "Cat2",
-        iconsPath: "/quiz/jungle",
+        iconsPath: "/quiz/jungle/",
         questions: [
             {
                 id: "jng1",

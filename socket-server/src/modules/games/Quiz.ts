@@ -40,7 +40,7 @@ export default class Quiz implements QuizGame {
     start(): void {
         this.emitUserData();
         this.socketListenerSetup();
-        this.selectNextQuestion([]);
+        // this.selectNextQuestion([]); Átírni máshová, indítás utánra, előbb fut le, mint a listener setup a túloldalon
     }
 
     public reconnectSocket(): void {
@@ -49,8 +49,6 @@ export default class Quiz implements QuizGame {
     }
 
     private emitUserData(): void {
-        console.log(this.players);
-
         const startData: Map<
             string,
             { ready: boolean; score: number; correct: boolean | null }
@@ -77,7 +75,12 @@ export default class Quiz implements QuizGame {
             user.socket?.removeAllListeners("quiz:answer");
             user.socket?.removeAllListeners("quiz:handRaise");
             user.socket?.removeAllListeners("quiz:selectQuestion");
+            user.socket?.removeAllListeners("quiz:admin:start");
             user.socket?.removeAllListeners("quiz:admin:evaluate");
+
+            user.socket?.on("quiz:admin:start", () => {
+                this.selectNextQuestion([]);
+            });
 
             user.socket?.on("quiz:requestData", (id: string) => {
                 this.emitUserData();
@@ -114,6 +117,8 @@ export default class Quiz implements QuizGame {
             );
 
             user.socket?.on("quiz:selectQuestion", (questionId: string) => {
+                console.log(questionId);
+
                 this.fullData.categories.forEach((category, index) => {
                     category.questions.forEach((question, ind) => {
                         if (question.id === questionId)
@@ -131,8 +136,8 @@ export default class Quiz implements QuizGame {
 
             user.socket?.on("quiz:admin:evaluate", () => {
                 const corrects = this.question!.evaluateAnswers();
-                this.updateScores(corrects);
-                this.selectNextQuestion(corrects);
+                setTimeout(() => this.updateScores(corrects), 5000);
+                setTimeout(() => this.selectNextQuestion(corrects), 5000);
             });
         });
     }
@@ -161,6 +166,7 @@ export default class Quiz implements QuizGame {
                     selector = player.userId;
             });
         }
+        console.log(this.players.get(selector)?.name);
         this.context.io
             .to(this.id)
             .emit(

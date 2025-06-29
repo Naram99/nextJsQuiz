@@ -11,7 +11,7 @@ import ScoreBoard from "./ScoreBoard";
 import { QuestionData } from "@/utils/types/games/QuestionData.type";
 import { CategoryData } from "@/utils/types/games/CategoryData.type";
 
-type GameState = "select" | "question" | "showdown";
+type GameState = "start" | "select" | "question" | "showdown";
 
 export default function QuizGamePage() {
     const router = useRouter();
@@ -20,10 +20,12 @@ export default function QuizGamePage() {
     const params = useParams();
     const id = params.id as string;
 
-    const [gameState, setGameState] = useState<GameState>("select");
+    const [gameState, setGameState] = useState<GameState>("start");
     const [playerType, setPlayerType] = useState<
         "admin" | "player" | "display"
     >("player");
+    const [categoryData, setCategoryData] = useState<CategoryData[]>([]);
+    const [selector, setSelector] = useState<string>("");
     const [questionData, setQuestionData] = useState<QuestionData>({
         id: "",
         question: "",
@@ -65,7 +67,6 @@ export default function QuizGamePage() {
             ][],
             owner: string
         ) {
-            console.log(data);
             const newScore = new Map(data);
             setScore(newScore);
             setPlayerType(
@@ -77,8 +78,16 @@ export default function QuizGamePage() {
             );
         }
 
-        function handleNextSelect(selector: string, categories: CategoryData) {
+        function handleNextSelect(
+            selector: string,
+            categories: CategoryData[]
+        ) {
+            console.log(selector);
+            console.log(categories);
+
+            setSelector(selector);
             setGameState("select");
+            setCategoryData(categories);
         }
 
         function handleQuestionData(data: QuestionData) {
@@ -110,13 +119,19 @@ export default function QuizGamePage() {
                 isPlayer={playerType === "player"}
             />
             {playerType === "admin" ? (
-                <AdminPage questionData={questionData} />
+                <AdminPage
+                    questionData={questionData}
+                    categoryData={categoryData}
+                    gameState={gameState}
+                />
             ) : (
                 <MainDisplay
                     isPlayer={playerType !== "display"}
                     questionData={questionData}
                     hasAnswered={score.get(me!.name)?.correct !== null}
                     gameState={gameState}
+                    categories={categoryData}
+                    selector={selector}
                 />
             )}
         </div>
