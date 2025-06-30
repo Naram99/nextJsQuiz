@@ -4,6 +4,7 @@ import Answer from "./answerComponents/Answer";
 import AnswerDisplay from "./answerComponents/AnswerDisplay";
 import { CategoryData } from "@/utils/types/games/CategoryData.type";
 import QuestionSelector from "./QuestionSelector";
+import Image from "next/image";
 
 export default function MainDisplay({
     isPlayer,
@@ -27,6 +28,15 @@ export default function MainDisplay({
                     <div className={styles.question}>
                         <h2>{questionData.question}</h2>
                     </div>
+                    {questionData.pictureSrc && (
+                        <Image
+                            src={questionData.pictureSrc}
+                            height={100}
+                            width={100}
+                            alt="question picture"
+                            unoptimized={true}
+                        />
+                    )}
                     <div className={styles.answers}>
                         {!isPlayer ? (
                             <AnswerDisplay />

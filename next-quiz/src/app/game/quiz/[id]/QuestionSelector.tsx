@@ -34,6 +34,7 @@ export default function QuestionSelector({
                                         question.id +
                                         ".png"
                                     }
+                                    unoptimized={true}
                                     onClick={() => handleSelect(question.id)}
                                 />
                             </div>

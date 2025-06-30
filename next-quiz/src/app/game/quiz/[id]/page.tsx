@@ -15,7 +15,7 @@ type GameState = "start" | "select" | "question" | "showdown";
 
 export default function QuizGamePage() {
     const router = useRouter();
-    const { user: me } = useUser();
+    const { isLoading, user: me } = useUser();
 
     const params = useParams();
     const id = params.id as string;
@@ -44,6 +44,7 @@ export default function QuizGamePage() {
     >(new Map());
 
     useEffect(() => {
+        if (isLoading) return;
         if (!socket.connected) connectSocketWithFreshToken();
 
         socket.emit("validateJoinCode", id);
@@ -112,7 +113,9 @@ export default function QuizGamePage() {
             socket.off("quiz:allAnswers", handleAllAnswers);
             socket.off("matchEnd", handleEnd);
         };
-    }, [id, router, me]);
+    }, [id, router, me, isLoading]);
+
+    if (isLoading) return;
 
     return (
         <div className={styles.pageWrapper}>

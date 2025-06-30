@@ -76,6 +76,7 @@ export default class Quiz implements QuizGame {
             user.socket?.removeAllListeners("quiz:handRaise");
             user.socket?.removeAllListeners("quiz:selectQuestion");
             user.socket?.removeAllListeners("quiz:admin:start");
+            user.socket?.removeAllListeners("quiz:admin:handRaiseCorrect");
             user.socket?.removeAllListeners("quiz:admin:evaluate");
 
             user.socket?.on("quiz:admin:start", () => {
@@ -92,6 +93,11 @@ export default class Quiz implements QuizGame {
             });
 
             user.socket?.on(
+                "quiz:admin:handRaiseCorrect",
+                (correct: boolean) => {}
+            );
+
+            user.socket?.on(
                 "quiz:answer",
                 (answer: number | string | string[]) => {
                     if (!this.players.get(user.userId)?.correct) {
@@ -101,6 +107,11 @@ export default class Quiz implements QuizGame {
                             correct: true,
                         });
                         this.emitUserData();
+                        console.log(
+                            Object.values(this.question!.answers).length
+                        );
+                        console.log(this.players.size);
+
                         if (
                             Object.values(this.question!.answers).length ===
                             this.players.size - 2
@@ -148,10 +159,17 @@ export default class Quiz implements QuizGame {
         data.forEach((obj) => {
             this.players.set(obj.id, {
                 ...this.players.get(obj.id)!,
-                score: this.players.get(obj.id)!.score,
+                score: this.players.get(obj.id)!.score + obj.points,
             });
         });
+        this.resetCorrect();
         this.emitUserData();
+    }
+
+    private resetCorrect(): void {
+        this.players.forEach((user, userId) => {
+            this.players.set(userId, { ...user, correct: null });
+        });
     }
 
     private selectNextQuestion(data: { id: string; points: number }[]) {

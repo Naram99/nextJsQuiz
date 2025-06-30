@@ -46,13 +46,15 @@ export default class Question {
     }
 
     public handleHandRaise(user: string): void {
-        this.handRaiseOrder.push(user);
+        if (!this.handRaiseOrder.includes(user)) this.handRaiseOrder.push(user);
         console.log(this.handRaiseOrder);
 
         this.context.io
             .to(this.id)
             .emit("quiz:handRaiseOrder", this.handRaiseOrder);
     }
+
+    private handleHandRaiseAnswer(correct: boolean): void {}
 
     private findClosestNumber(): { id: string; points: number }[] {
         let closest: { id: string; points: number }[] = [];
