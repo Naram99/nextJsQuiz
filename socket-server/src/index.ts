@@ -136,7 +136,7 @@ async function test() {
     console.log(process.env.DB_USER);
 
     const testInsert = await db.insert(QuizTable).values({
-        userId: "22ee4737-db18-4e85-8f56-e766c828b166",
+        userId: "cf85752e-56db-49f4-867f-c855db35bc66",
         title: "FullTest",
         type: "WinnerSelect",
         hasCategories: true,

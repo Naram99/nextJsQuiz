@@ -32,6 +32,7 @@ export default function QuizGamePage() {
         used: false,
         answer: { text: "", type: "handRaise", confirm: false, points: 0 },
     });
+    const [handRaiseOrder, setHandRaiseOrder] = useState<string[]>([])
     const [score, setScore] = useState<
         Map<
             string,
@@ -54,6 +55,7 @@ export default function QuizGamePage() {
         socket.on("quiz:playerData", handlePlayerData);
         socket.on("quiz:nextQuestionSelect", handleNextSelect);
         socket.on("quiz:questionData", handleQuestionData);
+        socket.on("quiz:handRaiseOrder", handleHandRaiseOrder)
         socket.on("quiz:allAnswers", handleAllAnswers);
         socket.on("matchEnd", handleEnd);
 
@@ -98,6 +100,10 @@ export default function QuizGamePage() {
             setQuestionData(data);
         }
 
+        function handleHandRaiseOrder(order: string[]) {
+            setHandRaiseOrder(order);
+        }
+
         // TODO
         function handleAllAnswers() {}
 
@@ -110,6 +116,7 @@ export default function QuizGamePage() {
             socket.off("quiz:playerData", handlePlayerData);
             socket.off("quiz:nextQuestionSelect", handleNextSelect);
             socket.off("quiz:questionData", handleQuestionData);
+            socket.off("quiz:handRaiseOrder", handleHandRaiseOrder)
             socket.off("quiz:allAnswers", handleAllAnswers);
             socket.off("matchEnd", handleEnd);
         };
@@ -129,6 +136,7 @@ export default function QuizGamePage() {
                     questionData={questionData}
                     categoryData={categoryData}
                     gameState={gameState}
+                    handRaiseOrder={handRaiseOrder}
                 />
             ) : (
                 <MainDisplay
@@ -137,7 +145,10 @@ export default function QuizGamePage() {
                     hasAnswered={score.get(me!.name)?.correct !== null}
                     gameState={gameState}
                     categories={categoryData}
+                    me={me?.name}
                     selector={selector}
+                    handRaiseOrder={handRaiseOrder}
+                    // TODO allAnswers={}
                 />
             )}
         </div>
