@@ -1,19 +1,16 @@
 import { QuestionData } from "@/utils/types/games/QuestionData.type";
 import styles from "../page.module.css";
-import Image from "next/image";
 
 export default function AnswerDisplay({
     questionData,
     handRaiseOrder,
     gameState,
-    allAnswers,
 }: {
     questionData: QuestionData;
     handRaiseOrder: string[];
     gameState: "start" | "select" | "question" | "showdown";
-    allAnswers: { [index: string]: number | string | string[] };
 }) {
-    console.log("AnswerDisplay", allAnswers);
+    console.log("AnswerDisplay", gameState);
 
     return (
         <div className={styles.answerDisplay}>
@@ -31,37 +28,6 @@ export default function AnswerDisplay({
                         </div>
                     </div>
                 )}
-            {gameState === "showdown" && (
-                <>
-                    <div className={styles.answer}>
-                        {Array.isArray(questionData.answer.text)
-                            ? questionData.answer.text.join(", ")
-                            : questionData.answer.text}
-                    </div>
-                    {questionData.answer.pictureSrc &&
-                        Array.isArray(questionData.answer.pictureSrc) &&
-                        questionData.answer.pictureSrc.map((pic) => (
-                            <div className={styles.answerPicture} key={pic}>
-                                <Image
-                                    src={pic}
-                                    width={100}
-                                    height={100}
-                                    alt="answer picture"
-                                />
-                            </div>
-                        ))}
-                    <div className={styles.allAnswers}>
-                        {Object.entries(allAnswers).map(([name, answer]) => (
-                            <div className={styles.playerAnswer} key={name}>
-                                {name}:{" "}
-                                {Array.isArray(answer)
-                                    ? answer.join(", ")
-                                    : answer}
-                            </div>
-                        ))}
-                    </div>
-                </>
-            )}
         </div>
     );
 }

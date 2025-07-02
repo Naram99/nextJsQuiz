@@ -89,9 +89,6 @@ export default function QuizGamePage() {
             selector: string,
             categories: CategoryData[]
         ) {
-            console.log(selector);
-            console.log(categories);
-
             setSelector(selector);
             setGameState("select");
             setCategoryData(categories);
@@ -108,12 +105,11 @@ export default function QuizGamePage() {
             setHandRaiseOrder(order);
         }
 
-        // TODO
         function handleAllAnswers(answers: {
             [index: string]: number | string | string[];
         }) {
             console.log("page.tsx", answers);
-
+            setGameState("showdown");
             setAllAnswers(answers);
         }
 
@@ -132,7 +128,7 @@ export default function QuizGamePage() {
             socket.off("quiz:questionData", handleQuestionData);
             socket.off("quiz:handRaiseOrder", handleHandRaiseOrder);
             socket.off("quiz:allAnswers", handleAllAnswers);
-            socket.on("quiz:showdown", handleShowdown);
+            socket.off("quiz:showdown", handleShowdown);
             socket.off("matchEnd", handleEnd);
         };
     }, [id, router, me, isLoading]);

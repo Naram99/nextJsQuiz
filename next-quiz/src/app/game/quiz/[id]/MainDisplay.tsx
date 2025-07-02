@@ -5,6 +5,7 @@ import AnswerDisplay from "./answerComponents/AnswerDisplay";
 import { CategoryData } from "@/utils/types/games/CategoryData.type";
 import QuestionSelector from "./QuestionSelector";
 import Image from "next/image";
+import ShowdownDisplay from "./answerComponents/ShowdownDisplay";
 
 export default function MainDisplay({
     isPlayer,
@@ -49,7 +50,6 @@ export default function MainDisplay({
                                 questionData={questionData}
                                 gameState={gameState}
                                 handRaiseOrder={handRaiseOrder}
-                                allAnswers={allAnswers}
                             />
                         ) : !hasAnswered ? (
                             <Answer data={questionData.answer} />
@@ -67,6 +67,12 @@ export default function MainDisplay({
                     `${selector} is selecting the next question`
                 )}
             </div>
+            {gameState === "showdown" && (
+                <ShowdownDisplay
+                    questionData={questionData}
+                    allAnswers={allAnswers}
+                />
+            )}
         </div>
     );
 }

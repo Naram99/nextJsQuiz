@@ -14,7 +14,7 @@ export const fullTestQuiz: CategoryData[] = [
                 answer: {
                     type: "multiSelect",
                     text: [
-                        "ChoGath",
+                        "Chogath",
                         "Caitlyn",
                         "Camille",
                         "Corki",
