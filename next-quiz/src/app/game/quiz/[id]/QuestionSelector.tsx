@@ -35,7 +35,13 @@ export default function QuestionSelector({
                                         ".png"
                                     }
                                     unoptimized={true}
-                                    onClick={() => handleSelect(question.id)}
+                                    onClick={
+                                        question.used
+                                            ? () => {
+                                                  console.log("Used question");
+                                              }
+                                            : () => handleSelect(question.id)
+                                    }
                                 />
                             </div>
                         ))}

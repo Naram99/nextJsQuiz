@@ -15,17 +15,17 @@ export default function MainDisplay({
     me,
     selector,
     handRaiseOrder,
-    allAnswers
+    allAnswers,
 }: {
     isPlayer: boolean;
     questionData: QuestionData;
     hasAnswered: boolean;
     gameState: "start" | "select" | "question" | "showdown";
     categories: CategoryData[];
-    me?: string,
+    me?: string;
     selector: string;
     handRaiseOrder: string[];
-    allAnswers: { [index: string]: number | string | string[] }
+    allAnswers: { [index: string]: number | string | string[] };
 }) {
     return (
         <div className={styles.mainDisplay}>
@@ -45,7 +45,7 @@ export default function MainDisplay({
                     )}
                     <div className={styles.answers}>
                         {!isPlayer ? (
-                            <AnswerDisplay 
+                            <AnswerDisplay
                                 questionData={questionData}
                                 gameState={gameState}
                                 handRaiseOrder={handRaiseOrder}
@@ -62,7 +62,10 @@ export default function MainDisplay({
             <div className={styles.selectorCt}>
                 {gameState === "select" && (me === selector || !isPlayer) ? (
                     <QuestionSelector categories={categories} />
-                ) : `${selector} is selecting the next question`}
+                ) : (
+                    gameState === "select" &&
+                    `${selector} is selecting the next question`
+                )}
             </div>
         </div>
     );

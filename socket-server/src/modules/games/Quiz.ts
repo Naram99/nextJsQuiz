@@ -78,6 +78,7 @@ export default class Quiz implements QuizGame {
             user.socket?.removeAllListeners("quiz:admin:start");
             user.socket?.removeAllListeners("quiz:admin:handRaiseCorrect");
             user.socket?.removeAllListeners("quiz:admin:evaluate");
+            user.socket?.removeAllListeners("quiz:admin:nextQuestion");
 
             user.socket?.on("quiz:admin:start", () => {
                 this.selectNextQuestion([]);
@@ -94,7 +95,31 @@ export default class Quiz implements QuizGame {
 
             user.socket?.on(
                 "quiz:admin:handRaiseCorrect",
-                (correct: boolean) => {}
+                (correct: boolean) => {
+                    const activePlayer =
+                        this.question?.handleHandRaiseAnswer(correct);
+                    if (correct && activePlayer) {
+                        this.players.forEach((player) => {
+                            if (player.name === activePlayer.id) {
+                                activePlayer.id = player.userId;
+                                this.players.set(player.userId, {
+                                    ...player,
+                                    correct: true,
+                                });
+                            }
+                        });
+                        this.emitUserData();
+                        this.finishQuestion([activePlayer]);
+                        // setTimeout(
+                        //     () => this.updateScores([activePlayer]),
+                        //     5000
+                        // );
+                        // setTimeout(
+                        //     () => this.selectNextQuestion([activePlayer]),
+                        //     5000
+                        // );
+                    }
+                }
             );
 
             user.socket?.on(
@@ -107,21 +132,18 @@ export default class Quiz implements QuizGame {
                             correct: true,
                         });
                         this.emitUserData();
-                        console.log(
-                            Object.values(this.question!.answers).length
-                        );
-                        console.log(this.players.size);
 
                         if (
                             Object.values(this.question!.answers).length ===
                             this.players.size - 2
                         ) {
                             const corrects = this.question!.evaluateAnswers();
-                            setTimeout(() => this.updateScores(corrects), 5000);
-                            setTimeout(
-                                () => this.selectNextQuestion(corrects),
-                                5000
-                            );
+                            this.finishQuestion(corrects);
+                            // setTimeout(() => this.updateScores(corrects), 5000);
+                            // setTimeout(
+                            //     () => this.selectNextQuestion(corrects),
+                            //     5000
+                            // );
                         }
                     }
                 }
@@ -149,10 +171,21 @@ export default class Quiz implements QuizGame {
 
             user.socket?.on("quiz:admin:evaluate", () => {
                 const corrects = this.question!.evaluateAnswers();
-                setTimeout(() => this.updateScores(corrects), 5000);
-                setTimeout(() => this.selectNextQuestion(corrects), 5000);
+                this.finishQuestion(corrects);
+                // setTimeout(() => this.updateScores(corrects), 5000);
+                // setTimeout(() => this.selectNextQuestion(corrects), 5000);
+            });
+
+            user.socket?.on("quiz:admin:nextQuestion", () => {
+                this.finishQuestion([]);
             });
         });
+    }
+
+    private finishQuestion(data: { id: string; points: number }[]) {
+        this.context.io.to(this.id).emit("quiz:showdown");
+        setTimeout(() => this.updateScores(data), 5000);
+        setTimeout(() => this.selectNextQuestion(data), 5000);
     }
 
     private updateScores(data: { id: string; points: number }[]): void {

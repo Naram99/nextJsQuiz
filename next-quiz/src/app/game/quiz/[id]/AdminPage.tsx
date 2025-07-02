@@ -8,7 +8,7 @@ export default function AdminPage({
     questionData,
     gameState,
     categoryData,
-    handRaiseOrder
+    handRaiseOrder,
 }: {
     questionData: QuestionData;
     gameState: "start" | "select" | "question" | "showdown";
@@ -17,6 +17,14 @@ export default function AdminPage({
 }) {
     function handleStart() {
         socket.emit("quiz:admin:start");
+    }
+
+    function handleAdminNext() {
+        socket.emit("quiz:admin:nextQuestion");
+    }
+
+    function handleHandRaiseCorrect(correct: boolean) {
+        socket.emit("quiz:admin:handRaiseCorrect", correct);
     }
 
     return (
@@ -44,23 +52,46 @@ export default function AdminPage({
                             ? questionData.answer.text.join(", ")
                             : questionData.answer.text}
                     </div>
-                    {questionData.answer.type === "handRaise" && (
-                        <div className={styles.handRaiseAdminBtnCt}>
-                            <div className={styles.handRaiseOrder}>
-                                {handRaiseOrder.length > 0 ? handRaiseOrder.map(name => (
-                                    <div className={styles.handRaiseName} key={name}>{name}</div>
-                                )) : "Waiting for hand raise..."}
+                    {questionData.answer.type === "handRaise" &&
+                        handRaiseOrder.length > 0 && (
+                            <div className={styles.handRaiseAdminBtnCt}>
+                                <div className={styles.handRaiseOrder}>
+                                    {handRaiseOrder.length > 0
+                                        ? handRaiseOrder.map((name) => (
+                                              <div
+                                                  className={
+                                                      styles.handRaiseName
+                                                  }
+                                                  key={name}
+                                              >
+                                                  {name}
+                                              </div>
+                                          ))
+                                        : "Waiting for hand raise..."}
+                                </div>
+                                <button
+                                    type={"button"}
+                                    className={styles.handRaiseAccept}
+                                    onClick={() => handleHandRaiseCorrect(true)}
+                                >
+                                    Correct
+                                </button>
+                                <button
+                                    type={"button"}
+                                    className={styles.handRaiseDeny}
+                                    onClick={() =>
+                                        handleHandRaiseCorrect(false)
+                                    }
+                                >
+                                    Wrong
+                                </button>
                             </div>
-                            <button 
-                                type={"button"} 
-                                className={styles.handRaiseAccept}
-                            >Correct</button>
-                            <button 
-                                type={"button"} 
-                                className={styles.handRaiseDeny}
-                            >Wrong</button>
-                        </div>
-                    )}
+                        )}
+                    <div className={styles.adminNextBtn}>
+                        <button type={"button"} onClick={handleAdminNext}>
+                            Next Question
+                        </button>
+                    </div>
                 </>
             )}
         </div>

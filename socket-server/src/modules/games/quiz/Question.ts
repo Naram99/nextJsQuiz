@@ -54,7 +54,19 @@ export default class Question {
             .emit("quiz:handRaiseOrder", this.handRaiseOrder);
     }
 
-    private handleHandRaiseAnswer(correct: boolean): void {}
+    public handleHandRaiseAnswer(
+        correct: boolean
+    ): { id: string; points: number } | undefined {
+        const player = this.handRaiseOrder.shift();
+        if (player && correct)
+            return { id: player, points: this.fullData.answer.points };
+        else {
+            this.context.io
+                .to(this.id)
+                .emit("quiz:handRaiseOrder", this.handRaiseOrder);
+            return undefined;
+        }
+    }
 
     private findClosestNumber(): { id: string; points: number }[] {
         let closest: { id: string; points: number }[] = [];

@@ -32,7 +32,10 @@ export default function QuizGamePage() {
         used: false,
         answer: { text: "", type: "handRaise", confirm: false, points: 0 },
     });
-    const [handRaiseOrder, setHandRaiseOrder] = useState<string[]>([])
+    const [handRaiseOrder, setHandRaiseOrder] = useState<string[]>([]);
+    const [allAnswers, setAllAnswers] = useState<{
+        [index: string]: number | string | string[];
+    }>({});
     const [score, setScore] = useState<
         Map<
             string,
@@ -55,8 +58,9 @@ export default function QuizGamePage() {
         socket.on("quiz:playerData", handlePlayerData);
         socket.on("quiz:nextQuestionSelect", handleNextSelect);
         socket.on("quiz:questionData", handleQuestionData);
-        socket.on("quiz:handRaiseOrder", handleHandRaiseOrder)
+        socket.on("quiz:handRaiseOrder", handleHandRaiseOrder);
         socket.on("quiz:allAnswers", handleAllAnswers);
+        socket.on("quiz:showdown", handleShowdown);
         socket.on("matchEnd", handleEnd);
 
         function handleJoinLobby(bool: boolean) {
@@ -105,7 +109,17 @@ export default function QuizGamePage() {
         }
 
         // TODO
-        function handleAllAnswers() {}
+        function handleAllAnswers(answers: {
+            [index: string]: number | string | string[];
+        }) {
+            console.log("page.tsx", answers);
+
+            setAllAnswers(answers);
+        }
+
+        function handleShowdown() {
+            setGameState("showdown");
+        }
 
         function handleEnd() {
             router.back();
@@ -116,8 +130,9 @@ export default function QuizGamePage() {
             socket.off("quiz:playerData", handlePlayerData);
             socket.off("quiz:nextQuestionSelect", handleNextSelect);
             socket.off("quiz:questionData", handleQuestionData);
-            socket.off("quiz:handRaiseOrder", handleHandRaiseOrder)
+            socket.off("quiz:handRaiseOrder", handleHandRaiseOrder);
             socket.off("quiz:allAnswers", handleAllAnswers);
+            socket.on("quiz:showdown", handleShowdown);
             socket.off("matchEnd", handleEnd);
         };
     }, [id, router, me, isLoading]);
@@ -148,7 +163,7 @@ export default function QuizGamePage() {
                     me={me?.name}
                     selector={selector}
                     handRaiseOrder={handRaiseOrder}
-                    // TODO allAnswers={}
+                    allAnswers={allAnswers}
                 />
             )}
         </div>
