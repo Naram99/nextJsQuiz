@@ -20,20 +20,21 @@ export default function ShowdownDisplay({
             </div>
             {questionData.answer.pictureSrc &&
                 Array.isArray(questionData.answer.pictureSrc) &&
-                questionData.answer.pictureSrc.map((pic) => (
-                    <div className={styles.answerPicture} key={pic}>
-                        <Image
-                            src={pic}
-                            width={100}
-                            height={100}
-                            alt="answer picture"
-                        />
-                    </div>
+                questionData.answer.pictureSrc.map((pic, index) => (
+                    <Image
+                        src={pic}
+                        width={100}
+                        height={100}
+                        alt="answer picture"
+                        unoptimized={true}
+                        key={index}
+                        className={styles.answerPicture}
+                    />
                 ))}
             <div className={styles.allAnswers}>
                 {Object.entries(allAnswers).map(([name, answer]) => (
                     <div className={styles.playerAnswer} key={name}>
-                        {name}:
+                        {name}:{" "}
                         {Array.isArray(answer) ? answer.join(", ") : answer}
                     </div>
                 ))}

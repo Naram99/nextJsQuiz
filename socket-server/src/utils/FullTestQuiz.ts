@@ -31,11 +31,13 @@ export const fullTestQuiz: CategoryData[] = [
                 id: "top2",
                 question: "Mikor spawnolnak a Voidgrub-ok?",
                 used: false,
+                pictureSrc: "/quiz/ai/grubs.jpg",
                 answer: {
                     text: "8:00",
                     type: "handRaise",
                     confirm: false,
                     points: 20,
+                    pictureSrc: ["/quiz/ai/grub.jpg", "/quiz/ai/grub.jpg"],
                 },
             },
         ],

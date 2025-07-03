@@ -23,6 +23,10 @@ export default function AdminPage({
         socket.emit("quiz:admin:nextQuestion");
     }
 
+    function handleAdminEvaluate() {
+        socket.emit("quiz:admin:evaluate");
+    }
+
     function handleHandRaiseCorrect(correct: boolean) {
         socket.emit("quiz:admin:handRaiseCorrect", correct);
     }
@@ -42,7 +46,7 @@ export default function AdminPage({
             {gameState === "select" && (
                 <QuestionSelector categories={categoryData} />
             )}
-            {gameState === "question" && (
+            {(gameState === "question" || gameState === "showdown") && (
                 <>
                     <div className={styles.adminQuestion}>
                         {questionData.question}
@@ -54,7 +58,7 @@ export default function AdminPage({
                     </div>
                     {questionData.answer.type === "handRaise" &&
                         handRaiseOrder.length > 0 && (
-                            <div className={styles.handRaiseAdminBtnCt}>
+                            <div className={styles.handRaiseCt}>
                                 <div className={styles.handRaiseOrder}>
                                     {handRaiseOrder.length > 0
                                         ? handRaiseOrder.map((name) => (
@@ -69,27 +73,42 @@ export default function AdminPage({
                                           ))
                                         : "Waiting for hand raise..."}
                                 </div>
-                                <button
-                                    type={"button"}
-                                    className={styles.handRaiseAccept}
-                                    onClick={() => handleHandRaiseCorrect(true)}
-                                >
-                                    Correct
-                                </button>
-                                <button
-                                    type={"button"}
-                                    className={styles.handRaiseDeny}
-                                    onClick={() =>
-                                        handleHandRaiseCorrect(false)
-                                    }
-                                >
-                                    Wrong
-                                </button>
+                                <div className={styles.handRaiseAdminBtnCt}>
+                                    <button
+                                        type={"button"}
+                                        className={styles.handRaiseAccept}
+                                        onClick={() =>
+                                            handleHandRaiseCorrect(true)
+                                        }
+                                    >
+                                        Correct
+                                    </button>
+                                    <button
+                                        type={"button"}
+                                        className={styles.handRaiseDeny}
+                                        onClick={() =>
+                                            handleHandRaiseCorrect(false)
+                                        }
+                                    >
+                                        Wrong
+                                    </button>
+                                </div>
                             </div>
                         )}
-                    <div className={styles.adminNextBtn}>
-                        <button type={"button"} onClick={handleAdminNext}>
+                    <div className={styles.adminNextBtnCt}>
+                        <button
+                            type={"button"}
+                            onClick={handleAdminNext}
+                            className={styles.adminNextBtn}
+                        >
                             Next Question
+                        </button>
+                        <button
+                            type={"button"}
+                            onClick={handleAdminEvaluate}
+                            className={styles.adminEvaluateBtn}
+                        >
+                            Evaluate Question
                         </button>
                     </div>
                 </>

@@ -10,7 +10,7 @@
         "build": "tsc",
         "start": "tsc && node dist/index.js",
         "test": "test",
-        "updateData": "tsc && node dist/update.js 15.11.1"
+        "updateData": "tsc && node dist/update.js 15.13.1"
     },
     "devDependencies": {
         "@types/express": "^5.0.1",

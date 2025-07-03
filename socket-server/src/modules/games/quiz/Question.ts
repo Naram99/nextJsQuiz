@@ -1,5 +1,6 @@
 import ServerContext from "../../../utils/ServerContext";
 import { QuestionData } from "../../../utils/type/quiz/QuestionData.type";
+import { UserInLobby } from "../../../utils/type/UserInLobby.type";
 
 export default class Question {
     public handRaiseOrder: string[] = [];
@@ -8,7 +9,11 @@ export default class Question {
     constructor(
         private context: ServerContext,
         private id: string,
-        public fullData: QuestionData
+        private players: Map<string, UserInLobby>,
+        public fullData: QuestionData,
+        public emitAnswers: (data: {
+            [index: string]: number | string | string[];
+        }) => void
     ) {
         console.log(fullData);
         context.io.to(id).emit("quiz:questionData", fullData);
@@ -24,7 +29,7 @@ export default class Question {
 
     public evaluateAnswers(): { id: string; points: number }[] {
         console.log("Evaluating answers");
-        this.context.io.to(this.id).emit("quiz:allAnswers", this.answers);
+        this.emitAnswers(this.answers);
 
         let corrects: { id: string; points: number }[] = [];
 

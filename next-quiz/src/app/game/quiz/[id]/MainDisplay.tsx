@@ -42,6 +42,7 @@ export default function MainDisplay({
                             width={100}
                             alt="question picture"
                             unoptimized={true}
+                            className={styles.mainDisplayImg}
                         />
                     )}
                     <div className={styles.answers}>
@@ -60,12 +61,15 @@ export default function MainDisplay({
                 </>
             )}
             <div className={styles.selectorCt}>
-                {gameState === "select" && (me === selector || !isPlayer) ? (
-                    <QuestionSelector categories={categories} />
-                ) : (
-                    gameState === "select" &&
-                    `${selector} is selecting the next question`
-                )}
+                {
+                    //gameState === "select" && (me === selector || !isPlayer) ? (
+                    gameState === "select" && !isPlayer ? (
+                        <QuestionSelector categories={categories} />
+                    ) : (
+                        gameState === "select" &&
+                        `${selector} is selecting the next question`
+                    )
+                }
             </div>
             {gameState === "showdown" && (
                 <ShowdownDisplay

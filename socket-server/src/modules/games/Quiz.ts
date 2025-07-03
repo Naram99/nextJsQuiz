@@ -18,6 +18,7 @@ export default class Quiz implements QuizGame {
         categories: [],
     };
     private question?: Question;
+    private answers: { id: string; points: number }[] = [];
 
     constructor(
         private context: ServerContext,
@@ -110,14 +111,6 @@ export default class Quiz implements QuizGame {
                         });
                         this.emitUserData();
                         this.finishQuestion([activePlayer]);
-                        // setTimeout(
-                        //     () => this.updateScores([activePlayer]),
-                        //     5000
-                        // );
-                        // setTimeout(
-                        //     () => this.selectNextQuestion([activePlayer]),
-                        //     5000
-                        // );
                     }
                 }
             );
@@ -137,13 +130,8 @@ export default class Quiz implements QuizGame {
                             Object.values(this.question!.answers).length ===
                             this.players.size - 2
                         ) {
-                            const corrects = this.question!.evaluateAnswers();
-                            this.finishQuestion(corrects);
-                            // setTimeout(() => this.updateScores(corrects), 5000);
-                            // setTimeout(
-                            //     () => this.selectNextQuestion(corrects),
-                            //     5000
-                            // );
+                            this.answers = this.question!.evaluateAnswers();
+                            this.finishQuestion(this.answers);
                         }
                     }
                 }
@@ -151,6 +139,7 @@ export default class Quiz implements QuizGame {
 
             user.socket?.on("quiz:selectQuestion", (questionId: string) => {
                 console.log(questionId);
+                this.answers = [];
 
                 this.fullData.categories.forEach((category, index) => {
                     category.questions.forEach((question, ind) => {
@@ -162,7 +151,9 @@ export default class Quiz implements QuizGame {
                             this.question = new Question(
                                 this.context,
                                 this.id,
-                                this.fullData.categories[index].questions[ind]
+                                this.players,
+                                this.fullData.categories[index].questions[ind],
+                                this.emitAllAnswersWithNames
                             );
                         }
                     });
@@ -170,14 +161,12 @@ export default class Quiz implements QuizGame {
             });
 
             user.socket?.on("quiz:admin:evaluate", () => {
-                const corrects = this.question!.evaluateAnswers();
-                this.finishQuestion(corrects);
-                // setTimeout(() => this.updateScores(corrects), 5000);
-                // setTimeout(() => this.selectNextQuestion(corrects), 5000);
+                this.answers = this.question!.evaluateAnswers();
+                this.finishQuestion(this.answers);
             });
 
             user.socket?.on("quiz:admin:nextQuestion", () => {
-                this.finishQuestion([]);
+                this.selectNextQuestion(this.answers);
             });
         });
     }
@@ -185,7 +174,6 @@ export default class Quiz implements QuizGame {
     private finishQuestion(data: { id: string; points: number }[]) {
         this.context.io.to(this.id).emit("quiz:showdown");
         setTimeout(() => this.updateScores(data), 5000);
-        setTimeout(() => this.selectNextQuestion(data), 5000);
     }
 
     private updateScores(data: { id: string; points: number }[]): void {
@@ -227,5 +215,16 @@ export default class Quiz implements QuizGame {
                 this.players.get(selector)?.name,
                 this.fullData.categories
             );
+    }
+
+    public emitAllAnswersWithNames(data: {
+        [index: string]: number | string | string[];
+    }) {
+        const withNames: { [index: string]: string | number | string[] } = {};
+        Object.entries(data).forEach(([id, answer]) => {
+            const playerName = this.players.get(id)!.name;
+            withNames[playerName] = answer;
+        });
+        this.context.io.to(this.id).emit("quiz:allAnswers", withNames);
     }
 }

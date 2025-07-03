@@ -38,7 +38,7 @@ export const DRVQuizData: CategoryData[] = [
                 question: "Nevezz meg egy hőst, akinek 5 különböző CC-je van!",
                 used: false,
                 answer: {
-                    text: ["Nautilus", "Poppy", "RenataGlasc", "Urgot"],
+                    text: ["Nautilus", "Poppy", "Renata", "Urgot", "Hwei"],
                     type: "handRaise",
                     confirm: false,
                     points: 30,
@@ -49,7 +49,7 @@ export const DRVQuizData: CategoryData[] = [
                 question: "Melyik knockup tart a legtovább?",
                 used: false,
                 answer: {
-                    text: "Kalista R (2 sec)",
+                    text: "Kalista R / Nautilus R (2 sec)",
                     type: "handRaise",
                     confirm: false,
                     points: 40,
@@ -64,7 +64,7 @@ export const DRVQuizData: CategoryData[] = [
                     text: [
                         "Akshan",
                         "Ezreal",
-                        "KaiSa",
+                        "Kaisa",
                         "Katarina",
                         "Lucian",
                         "MasterYi",
@@ -282,7 +282,7 @@ export const DRVQuizData: CategoryData[] = [
                 used: false,
                 answer: {
                     text: [],
-                    type: "single",
+                    type: "handRaise",
                     confirm: false,
                     points: 40,
                 },
