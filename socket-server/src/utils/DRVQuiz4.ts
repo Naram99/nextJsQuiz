@@ -4,7 +4,7 @@ export const DRVQuizData: CategoryData[] = [
     {
         id: "cat1",
         name: "CC",
-        iconsPath: "/quiz/top",
+        iconsPath: "/quiz/top/",
         questions: [
             {
                 id: "top1",
@@ -84,7 +84,7 @@ export const DRVQuizData: CategoryData[] = [
     {
         id: "cat2",
         name: "AI",
-        iconsPath: "/quiz/jungle",
+        iconsPath: "/quiz/jungle/",
         questions: [
             {
                 id: "jng1",
@@ -168,7 +168,7 @@ export const DRVQuizData: CategoryData[] = [
     {
         id: "cat3",
         name: "Riot Games",
-        iconsPath: "/quiz/mid",
+        iconsPath: "/quiz/mid/",
         questions: [
             {
                 id: "mid1",
@@ -236,7 +236,7 @@ export const DRVQuizData: CategoryData[] = [
     {
         id: "cat4",
         name: "DROVE",
-        iconsPath: "/quiz/bot",
+        iconsPath: "/quiz/bot/",
         questions: [
             {
                 id: "bot1",
@@ -313,7 +313,7 @@ export const DRVQuizData: CategoryData[] = [
     {
         id: "cat5",
         name: "Random",
-        iconsPath: "/quiz/support",
+        iconsPath: "/quiz/support/",
         questions: [
             {
                 id: "sup1",

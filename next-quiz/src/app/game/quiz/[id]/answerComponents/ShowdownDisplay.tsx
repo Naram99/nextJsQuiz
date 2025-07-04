@@ -31,14 +31,16 @@ export default function ShowdownDisplay({
                         className={styles.answerPicture}
                     />
                 ))}
-            <div className={styles.allAnswers}>
-                {Object.entries(allAnswers).map(([name, answer]) => (
-                    <div className={styles.playerAnswer} key={name}>
-                        {name}:{" "}
-                        {Array.isArray(answer) ? answer.join(", ") : answer}
-                    </div>
-                ))}
-            </div>
+            {questionData.answer.type !== "handRaise" && (
+                <div className={styles.allAnswers}>
+                    {Object.entries(allAnswers).map(([name, answer]) => (
+                        <div className={styles.playerAnswer} key={name}>
+                            {name}:{" "}
+                            {Array.isArray(answer) ? answer.join(", ") : answer}
+                        </div>
+                    ))}
+                </div>
+            )}
         </div>
     );
 }

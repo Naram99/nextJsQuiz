@@ -137,10 +137,10 @@ async function test() {
 
     const testInsert = await db.insert(QuizTable).values({
         userId: "22ee4737-db18-4e85-8f56-e766c828b166",
-        title: "FullTest",
+        title: "DRVQuiz4",
         type: "WinnerSelect",
         hasCategories: true,
-        questions: fullTestQuiz,
+        questions: DRVQuizData,
     });
 
     const data = await db.select().from(QuizTable);
