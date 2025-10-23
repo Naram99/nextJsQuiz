@@ -92,6 +92,7 @@ export default function QuizGamePage() {
             setSelector(selector);
             setGameState("select");
             setCategoryData(categories);
+            setHandRaiseOrder([]);
         }
 
         function handleQuestionData(data: QuestionData) {
