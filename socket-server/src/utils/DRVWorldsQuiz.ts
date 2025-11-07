@@ -168,15 +168,14 @@ export const DRVQuizData: CategoryData[] = [
             },
             {
                 id: "bot3",
-                question: "Kire utal a kép?",
+                question:
+                    "Melyik játékos nyert utoljára Worlds döntőt úgy, hogy a flasht a 'D' gombon használta?",
                 used: false,
-                pictureSrc: "/quiz/ai/worlds/riddle2.webp",
                 answer: {
-                    text: "Vízicsacsi",
+                    text: "Deft (DRX ADC)",
                     type: "handRaise",
                     confirm: false,
                     points: 30,
-                    pictureSrc: ["/quiz/ai/worlds/riddle2.webp"],
                 },
             },
         ],
