@@ -8,12 +8,11 @@ export const DRVQuizData: CategoryData[] = [
         questions: [
             {
                 id: "top1",
-                question:
-                    "Milyen role-t játszik az a játékos aki úgy nyert 2 Worlds döntőt, hogy sosem játszott az SKT/T1-ben?",
+                question: "Hány különböző országban volt már Worlds döntő?",
                 used: false,
                 answer: {
-                    type: "handRaise",
-                    text: "Support (BeryL)",
+                    type: "guessNumber",
+                    text: 8,
                     confirm: false,
                     points: 10,
                 },
@@ -126,6 +125,49 @@ export const DRVQuizData: CategoryData[] = [
             },
             {
                 id: "mid3",
+                question: "Kire utal a kép?",
+                used: false,
+                pictureSrc: "/quiz/ai/worlds/riddle2.webp",
+                answer: {
+                    text: "Vízicsacsi",
+                    type: "handRaise",
+                    confirm: false,
+                    points: 30,
+                    pictureSrc: ["/quiz/ai/worlds/riddle2.webp"],
+                },
+            },
+        ],
+    },
+    {
+        id: "cat4",
+        name: "Worlds winners",
+        iconsPath: "/quiz/bot/",
+        questions: [
+            {
+                id: "bot1",
+                question:
+                    "Milyen role-t játszik az a játékos aki úgy nyert 2 Worlds döntőt, hogy sosem játszott az SKT/T1-ben?",
+                used: false,
+                answer: {
+                    type: "handRaise",
+                    text: "Support (BeryL)",
+                    confirm: false,
+                    points: 10,
+                },
+            },
+            {
+                id: "bot2",
+                question: "Hány kínai játékos nyert Worlds-öt?",
+                used: false,
+                answer: {
+                    text: 9,
+                    type: "guessNumber",
+                    confirm: false,
+                    points: 20,
+                },
+            },
+            {
+                id: "bot3",
                 question: "Kire utal a kép?",
                 used: false,
                 pictureSrc: "/quiz/ai/worlds/riddle2.webp",
